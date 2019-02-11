@@ -100,9 +100,16 @@ for (security in securities) {
 expDates <- c("09/21/18", "10/19/18", "11/16/18")
 
 # Defining put and call prices for SPY and AMZN options
-spyPrices <- c("270", "275", "280", "285", "290", "295", "300", "305", "310")
-amznPrices <- c("1920", "1930", "1940", "1950", "1960", "1970", "1980",
-                "1990", "2000")
+# Grabbing prices for 5% +/- current price
+
+# Current SPY price
+spyCurrent <- 270
+spyPrices <- c(floor(0.95 * spyCurrent):ceiling(1.05 * spyCurrent))
+
+# Current AMZN price (need to do this manually because of option strikes)
+# Closest option price to 95% of price is at $1557.50 and 105% is $1722.50
+amznCurrent <- 1640
+amznPrices <- seq(1557.5, 1722.5, by=5)
 
 # Creating option names for SPY and AMZN
 spyOptions <- createOptionName("SPY US", expDates, spyPrices, "C", "Equity")
