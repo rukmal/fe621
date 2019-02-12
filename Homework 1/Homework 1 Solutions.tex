@@ -35,6 +35,24 @@
 % Bibliography configuration
 \addbibresource{../bibliography.bib}
 
+% Remapping bibliography underscores (_) and tildes (~) because Mendeley has weird exporting
+% Solution from: https://tex.stackexchange.com/questions/309980/parsing-underscores-in-urls-from-mendeley
+
+\DeclareSourcemap{ % Used when .bib/Bibliography is compiled, not when document is
+    \maps{
+        \map{ % Replaces '{\_}', '{_}' or '\_' with just '_'
+            \step[fieldsource=url,
+                  match=\regexp{\{\\\_\}|\{\_\}|\\\_},
+                  replace=\regexp{\_}]
+        }
+        \map{ % Replaces '{'$\sim$'}', '$\sim$' or '{~}' with just '~'
+            \step[fieldsource=url,
+                  match=\regexp{\{\$\\sim\$\}|\{\~\}|\$\\sim\$},
+                  replace=\regexp{\~}]
+        }
+    }
+}
+
 % Code display configuration
 \newcommand*\lstinputpath[1]{\lstset{inputpath=#1}} % Setting path
 \lstset{
