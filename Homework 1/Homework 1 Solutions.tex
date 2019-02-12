@@ -14,15 +14,17 @@
 % Package Imports
 %==============================    
 \usepackage[ruled]{algorithm2e}
-\usepackage[authordate]{biblatex-chicago}
+\usepackage[authordate, maxcitenames=1]{biblatex-chicago}
 \usepackage{amsmath} % math environment stuff
 \usepackage{amssymb} % additional math symbols
 \usepackage[toc, page]{appendix} % Appendix referencing
 \usepackage{comment} % enables the use of multi-line comments (\ifx \fi) 
 \usepackage{csvsimple} % CSV to Table
 \usepackage{fancyhdr} % Header
+\usepackage{fancyvrb}
 \usepackage[headings]{fullpage}
 \usepackage{listings} % code embedding
+\usepackage{pmboxdraw}
 \usepackage[dvipsnames]{xcolor} % colors for code
 
 
@@ -129,7 +131,7 @@ Unless otherwise stated, the following shorthand notation is used to distinguish
 The content of this Homework Assignment is divided into three sections; the first discusses data gathering, formatting, and a discussion of the assets being examined. The second contains data analysis, and an exploration of implied volatility through the Black-Scholes-Merton pricing framework and related computations. Finally, the third section discusses numerical integration and the convergence of various quadrature rules.
 
 \begin{center}
-    \textit{See Appendix \ref{appendix:source} for specific question implementations, and (\cite{Weerawarana2019}) for full source code.}
+    \textit{See Appendix \ref{appendix:source} for specific question implementations, and (\cite{Weerawarana2019}) for full source code of the {\normalfont fe621} Python package.}
 \end{center}
 
 
@@ -154,6 +156,37 @@ The content of this Homework Assignment is divided into three sections; the firs
         The CBOE (\textit{Chicago Board Options Exchange}) volatility index, \textit{VIX} is an exchange traded product (\textit{ETP}) designed to give investors exposure to the market's expectation of 30-day volatility. It is priced using a large set of implied volatility of put and call options on the S\&P 500 index to gauge investor sentiment. Typically, the price of the VIX has an inverse relationship to the price of the S\&P 500 index. Similar to an ETF, an ETP is also traded on an exchange as a typical traded asset.
 
 
+    \subsection{Data Gathering}
+
+    For the assignment, we downloaded monthly options on \textit{Amazon Inc.} (ticker: AMZN) and \textit{S\&P 500 ETF} (ticker: SPY) at various strike prices for the following dates:
+    
+    \begin{itemize}
+        \item \textit{02/15/19} - Friday, February 15 2019;
+        \item \textit{03/15/19} - Friday, March 15 2019;
+        \item \textit{04/18/19} - Thursday, April 18 2019.
+    \end{itemize}
+
+    A wide variety of option strike prices were considered, with the following ranges:
+    
+    \begin{itemize}
+        \item \textit{AMZN} - \$1555 to \$1725 in increments of \$5 (35 strike prices);
+        \item \textit{SPY} - \$256 to \$284 in increments of \$1 (29 strike prices).
+    \end{itemize}
+
+    Intra-day minute closing price data was gathered for both put and call options with expiration dates and strike prices detailed above. This intra-day data was gathered for the trading day \textit{2/6/19} (February 6 2019; \textbf{DATA1}). Additionally, intra-day minute closing price data was also downloaded for each of the underlying assets. This data was downloaded for both \textit{2/6/19} (February 6 2019; \textbf{DATA1}), and \textit{2/7/19} (February 7 2019; \textbf{DATA2}).
+
+    This data detailed above was gathered utilizing \textit{Rblpapi} (\cite{Armstrong2018}), which provides an R interface to data on the Bloomberg Terminal (\cite{BloombergL.P.2019}). The data download was automated, and corresponding intra-day prices for each of the options were output to individual files. The source code for this implementation is available in Appendix \ref{appendix:source:q1:bloomberg}.
+
+    Furthermore, as a proxy for the \textit{risk-free rate}, we chose to utilize the effective Federal Funds Rate (FFR). This is the interest rate at which depository institutions in the United States lend reserve balances to other depository institutions overnight. This data was gathered for both dates, and correspond to \textbf{DATA1} and \textbf{DATA2}. The effective FFR is published daily by the US Federal Reserve Board of Governors, and are expressed as yields per annum (\cite{BoardofGovernorsoftheFederalReserveSystem2019}).
+
+    \subsubsection{Data Cleaning}
+
+        For easier programmatic access, the data was placed in a hierarchical structure, corresponding to the \textbf{DATA1}, \textbf{DATA2} data division. Each of the option and asset prices for the corresponding days were placed in the requisite sub-folders. This directory structure is reproduced below.
+
+        \VerbatimInput{bin/data_tree.txt}
+
+        Option price filenames were changed to OOC format option names, discussed further below. This was done utilizing a cleaning script, written in Python. This script employs utility functions from the \textit{fe621} Python package (\cite{Weerawarana2019}). The cleaning script is reproduced in Appendix \ref{appendix:source:q1:clean}.
+
 %==============================
 % References
 %==============================
@@ -172,15 +205,20 @@ The content of this Homework Assignment is divided into three sections; the firs
 \appendix
 
 % Resetting input path
-\lstinputpath{question_solutions}
+\lstinputpath{}
 
 \section{Appendix} \label{appendix:source}
 
     \subsection{Question 1 Implementation}
-    \label{appendix:source:q1}
 
-        \lstinputlisting{question_1.R}
+        \subsubsection{Bloomberg Data Download} \label{appendix:source:q1:bloomberg}
 
+            \lstinputlisting{question_solutions/question_1.R}
+        
+        \subsubsection{Data Cleaning} \label{appendix:source:q1:clean}
+        
+            \lstinputlisting{data_cleaning.py}
+    
 %==============================
 % Document End
 %==============================
