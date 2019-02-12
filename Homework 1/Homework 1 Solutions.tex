@@ -179,13 +179,48 @@ The content of this Homework Assignment is divided into three sections; the firs
 
     Furthermore, as a proxy for the \textit{risk-free rate}, we chose to utilize the effective Federal Funds Rate (FFR). This is the interest rate at which depository institutions in the United States lend reserve balances to other depository institutions overnight. This data was gathered for both dates, and correspond to \textbf{DATA1} and \textbf{DATA2}. The effective FFR is published daily by the US Federal Reserve Board of Governors, and are expressed as yields per annum (\cite{BoardofGovernorsoftheFederalReserveSystem2019}).
 
-    \subsubsection{Data Cleaning}
+        \subsubsection{Data Cleaning}
 
-        For easier programmatic access, the data was placed in a hierarchical structure, corresponding to the \textbf{DATA1}, \textbf{DATA2} data division. Each of the option and asset prices for the corresponding days were placed in the requisite sub-folders. This directory structure is reproduced below.
+            For easier programmatic access, the data was placed in a hierarchical structure, corresponding to the \textbf{DATA1}, \textbf{DATA2} data division. Each of the option and asset prices for the corresponding days were placed in the requisite sub-folders. This directory structure is reproduced below.
 
-        \VerbatimInput{bin/data_tree.txt}
+            \VerbatimInput{bin/data_tree.txt}
 
-        Option price filenames were changed to OOC format option names, discussed further below. This was done utilizing a cleaning script, written in Python. This script employs utility functions from the \textit{fe621} Python package (\cite{Weerawarana2019}). The cleaning script is reproduced in Appendix \ref{appendix:source:q1:clean}.
+            Option price filenames were changed to OOC format option names, discussed further below. This was done utilizing a cleaning script, written in Python. This script employs utility functions from the \textit{fe621} Python package (\cite{Weerawarana2019}). The cleaning script is reproduced in Appendix \ref{appendix:source:q1:clean}.
+    
+        \subsection{Option Naming Convention}
+
+        A modern convention for naming option contracts was proposed by the Options Clearing Commission (OCC) in 2008 (\cite{OptionsSymbologyInitiative2008}), and adopted in 2010. The OCC is an organization that acts as both the issuer and guarantor for option and future contracts. The OCC is governed by the Securities and Exchange Commission (SEC) and the Commodities Futures Trading Commission (CFTC). The current convention for option naming is best explained by example.
+        
+        Consider the option code, \textit{AMZN190215C01960000}. This corresponds to a \textbf{Call Option} on \textbf{Amazon Inc. (AMZN)}, with a strike price of \textbf{\$1960.00} and an expiration date of \textbf{2/15/19} (February 15 2019).
+        
+        The methodology of this nomenclature is explained in detail below:
+    
+        \begin{center}
+            \textbf{\textcolor{red}{AMZN}\textcolor{MidnightBlue}{19}\textcolor{Bittersweet}{02}\textcolor{YellowOrange}{15}\textcolor{RoyalPurple}{C}\textcolor{ForestGreen}{01960}\textcolor{violet}{000}}
+        \end{center}
+    
+        \begin{itemize}
+            \item \textbf{\textcolor{red}{AMZN}} - Ticker of the company (arbitrary length; always first sequence of characters)
+            \item \textbf{\textcolor{MidnightBlue}{19}} - Expiration year of the contract (shortened to two digits, i.e. 2019 $\rightarrow$ 19)
+            \item \textbf{\textcolor{Bittersweet}{02}} - Expiration month of the contract
+            \item \textbf{\textcolor{YellowOrange}{15}} - Expiration day of the contract
+            \item \textbf{\textcolor{RoyalPurple}{C}} - Type of option (\textit{C} for call, \textit{P} for put)
+            \item \textbf{\textcolor{ForestGreen}{01960}} - Dollar component of strike price (in \$; always 5 digits)
+            \item \textbf{\textcolor{violet}{000}} - ${\frac{1}{1000}}^\text{th}$ Dollar component of strike price (in $\frac{1}{1000}$\$; always 3 digits)
+        \end{itemize}
+    
+        Similarly, the following option code corresponds to a \textbf{Put Option} on \textbf{SPDR S\&P 500 ETF (SPY)}, with a strike price of \textbf{\$287.50} and an expiration date of \textbf{2019/03/15} (March 15 2019):
+    
+        \begin{center}
+            \textbf{\textcolor{red}{SPY}\textcolor{MidnightBlue}{19}\textcolor{Bittersweet}{03}\textcolor{YellowOrange}{15}\textcolor{RoyalPurple}{P}\textcolor{ForestGreen}{00287}\textcolor{violet}{500}}
+        \end{center}
+    
+        Finally, the following option code corresponds to a \textbf{Call Option} on \textbf{CBOE Volatility Index (VIX)}, with a strike price of \textbf{\$16.35} and an expiration date of \textbf{2019/04/18} (February 18 2019):
+    
+        \begin{center}
+            \textbf{\textcolor{red}{VIX}\textcolor{MidnightBlue}{19}\textcolor{Bittersweet}{04}\textcolor{YellowOrange}{18}\textcolor{RoyalPurple}{C}\textcolor{ForestGreen}{00016}\textcolor{violet}{350}}
+        \end{center}
+
 
 %==============================
 % References
