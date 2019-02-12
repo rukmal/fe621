@@ -1,3 +1,6 @@
+# Script to rename option files, from the R data download script format to
+# OOC-compliant names.
+
 from context import fe621
 
 import os
