@@ -13,8 +13,8 @@ def loadData(folder_path: str, date: str, start_time: str='9:30',
     dates and times are in the first column of the CSV file (headers 'Dates'),
     and that the prices are in the second column. The corresponding column in
     the final DataFrame is the name of the file it was read from. This function
-    also forward-propagates prices from the last viable value if one is not
-    available for a given minute.
+    also forward and backward propagates prices from the last/first viable
+    value if one is not available for a given minute.
 
     Arguments:
         folder_path {str} -- Path from which CSV files are to be ingested.
@@ -61,6 +61,8 @@ def loadData(folder_path: str, date: str, start_time: str='9:30',
 
     # Forward-filling data (i.e. forward-propagate last viable value)
     data = data.fillna(method='ffill')
+    # Backward-filling data
+    data = data.fillna(method='backfill')
 
     # Restrict time to start_time and end_time
     data = data.between_time(start_time=start_time, end_time=end_time)
