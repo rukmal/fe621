@@ -336,6 +336,35 @@ The content of this Homework Assignment is divided into three sections; the firs
         
         \lstinputlisting{fe621/black_scholes/greeks.py}
 
+    \newpage
+    \subsection{Numeric Optimization}
+
+    \begin{algorithm}[t]
+        \SetAlgoNoLine
+        \KwIn{Input function, $f$ to be optimized; must have sign change. Search space start and stop points, $a$ and $b$. Tolerance level, $\epsilon$.}
+        \KwOut{Point $x_0$ in the interval $[a, b]$ where $f(x_0) = 0$.}
+        Let midpont = $m$\;
+        \Repeat{$(b - a) < \epsilon$}{
+            $m = \frac{a + b}{2}$\;
+            \If{$f(a) \times f(mid) < 0$}{$b=m$}
+            \If{$f(b) \times f(mid) < 0$}{$a=m$}
+        }
+        $x_0 = \frac{a + b}{2}$\;
+        \caption{Bisection Algorithm}
+        \label{alg:bisection}
+    \end{algorithm}
+
+    In this section, we implement the Bisection method to compute the implied volatility, using the market price of the underlying asset and the option contract.
+
+    The bisection algorithm is outlined in Algorithm \ref{alg:bisection}. The algorithm is implemented recursively.
+
+    \lstinputlisting{fe621/optimization/bisection.py}
+
+
+    \subsection{Volatility Smile}
+
+    In this section, we utilize the functions and data described above to calculate the average implied volatility of each of the option chains.
+
 %==============================
 % References
 %==============================
