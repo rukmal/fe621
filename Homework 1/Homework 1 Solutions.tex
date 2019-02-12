@@ -14,6 +14,7 @@
 % Package Imports
 %==============================    
 \usepackage[ruled]{algorithm2e}
+\usepackage[authordate]{biblatex-chicago}
 \usepackage{amsmath} % math environment stuff
 \usepackage{amssymb} % additional math symbols
 \usepackage[toc, page]{appendix} % Appendix referencing
@@ -28,6 +29,9 @@
 %==============================
 % Configuration
 %==============================
+
+% Bibliography configuration
+\addbibresource{../bibliography.bib}
 
 % Code display configuration
 \newcommand*\lstinputpath[1]{\lstset{inputpath=#1}} % Setting path
@@ -107,5 +111,35 @@
 
 \noindent\rule{\linewidth}{.1em}
 
+
+%==============================
+% Overview
+%==============================
+
+\subsection*{Overview}
+
+In this Homework Assignment, we explore various numerical optimization methods through the lens of the Black-Scholes-Merton Option pricing model (\cite{Shreve2004}). Using this, we calculate explore the implied volatility of options for various assets traded on the market. Furthermore, we also explore numeric methods of differential calculation to compute the Greeks of these candidate options. Finally, we explore numeric integration and the behavior of various quadrature methods.
+
+Unless otherwise stated, the following shorthand notation is used to distinguish between dates:
+
+\begin{itemize}
+    \item \textbf{DATA1} - Wednesday, February 6 2019 (\textit{2/6/19})
+    \item \textbf{DATA2} - Thursday, February 7 2019 (\textit{2/7/19})
+\end{itemize}
+
+The content of this Homework Assignment is divided into three sections; the first discusses data gathering, formatting, and a discussion of the assets being examined. The second contains data analysis, and an exploration of implied volatility through the Black-Scholes-Merton pricing framework and related computations. Finally, the third section discusses numerical integration and the convergence of various quadrature rules.
+
+\begin{center}
+    \textit{See Appendix <CITE APPENDIX HERE> for specific question implementations, and (\cite{Weerawarana2019}) for full source code.}
+\end{center}
+
+
+%==============================
+% REFERENCES
+%==============================
+
+\newpage
+
+\printbibliography
 
 \end{document}
