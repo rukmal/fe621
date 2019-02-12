@@ -1,0 +1,111 @@
+\documentclass[10pt]{article}
+
+%==============================
+% Document Metadata
+%============================== 
+\usepackage[pdftex,
+    pdfauthor={Rukmal Weerawarana},
+    pdftitle={Homework 1 Solutions - FE 621},
+    pdfsubject={FE 621 - Computational Methods in Finance}
+]{hyperref}
+
+
+%==============================
+% Package Imports
+%==============================    
+\usepackage[ruled]{algorithm2e}
+\usepackage{amsmath} % math environment stuff
+\usepackage{amssymb} % additional math symbols
+\usepackage[toc, page]{appendix} % Appendix referencing
+\usepackage{comment} % enables the use of multi-line comments (\ifx \fi) 
+\usepackage{csvsimple} % CSV to Table
+\usepackage{fancyhdr} % Header
+\usepackage[headings]{fullpage}
+\usepackage{listings} % code embedding
+\usepackage[dvipsnames]{xcolor} % colors for code
+
+
+%==============================
+% Configuration
+%==============================
+
+% Code display configuration
+\newcommand*\lstinputpath[1]{\lstset{inputpath=#1}} % Setting path
+\lstinputpath{hw1_code}
+\lstset{
+	language=Python,
+	basicstyle=\footnotesize\ttfamily,
+	commentstyle=\ttfamily\color{purple!40!black},
+	identifierstyle=\color{blue},
+	keywordstyle=\color{ForestGreen},
+	numbers=left,
+	numberstyle=\ttfamily\color{gray}\footnotesize,
+	stepnumber=1,
+	numbersep=5pt,
+	backgroundcolor=\color{white},
+	showspaces=false,
+	showstringspaces=false,
+	showtabs=false,
+	frame=single,
+	tabsize=2,
+	captionpos=b,
+	breaklines=true,
+	breakatwhitespace=false,
+	title=\lstname
+}
+\lstset{
+	language=R,
+	basicstyle=\footnotesize\ttfamily,
+	commentstyle=\ttfamily\color{purple!40!black},
+	identifierstyle=\color{blue},
+	keywordstyle=\color{ForestGreen},
+	numbers=left,
+	numberstyle=\ttfamily\color{gray}\footnotesize,
+	stepnumber=1,
+	numbersep=5pt,
+	backgroundcolor=\color{white},
+	showspaces=false,
+	showstringspaces=false,
+	showtabs=false,
+	frame=single,
+	tabsize=2,
+	captionpos=b,
+	breaklines=true,
+	breakatwhitespace=false,
+	title=\lstname
+}
+
+% Header and Footer configuration
+\pagestyle{fancy} % set page style
+\fancyhead{} % override header
+\fancyfoot{} % override footer
+\renewcommand{\headrulewidth}{.4pt} % set header rule width 
+\renewcommand{\footrulewidth}{.4pt} % set footer rule width 
+\lhead{Homework Assignment 1} % set left header
+\rhead{Rukmal Weerawarana} % set right header
+\lfoot{\textit{FE 621}: Computational Methods in Finance} % set left footer
+\rfoot{Page \thepage} % set right footer
+
+
+%==============================
+% Document Content
+%==============================
+
+\begin{document}
+
+\thispagestyle{plain}
+
+%==============================
+% Document Title
+%==============================
+
+\noindent
+\large\textbf{Homework Assignment 1} \hfill \textbf{Rukmal Weerawarana} \\
+\normalsize \textit{FE 621}: Computational Methods in Finance \hfill \textit{rweerawa@stevens.edu} $\mid$ 104-307-27 \\
+\textit{Instructor}: Ionut Florescu \hfill Department of Financial Engineering \\
+2/20/2019 \hfill Stevens Institute of Technology
+
+\noindent\rule{\linewidth}{.1em}
+
+
+\end{document}
