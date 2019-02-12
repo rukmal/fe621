@@ -5,6 +5,10 @@
 *.aux
 *.synctex.gz
 *.out
+*.bbl
+*.blg
+*.run.xml
+*.bcf
 
 # MacOS and Project stuff
 .DS_Store
