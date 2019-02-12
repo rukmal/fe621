@@ -6,7 +6,7 @@ import re
 def renameOptionFiles(folder_path: str):
     """Function to rename files corresponding to option pricing data from the
     format output by the R Bloomberg data gathering utility to files with
-    OOC (Options Clearing Commission) formatting.
+    OOC (Options Clearing Commission) formatting. For RegEx, https://regexr.com
     eg: SPY 3-15-19 C270 Equity.csv -> SPY190315C00270000.csv
     
     Arguments:
