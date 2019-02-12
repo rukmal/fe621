@@ -1,0 +1,11 @@
+data
+├── DATA1
+│   ├── AMZN
+│   ├── SPY
+│   └── VIX
+└── DATA2
+    ├── AMZN
+    ├── SPY
+    └── VIX
+
+8 directories
