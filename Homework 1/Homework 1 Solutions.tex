@@ -244,6 +244,99 @@ The content of this Homework Assignment is divided into three sections; the firs
 
 
 %==============================
+% Section 2
+%==============================
+
+\newpage
+
+\lstinputpath{..}
+
+\section{Data Analysis}
+
+    \begin{center}
+        \textit{Note: All Python scripts reproduced in this section are extracted from the {\normalfont fe621 (\cite{Weerawarana2019}}) package created for this class.}
+    \end{center}
+
+    \subsection{Black-Scholes Model Formulas}
+
+    With the probabilities $d_1$ and $d_2$ defined as:
+    \begin{gather*}
+        d_1 = \frac{\log \left( \frac{S_t}{K} \right) + \left( r - \frac{\sigma^2}{2} \right) (T-t)}{\sigma \sqrt{T-t}} \\
+        d_2 = d_1 - \sigma \sqrt{T-t} \\
+        \Phi(x) = \int_{-\infty}^{x} \phi(z) dz = \int_{-\infty}^{x} \frac{1}{\sqrt{2\pi}} e^{\frac{-z^2}{2}} dz
+    \end{gather*}
+
+    \lstinputlisting{fe621/black_scholes/util.py}
+
+    \begin{center}
+        \textbf{\textit{Note:} The following assumes the dividend rate, $q = 0$.}
+    \end{center}
+
+        \subsubsection{Put Option}
+
+        The Black-Scholes Option price for a European Put ($P(S_t)$) option is defined as:
+        \begin{gather*}
+            P(S_t) = K e^{-r(T-t)} \Phi(-d_2) - S_t \Phi(-d_1)
+        \end{gather*}
+
+        \lstinputlisting{fe621/black_scholes/put.py}
+
+
+        \subsubsection{Call Option}
+
+        The Black-Scholes Option price for a European Call ($C(S_t)$) option is defined as:
+        \begin{gather*}
+            C(S_t) = S_t \Phi(d_1) - K e^{-r(T-t)} \Phi(d_2) \\
+        \end{gather*}
+
+        \lstinputlisting{fe621/black_scholes/call.py}
+
+
+        \subsubsection{Put-Call Parity}
+
+        The relationship between the price of a Call and Put option is governed by Put-Call parity:
+        \begin{gather*}
+            P(S_t) = C(S_t) - S_t + K e^{-r(T-t)}
+        \end{gather*}
+    
+        \lstinputlisting{fe621/black_scholes/parity.py}
+
+
+        \subsubsection{The Greeks}
+
+        The Greeks are the quantities representing the sensitivity of the price of a derivative with respect to changes in the underlying parameters. The following formulas are implemented to calculate each of the Greeks using the Black-Scholes option pricing formula. These formulas are derived in full in \cite{Stefanica2011} and \cite{Weerawarana2016}.
+
+        \begin{center}
+            \textbf{\textit{Note:} The following assumes the dividend rate, $q = 0$.}
+        \end{center}
+    
+        \textbf{Delta}
+    
+        The Delta ($\Delta$) of an option is the first derivative of an option with respect to the price of the underlying asset at time $t$, $S_t$.
+    
+        \begin{gather*}
+            \Delta(C) = \frac{\partial C(S_t)}{\partial S_t} = \Phi(d_1)
+        \end{gather*}
+    
+        \textbf{Gamma}
+    
+        The Gamma ($\Gamma$) of an option is the second derivative of an option with respect to the price of the underlying asset at time $t$, $S_t$.
+    
+        \begin{gather*}
+            \Gamma(C) = \frac{\partial^2 C(S_t)}{\partial S_t^2} = \frac{\phi(d_1)}{S_t \sigma \sqrt{T-t}}
+        \end{gather*}
+    
+        \textbf{Vega}
+    
+        The Vega ($\nu$) of an option is the first derivative of an option with respect to the volatility of the underlying asset at time $t$, $\sigma$.
+        
+        \begin{gather*}
+            \nu(C) = \nu(P) = \frac{\partial C(S_t)}{\partial \sigma} = S_t \sqrt{T-t} \, \phi(d_1)
+        \end{gather*}
+        
+        \lstinputlisting{fe621/black_scholes/greeks.py}
+
+%==============================
 % References
 %==============================
 
