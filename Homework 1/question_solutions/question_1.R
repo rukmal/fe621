@@ -91,13 +91,13 @@ securities <- c("SPY US Equity", "AMZN US Equity", "VIX Index")
 
 # Getting prices for each of the top-level securities
 for (security in securities) {
-  data <- getPrice(security, startTime, endTime, timeZone)
+  data <- getPrice(security, data1Start, data1End, timeZone)
   write.csv(data, file = paste(security, "DATA1", "csv", sep = "."),
             row.names = FALSE)
 }
 
 # Expiration dates
-expDates <- c("09/21/18", "10/19/18", "11/16/18")
+expDates <- c("2/15/19", "3/15/19", "4/18/19")
 
 # Defining put and call prices for SPY and AMZN options
 # Grabbing prices for 5% +/- current price
@@ -109,22 +109,26 @@ spyPrices <- c(floor(0.95 * spyCurrent):ceiling(1.05 * spyCurrent))
 # Current AMZN price (need to do this manually because of option strikes)
 # Closest option price to 95% of price is at $1557.50 and 105% is $1722.50
 amznCurrent <- 1640
-amznPrices <- seq(1557.5, 1722.5, by=5)
+amznPrices <- seq(1555, 1725, by=5)
 
 # Creating option names for SPY and AMZN
-spyOptions <- createOptionName("SPY US", expDates, spyPrices, "C", "Equity")
-spyOptions <- c(spyOptions, createOptionName("SPY US", expDates, spyPrices,
+spyOptions <- createOptionName("SPY", expDates, spyPrices, "C", "Equity")
+spyOptions <- c(spyOptions, createOptionName("SPY", expDates, spyPrices,
                                              "P", "Equity"))
 
-amznOptions <- createOptionName("AMZN US", expDates, amznPrices, "C", "Equity")
-amznOptions <- c(amznOptions, createOptionName("AMZN US", expDates, amznPrices,
+amznOptions <- createOptionName("AMZN", expDates, amznPrices, "C", "Equity")
+amznOptions <- c(amznOptions, createOptionName("AMZN", expDates, amznPrices,
                                                "P", "Equity"))
 
 # Getting prices for each of the options
 for (option in c(amznOptions, spyOptions)) {
-  data <- getPrice(option, startTime, endTime, timeZone)
-  write.csv(data, file = paste(option, "csv", sep = "."),
-            row.names = FALSE)
+  data <- getPrice(option, data1Start, data1End, timeZone)
+  # Only print to file if option exists
+  if (all(dim(data) > 0)) {
+    optionFileName <- gsub("/", "-", option) # Need to do this for Windows
+    write.csv(data, file = paste(optionFileName, "csv", sep = "."),
+              row.names = FALSE)
+  }
 }
 
 
@@ -133,14 +137,14 @@ for (option in c(amznOptions, spyOptions)) {
 #----------------------------------
 
 # Define Start and End times (DATA2)
-data1Start <- ISOdatetime(year = 2019, month = 2, day = 7,
+data2Start <- ISOdatetime(year = 2019, month = 2, day = 7,
                           hour = 9, min = 30, sec = 0)
-data1End <- ISOdatetime(year = 2019, month = 2, day = 7,
+data2End <- ISOdatetime(year = 2019, month = 2, day = 7,
                         hour = 16, min = 0, sec = 0)
 
 # Getting prices for each of the top-level securities
 for (security in securities) {
-  data <- getPrice(security, startTime, endTime, timeZone)
+  data <- getPrice(security, data2Start, data2End, timeZone)
   write.csv(data, file = paste(security, "DATA2", "csv", sep = "."),
             row.names = FALSE)
 }
