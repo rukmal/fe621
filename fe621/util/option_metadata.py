@@ -46,16 +46,15 @@ def getStrikePrice(name: str) -> float:
     return strike
 
 
-def getTTM(name: str, current_date: str) -> float:
-    """Function to compute the time to maturity (TTM) in days, given
-    the current date and the standard name of an option.
+def getExpiration(name: str) -> datetime:
+    """Function to get the expiration date of the option as a datetime object,
+    given the standard name of the option.
 
     Arguments:
         name {str} -- Name of the option contract.
-        current_date {str} -- Date in YYYY-MM-DD format.
 
     Returns:
-        float -- TTM (in years, with 365 days per year).
+        datetime -- Expiration date of the option contract.
     """
 
     # Defining search Regex, see https://regexr.com for more info
@@ -70,6 +69,24 @@ def getTTM(name: str, current_date: str) -> float:
     # Creating date object with expiration date information
     exp_date = datetime(year=int(exp_year), month=int(match[2]),
                         day=int(match[3]))
+
+    # Return date object with option expiration date
+    return exp_date
+
+
+def getTTM(name: str, current_date: str) -> float:
+    """Function to compute the time to maturity (TTM) in days, given
+    the current date and the standard name of an option.
+
+    Arguments:
+        name {str} -- Name of the option contract.
+        current_date {str} -- Date in YYYY-MM-DD format.
+
+    Returns:
+        float -- TTM (in years, with 365 days per year).
+    """
+
+    exp_date = getExpiration(name=name)
 
     # Creating current date object by parsing input string
     current_date_format = '%Y-%m-%d'
