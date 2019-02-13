@@ -40,7 +40,7 @@ def computeImpVolatilities():
                                                     rf=rf[data1_date][0],
                                                     current_date=data1_date)
     # Saving to CSV
-    spy_data1_vol.to_csv('Homework 1/bin/spy_data1_vol.csv')
+    spy_data1_vol.to_csv('Homework 1/bin/spy_data1_vol.csv', index=False)
 
     # AMZN
     amzn_data1_vol = fe621.util.computeAvgImpliedVol(data=amzn_data1,
@@ -48,7 +48,7 @@ def computeImpVolatilities():
                                                      rf=rf[data1_date][0],
                                                      current_date=data1_date)
     # Saving to CSV
-    amzn_data1_vol.to_csv('Homework 1/bin/amzn_data1_vol.csv')
+    amzn_data1_vol.to_csv('Homework 1/bin/amzn_data1_vol.csv', index=False)
 
 
 if __name__ == "__main__":
