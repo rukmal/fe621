@@ -28,8 +28,12 @@ vix_data2 = fe621.util.loadData(folder_path='Homework 1/data/DATA2/VIX',
 rf = pd.read_csv('Homework 1/data/ffr.csv')
 
 
-# Part 1 - Implied Volatility Computation
 def computeImpVolatilities():
+    """Function to compute the implied volatilities for the SPY and AMZN option
+    chains, for all maturities. Computed implied volatilities are output to
+    CSV files.
+    """
+
     # SP 500
     spy_data1_vol = fe621.util.computeAvgImpliedVol(data=spy_data1,
                                                     name='SPY',
@@ -48,4 +52,5 @@ def computeImpVolatilities():
 
 
 if __name__ == "__main__":
+    # Part 1 - Implied Volatility Computation
     computeImpVolatilities()
