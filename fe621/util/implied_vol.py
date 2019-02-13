@@ -70,5 +70,49 @@ def computeAvgImpliedVol(data: pd.DataFrame, name: str,
         # Computing mean implied volatility for option, adding to estimates
         estimates[column] = [np.mean(imp_vols)]
 
-    # Cast to DataFrame, return
-    return pd.DataFrame(estimates)
+    # Cast to DataFrame, clean and return
+    return cleanImpliedVol(candidate_df=pd.DataFrame(estimates))
+
+
+def cleanImpliedVol(candidate_df: pd.DataFrame) -> pd.DataFrame:
+    """Function to clean and format the DataFrame output by the implied
+    volatility computation. Extracts option expiry, type, strike, and implied
+    volatility and assigns them to individual columns in a new DataFrame.
+    
+    Arguments:
+        candidate_df {pd.DataFrame} -- Output DataFrame from average implied
+                                       volatility computation.
+    
+    Returns:
+        pd.DataFrame -- Formatted DataFrame.
+    """
+
+    # Transposing and removing top (empty) row
+    candidate_df = candidate_df.T[1:]
+
+    # Creating empty dataframe to store formatted output
+    clean_df = pd.DataFrame()
+
+    # Iterating through transformed DataFrame, isolating option metadata
+    for option_name, implied_vol in candidate_df.iterrows():
+        # Extracting implied vol; it is the only element in the series
+        implied_vol = implied_vol[0]
+
+        # Extracting option metadata
+        option_expiry = option_metadata.getExpiration(name=option_name) \
+                        .strftime('%Y-%m-%d')
+        
+        # Extracting option type
+        option_type = 'C' if option_metadata.isCallOption(name=option_name) else 'P'
+        
+        # Extracting option strike
+        option_strike = option_metadata.getStrikePrice(name=option_name)
+
+        # Appending to new DataFrame
+        clean_df = clean_df.append(pd.Series([option_name, option_expiry,
+                                              option_type, option_strike,
+                                              implied_vol]), ignore_index=True)
+
+    clean_df.columns = ['name', 'expiration', 'type', 'strike', 'implied_vol']
+
+    return clean_df
