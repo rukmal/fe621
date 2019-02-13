@@ -21,7 +21,7 @@ def computeD1D2(current: float, volatility: float, ttm: float, strike: float,
         Tuple[float, float] -- Tuple with d1, and d2 respectively.
     """
 
-    d1 = (np.log(current / strike) + (rf - (volatility / 2)) * ttm) \
+    d1 = (np.log(current / strike) + (rf + ((volatility ** 2) / 2)) * ttm) \
         / (volatility * np.sqrt(ttm))
     d2 = d1 - (volatility * np.sqrt(ttm))
     
