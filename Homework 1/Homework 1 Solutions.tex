@@ -362,11 +362,18 @@ The content of this Homework Assignment is divided into three sections; the firs
             \label{alg:bisection}
         \end{algorithm}
 
-        In this section, we implement the Bisection method to compute the implied volatility, using the market price of the underlying asset and the option contract.
-
-        The bisection algorithm is outlined in Algorithm \ref{alg:bisection}. The algorithm is implemented recursively.
+        In this section, we implement the Bisection optimization method. The bisection algorithm is outlined in Algorithm \ref{alg:bisection}. The algorithm is implemented recursively.
 
         \lstinputlisting{fe621/optimization/bisection.py}
+        
+        \subsubsection{Newton Method}
+        
+        In this section, we implement the Newton optimization method. The Newton method algorithm is outlined in Algorithm~\ref{alg:newton}
+        
+        \begin{algorithm}[t]
+            \SetAlgoLine
+            \KwIn{Let $f : \mathbb{R} \rightarrow \mathbb{R}$ be a differentiable function.}
+        \end{algorithm}
 
 
     \subsection{Implied Volatility}
