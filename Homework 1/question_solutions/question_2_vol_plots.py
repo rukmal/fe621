@@ -54,13 +54,12 @@ def plot2DVolSmile(data: pd.DataFrame, name: str, save_loc: str):
         ax.set_xticklabels(['$%i' % i for i in ax.get_xticks()])
         ax.set_xlabel('Strike Price')
 
-        # Setting legend and title
+        # Setting legend and setting plot dimensions to tight
         plt.legend()
-        full_option_type = 'Call' if (option_type == 'C') else 'Put'
-        plt.title(' '.join([name, full_option_type,
-                            'Option Implied Volatility Smile']))
-
+        plt.tight_layout()
+        
         # Saving to file
+        full_option_type = 'Call' if (option_type == 'C') else 'Put'
         fname = '_'.join([name, full_option_type, '2DVolSmile.png'])
         plt.savefig(fname=(save_loc + '/' + fname))
 
@@ -116,12 +115,11 @@ def plot3DVolatilitySurface(data: pd.DataFrame, name: str, save_loc: str):
         # Modifying z ticks to be percentages
         ax.set_zticklabels(['{:,.0%}'.format(i) for i in ax.get_zticks()])
 
-        # Setting title
-        full_option_type = 'Call' if (option_type == 'C') else 'Put'
-        plt.title(' '.join([name, full_option_type,
-                            'Option Implied Volatility Surface']))
+        # Setting plot dimensions to tight
+        plt.tight_layout()
 
         # Saving to file
+        full_option_type = 'Call' if (option_type == 'C') else 'Put'
         fname = '_'.join([name, full_option_type, '3DVolSurface.png'])
         plt.savefig(fname=(save_loc + '/' + fname))
 
