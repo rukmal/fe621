@@ -35,7 +35,8 @@ def computeImpVolatilities():
     """
 
     # SP 500
-    spy_data1_vol = fe621.util.computeAvgImpliedVol(data=spy_data1,
+    spy_data1_vol = fe621.util.computeAvgImpliedVolBisection(
+                                                    data=spy_data1,
                                                     name='SPY',
                                                     rf=rf[data1_date][0],
                                                     current_date=data1_date)
@@ -43,7 +44,8 @@ def computeImpVolatilities():
     spy_data1_vol.to_csv('Homework 1/bin/spy_data1_vol.csv', index=False)
 
     # AMZN
-    amzn_data1_vol = fe621.util.computeAvgImpliedVol(data=amzn_data1,
+    amzn_data1_vol = fe621.util.computeAvgImpliedVolBisection(
+                                                     data=amzn_data1,
                                                      name='AMZN',
                                                      rf=rf[data1_date][0],
                                                      current_date=data1_date)

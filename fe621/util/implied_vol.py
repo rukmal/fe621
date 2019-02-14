@@ -6,7 +6,7 @@ import numpy as np
 import pandas as pd
 
 
-def computeAvgImpliedVol(data: pd.DataFrame, name: str,
+def computeAvgImpliedVolBisection(data: pd.DataFrame, name: str,
                          rf: float, current_date: str) -> pd.DataFrame:
     """Function to compute the average implied volatility of a series of Option
     contracts, in the form created in the `hw1_code.util.loadData` function.
