@@ -27,6 +27,8 @@ vix_data2 = fe621.util.loadData(folder_path='Homework 1/data/DATA2/VIX',
 # Loading Risk-free rate (effective federal funds rate)
 rf = pd.read_csv('Homework 1/data/ffr.csv')
 
+# Tolerance level for optimization
+tol = 1e-6
 
 def computeImpVolatilities():
     """Function to compute the implied volatilities for the SPY and AMZN option
@@ -39,7 +41,8 @@ def computeImpVolatilities():
                                                     data=spy_data1,
                                                     name='SPY',
                                                     rf=rf[data1_date][0],
-                                                    current_date=data1_date)
+                                                    current_date=data1_date,
+                                                    tol=tol)
     # Saving to CSV
     spy_data1_vol.to_csv('Homework 1/bin/spy_data1_vol.csv', index=False)
 
@@ -48,7 +51,8 @@ def computeImpVolatilities():
                                                      data=amzn_data1,
                                                      name='AMZN',
                                                      rf=rf[data1_date][0],
-                                                     current_date=data1_date)
+                                                     current_date=data1_date,
+                                                     tol=tol)
     # Saving to CSV
     amzn_data1_vol.to_csv('Homework 1/bin/amzn_data1_vol.csv', index=False)
 
