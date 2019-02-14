@@ -56,7 +56,7 @@ def computeAvgImpliedVol(data: pd.DataFrame, name: str,
 
             # Computing implied volatility for each price
             try:
-                imp_vol = bisectionSolver(f=optimFunc, a=0.0, b=2.0)
+                imp_vol = bisectionSolver(f=optimFunc, a=0.0, b=5.0)
             except Exception:
                 print('WARNING: No implied vol solution found for {0} at {1}'
                       .format(column, index))
