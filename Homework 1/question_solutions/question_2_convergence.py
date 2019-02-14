@@ -65,8 +65,8 @@ def compareConvergenceTime():
         'Number of Dropped Options': [input_count - newton_count,
                                       input_count - bisection_count],
         'Time Elapsed for Computation (s)': [newton_time, bisection_time],
-        'Average Time per Option (s)': [newton_time / newton_count,
-                                        bisection_time / bisection_count]
+        'Average Time per Option (s)': [newton_time / input_count,
+                                        bisection_time / input_count]
     })
     convergence_table = convergence_table.T  # Transposing so cols are methods
     convergence_table.columns = ['Newton Method', 'Bisection Method']
