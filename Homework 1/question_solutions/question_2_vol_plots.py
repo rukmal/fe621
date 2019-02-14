@@ -57,7 +57,8 @@ def plot2DVolSmile(data: pd.DataFrame, name: str, save_loc: str):
         # Setting legend and title
         plt.legend()
         full_option_type = 'Call' if (option_type == 'C') else 'Put'
-        plt.title(' '.join([name, full_option_type, 'Volatility Smile']))
+        plt.title(' '.join([name, full_option_type,
+                            'Option Implied Volatility Smile']))
 
         # Saving to file
         fname = '_'.join([name, full_option_type, '2DVolSmile.png'])
@@ -117,7 +118,8 @@ def plot3DVolatilitySurface(data: pd.DataFrame, name: str, save_loc: str):
 
         # Setting title
         full_option_type = 'Call' if (option_type == 'C') else 'Put'
-        plt.title(' '.join([name, full_option_type, 'Volatility Surface']))
+        plt.title(' '.join([name, full_option_type,
+                            'Option Implied Volatility Surface']))
 
         # Saving to file
         fname = '_'.join([name, full_option_type, '3DVolSurface.png'])
