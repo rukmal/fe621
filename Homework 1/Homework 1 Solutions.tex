@@ -18,15 +18,16 @@
 \usepackage{amsmath} % math environment stuff
 \usepackage{amssymb} % additional math symbols
 \usepackage[toc, page]{appendix} % Appendix referencing
-\usepackage{comment} % enables the use of multi-line comments (\ifx \fi) 
+\usepackage{comment} % enables the use of multi-line comments (\ifx \fi)
+\usepackage[skip=5pt, labelfont=bf]{caption}
 \usepackage{csvsimple} % CSV to Table
 \usepackage{fancyhdr} % Header
-\usepackage{fancyvrb}
-\usepackage{float}
-\usepackage[headings]{fullpage}
-\usepackage{graphicx}
+\usepackage{fancyvrb} % Verbatim text
+\usepackage{float} % Controlling figure border
+\usepackage[headings]{fullpage} % Set all margins to 1.5 cm
+\usepackage{graphicx} % Figures
 \usepackage{listings} % code embedding
-\usepackage{pmboxdraw}
+\usepackage{pmboxdraw} % Box characters for file tree
 \usepackage[dvipsnames]{xcolor} % colors for code
 
 
@@ -347,32 +348,41 @@ The content of this Homework Assignment is divided into three sections; the firs
 
         \subsubsection{Bisection Method}
 
-        \begin{algorithm}[t]
+        In this section, we implement the Bisection optimization method. The bisection algorithm is outlined in Algorithm \ref{alg:bisection}. The algorithm is implemented recursively.
+
+        \begin{algorithm}[h]
             \SetAlgoNoLine
             \KwIn{Input function, $f$ to be optimized; must have sign change. Search space start and stop points, $a$ and $b$. Tolerance level, $\epsilon$.}
-            \KwOut{Point $x_0$ in the interval $[a, b]$ where $f(x_0) = 0$.}
+            \KwOut{Point $x^* \in [a, b]$ where $f(x^*) = 0$.}
             Let midpont = $m$\;
             \Repeat{$(b - a) < \epsilon$}{
                 $m = \frac{a + b}{2}$\;
                 \If{$f(a) \times f(mid) < 0$}{$b=m$}
                 \If{$f(b) \times f(mid) < 0$}{$a=m$}
             }
-            $x_0 = \frac{a + b}{2}$\;
+            \Return $\frac{a + b}{2}$\;
             \caption{Bisection Algorithm}
             \label{alg:bisection}
         \end{algorithm}
-
-        In this section, we implement the Bisection optimization method. The bisection algorithm is outlined in Algorithm \ref{alg:bisection}. The algorithm is implemented recursively.
 
         \lstinputlisting{fe621/optimization/bisection.py}
         
         \subsubsection{Newton Method}
         
-        In this section, we implement the Newton optimization method. The Newton method algorithm is outlined in Algorithm~\ref{alg:newton}
+        In this section, we implement the Newton optimization method. The Newton method algorithm is outlined in Algorithm~\ref{alg:newton}.
         
-        \begin{algorithm}[t]
-            \SetAlgoLine
-            \KwIn{Let $f : \mathbb{R} \rightarrow \mathbb{R}$ be a differentiable function.}
+        \begin{algorithm}[h]
+            \SetAlgoNoLine
+            \KwIn{A differentiable function $f : \mathbb{R}^a \rightarrow \mathbb{R}^b \, \forall \, a, b \in \mathbb{N}_{>0}$. Starting guess for the root $x_0$. Tolerance level, $\epsilon$.}
+            \KwOut{$x^* \in \mathbb{R}^a$, such that $f(x^*) = 0$}
+            $k = 1$\;
+            \Repeat{$\lvert{f(x_k)\rvert} < \epsilon$}{
+                $x_{k+1} = x_k - \frac{f(x_k)}{f^\prime(x_k)}$\;
+                $k = k + 1$
+            }
+            \Return $x_{k+1}$\;
+            \caption{Newton's Method}
+            \label{alg:newton}
         \end{algorithm}
 
 
@@ -394,6 +404,8 @@ The content of this Homework Assignment is divided into three sections; the firs
                 (c) AMZN Call Option Volatility Smile &
                 (d) AMZN Put Option Volatility Smile
             \end{tabular}
+            \label{fig:volatility_smiles}
+            \caption{Volatility Smiles of call and put option chains on AMZN and SPY. Plots the relationship between the strike price and implied volatility for various maturities.}
         \end{figure}
 
         \subsubsection{Volatility Surface}
@@ -409,6 +421,8 @@ The content of this Homework Assignment is divided into three sections; the firs
                 (c) AMZN Call Option Volatility Surface &
                 (d) AMZN Put Option Volatility Surface
             \end{tabular}
+            \label{fig:volatility_surfaces}
+            \caption{Volatility Surfaces of call and put option chains on AMZN and SPY. Plots the relationship between the strike price, time to maturity, and the implied volatility.}
         \end{figure}
 
 %==============================
