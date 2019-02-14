@@ -42,7 +42,7 @@ def callGamma(current: float, volatility: float, ttm: float, strike: float,
         float -- Delta of a European Call Opton Option contract.
     """
 
-    d1, d2 = computeD1D2(current, volatility, ttm, strike)
+    d1, d2 = computeD1D2(current, volatility, ttm, strike, rf)
 
     return norm.pdf(d1) * (1 / (current * volatility * np.sqrt(ttm)))
 
