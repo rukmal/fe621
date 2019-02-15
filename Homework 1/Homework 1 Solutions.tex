@@ -474,6 +474,54 @@ The content of this Homework Assignment is divided into three sections; the firs
             \caption{Volatility Surfaces of call and put option chains on AMZN and SPY. Plots the relationship between the strike price, time to maturity, and the implied volatility.}
         \end{figure}
 
+
+%==============================
+% Section 3
+%==============================
+\newpage
+\section{Numerical Integration}
+
+    \begin{center}
+        \textit{See Appendix~HERE for question solution implementation.}
+    \end{center}
+
+    \subsection{Quadrature Methods}
+    In this section, we implement the \textit{Trapezoidal Rule} and \textit{Simpson's Rule} quadrature methods.
+
+    \begin{gather*}
+        \text{Let data} = \boldsymbol{x} \\
+        \text{Let $i^\text{th}$ element of $\boldsymbol{x}$} = x_i
+    \end{gather*}
+
+        \subsubsection{Trapezoidal Rule}
+
+        \begin{gather*}
+            \text{Let Trapezoidal rule approximation} = T_N(f) \\
+            \Rightarrow T_N(f)
+            = \sum_{i=1}^{N} \left[ \left( \frac{f(x_{i-1}) + f(x_i)}{2} \right) \times h \right] \\
+            \Rightarrow h \times \sum_{i=1}^N \left[ \frac{f(x_{i-1}) + f(x_i)}{2} \right]
+            = h \times \left( \frac{1}{2}f(x_0) + f(x_1) + \cdots + f(x_{N-1} + \frac{1}{2}f(x_N))\right) \\
+            \therefore \, T_N(f) = hf(\boldsymbol{x}) - \frac{h}{2}(f(x_0) + f(x_N))
+        \end{gather*}
+        
+        \lstinputlisting{fe621/numerical_integration/trapezoidal.py}
+
+        \subsubsection{Simpson's Rule}
+
+        The following equation is derived in full in (\cite{Florescu2019}).
+
+        \begin{gather*}
+            \text{Let Simpson's rule approximation} = S_N(f) \\
+            \Rightarrow S_N(f) \approx \frac{h}{6} \times \sum_{i=1}^N \left[ f(x_{i-1}) + 4f \left( \frac{x_{i-1} + x_i}{2} \right) + f(x_i) \right] \\
+            = \frac{h}{6} \left( \sum_{i=1}^N [f(x_{i-1}) + f(x_i)] + 4 \times \sum_{i=1}^N \left[ f \left( \frac{x_{i-1} + x_i}{2} \right) \right] \right) \\
+            \\
+            \text{Note that $\left( \frac{x_{i-1} + x_i}{2} \right)$ is the midpoint between the points in $\boldsymbol{x}$.} \\
+            \text{Let the above} = \boldsymbol{x_\text{mid}} \\
+            \therefore \, S_N(f) \approx \frac{h}{6} \left( 2f(\boldsymbol{x}) - (f(x_0) + f(x_N)) + 4f(\boldsymbol{x}_\text{mid}) \right)
+        \end{gather*}
+
+        \lstinputlisting{fe621/numerical_integration/simpsons.py}
+
 %==============================
 % References
 %==============================
@@ -534,6 +582,9 @@ The content of this Homework Assignment is divided into three sections; the firs
                     \toprule\bfseries Option Name &\bfseries Expiration Date &\bfseries Type &\bfseries Strike &\bfseries Implied Volatility \\ \midrule \endhead \bottomrule \endfoot,
                 late after line=\\
             ]{bin/amzn_data1_vol.csv}{1=\one, 2=\two, 3=\three, 4=\four, 5=\five}{\one & \two & \three & \four & \five}
+
+    \newpage
+    \subsection{Question 3 Implementation}
 
 %==============================
 % Document End
