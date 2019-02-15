@@ -3,8 +3,8 @@ import numpy as np
 
 
 def convergenceApproximation(f: Callable, rule: Callable, epsilon: float=1e-3,
-                             start: float=-1e6, stop: float=1e6,
-                             step_start: int=300000) -> Tuple[float, int]:
+                             start: float=-1e6, stop: float=1e6) \
+                            -> Tuple[float, int]:
     """Function to approximate the numeric integral of a function, f, using
     a given quadrature rule and a tolerance level epsilon.
     
@@ -17,7 +17,6 @@ def convergenceApproximation(f: Callable, rule: Callable, epsilon: float=1e-3,
         epsilon {float} -- Tolerance level (default: {1e-3}).
         start {float} -- Starting point (default: {-1e6}).
         stop {float} -- Stopping point (default: {1e6}).
-        step_start {int} -- Starting step value (default: {int(1e5)}).
     
     Returns:
         Tuple[float, int] -- Approximation of the area under the function
@@ -27,21 +26,25 @@ def convergenceApproximation(f: Callable, rule: Callable, epsilon: float=1e-3,
     # Flags
     area_old = 0
     area_new = 1
-    N = step_start
+    N = 1
 
-    while (np.abs(area_old - area_new) > epsilon):
+    while (np.abs(area_new - area_old) > epsilon):
         # Set new area to old area
         area_old = area_new
 
-        # Increase N by 1
-        N += 1
+        # Increase N by powers of 10
+        N *= 10
 
         # Computing area with given parameters
         area_new = rule(f=f, N=N, start=start, stop=stop)
 
         # Log
-        print('On iteration {0} with method {1} convergence {2}'.format(
-            N, str(rule), '{:.4e}'.format(np.abs(area_old - area_new))))
+        print('On iteration {0} method {1} convergence {2} val {3}'.format(
+            N, str(rule),
+            '{:.5e}'.format(np.abs(area_new - area_old)),
+            area_new))
 
     # Return final area and number of iterations
-    return (area_new, N)
+    # NOTE: Number of iterations is just log_{10}(N) as we increase in powers
+    #       of 10.
+    return (area_new, np.log10(N))
