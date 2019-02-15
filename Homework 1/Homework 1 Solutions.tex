@@ -508,6 +508,7 @@ The content of this Homework Assignment is divided into three sections; the firs
         
         \lstinputlisting{fe621/numerical_integration/trapezoidal.py}
 
+        \pagebreak[4]
         \subsubsection{Simpson's Rule}
 
         The following equation is derived in full in (\cite{Florescu2019}).
@@ -523,6 +524,53 @@ The content of this Homework Assignment is divided into three sections; the firs
         \end{gather*}
 
         \lstinputlisting{fe621/numerical_integration/simpsons.py}
+    
+    \pagebreak[3]
+    \subsection{Truncation Error Analysis}
+
+    To examine the behavior of each of the quadrature methods described above, we approximate the integral of the following function:
+
+    \begin{gather*}
+        f(x) =
+        \begin{cases}
+            \frac{\sin{(x)}}{x}, & \quad \text{for} \, x \neq 0, \\
+            1, & \quad \text{for} \, x = 0.
+        \end{cases}
+    \end{gather*}
+
+    We parameterize the start and stop points of the quadrature methods with a variable $a$, such that ${\text{start} = -a}$ and ${\text{stop} = a}$. Furthermore, we define the number of segments with variable $N$.
+
+    \begin{gather*}
+        \text{Let approximation with parameters $a$ and $N$} = I_{N,a}
+    \end{gather*}
+
+    It is know analytically that the value of the integral $\int_\infty^\infty f(x) dx = \pi$. We evaluate the performance of each of the quadrature methods with various values of $a$ and $N$. Then, we compute the \textit{truncation error} of the approximation, defined as:
+
+    \begin{gather*}
+        \text{Truncation error for approximation with parameters $a$ and $N$} = \left| I_{N,a} - \pi \right|
+    \end{gather*}
+
+    \begin{table}[h]
+        \centering
+        \csvautotabular{bin/numerical_integration/trapezoidal_trunc_error.csv}
+        \caption{Trapezoidal quadrature rule truncation error for varying values of $a$ and $N$.}
+        \label{table:trapezoidal_trunc_error}
+    \end{table}
+
+    \begin{table}[h]
+        \centering
+        \csvautotabular{bin/numerical_integration/simpsons_trunc_error.csv}
+        \caption{Simpsons quadrature rule truncation error for varying values of $a$ and $N$.}
+        \label{table:simpsons_trunc_error}
+    \end{table}
+
+    Table~\ref{table:trapezoidal_trunc_error} and Table~\ref{table:simpsons_trunc_error} report the truncation error for the Trapezoidal and Simpson's quadrature rules, respectively. The script used to produce this table is reproduced in Appendix~\ref{appendix:q3:source:trunc_error}. Variations of $N$ and $a$ are explores in increasing powers of 10, with $a$ progressing from 100 to 1,000,000, and $N$ from 1,000 to 10,000,000.
+
+    It is evident from Table~\ref{table:trapezoidal_trunc_error} that the Trapezoidal quadrature rule performs relatively well across all values of $a$, even at relatively low values of $N$. Compared to Simpson's quadrature rule truncation error (Table~\ref{table:simpsons_trunc_error}), the Trapezoidal quadrature rule also performs relatively better with larger values of $N$, and small values of $a$.
+    
+    A potential explanation of this may be the interpolating behavior of the Simpson's quadrature rule. The function $\frac{sin{(x)}}{x}$ is significantly more linear than quadratic in small intervals, and thus the quadratic interpolating behavior of the Simpson's quadrature rule is a poor approximation heuristic for the function with low values of $a$.
+
+    Finally, it can be observed that both quadrature rule approximations converge commensurately as the values of $a$ and $N$ increase. However, it is clear that the Trapezoidal quadrature rule approximation converges at a faster rate than the Simpson's quadrature rule approximation with increasing values of $a$ and $N$.
 
 %==============================
 % References
@@ -539,33 +587,33 @@ The content of this Homework Assignment is divided into three sections; the firs
 
 \newpage
 
-\appendix
+\appendix % all sections after this are appendix sections
 
 % Resetting input path
 \lstinputpath{}
 
-\section{Appendix} \label{appendix:source}
-
-    \subsection{Computed Implied Volatility} \label{appendix:q2:imp_vol}
+\section{Computed Implied Volatility} \label{appendix:q2:imp_vol}
         
-        \subsubsection{SPY Option Chain} \label{appendix:q2:spy_vol}
-            \csvreader[
-                longtable=lcccl,
-                table head=
-                    \toprule\bfseries Option Name &\bfseries Expiration Date &\bfseries Type &\bfseries Strike &\bfseries Implied Volatility \\ \midrule \endhead \bottomrule \endfoot,
-                late after line=\\
-            ]{bin/spy_data1_vol.csv}{1=\one, 2=\two, 3=\three, 4=\four, 5=\five}{\one & \two & \three & \four & \five}
-        
-        \subsubsection{AMZN Option Chain} \label{appendix:q2:amzn_vol}
-            \csvreader[
-                longtable=lcccl,
-                table head=
-                    \toprule\bfseries Option Name &\bfseries Expiration Date &\bfseries Type &\bfseries Strike &\bfseries Implied Volatility \\ \midrule \endhead \bottomrule \endfoot,
-                late after line=\\
-            ]{bin/amzn_data1_vol.csv}{1=\one, 2=\two, 3=\three, 4=\four, 5=\five}{\one & \two & \three & \four & \five}
+    \subsection{SPY Option Chain} \label{appendix:q2:spy_vol}
+        \csvreader[
+            longtable=lcccl,
+            table head=
+                \toprule\bfseries Option Name &\bfseries Expiration Date &\bfseries Type &\bfseries Strike &\bfseries Implied Volatility \\ \midrule \endhead \bottomrule \endfoot,
+            late after line=\\
+        ]{bin/spy_data1_vol.csv}{1=\one, 2=\two, 3=\three, 4=\four, 5=\five}{\one & \two & \three & \four & \five}
+    
+    \subsection{AMZN Option Chain} \label{appendix:q2:amzn_vol}
+        \csvreader[
+            longtable=lcccl,
+            table head=
+                \toprule\bfseries Option Name &\bfseries Expiration Date &\bfseries Type &\bfseries Strike &\bfseries Implied Volatility \\ \midrule \endhead \bottomrule \endfoot,
+            late after line=\\
+        ]{bin/amzn_data1_vol.csv}{1=\one, 2=\two, 3=\three, 4=\four, 5=\five}{\one & \two & \three & \four & \five}
 
 
-    \newpage
+\newpage
+\section{Solution Source Code} \label{appendix:source}
+
     \subsection{Question 1 Implementation}
 
         \subsubsection{Bloomberg Terminal Data Download} \label{appendix:source:q1:bloomberg}
