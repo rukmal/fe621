@@ -32,14 +32,15 @@ def convergenceApproximation(f: Callable, rule: Callable, epsilon: float=1e-3,
         # Set new area to old area
         area_old = area_new
 
-        # Increase N in powers of 10
-        N *= 10
+        # Increase N by 1
+        N += 1
 
         # Computing area with given parameters
         area_new = rule(f=f, N=N, start=start, stop=stop)
 
-    # Computing number of iterations required for convergence
-    # NOTE: As we increase N in powers of 10, this is simply log_10(N)
-    k = int(np.log10(N))
+        # Log
+        print('On iteration {0} with method {1} convergence {2}'.format(
+            N, str(rule), '{:.4e}'.format(np.abs(area_old - area_new))))
 
-    return (area_new, k)
+    # Return final area and number of iterations
+    return (area_new, N)
