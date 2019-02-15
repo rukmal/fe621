@@ -161,7 +161,7 @@ Unless otherwise stated, the following shorthand notation is used to distinguish
 The content of this Homework Assignment is divided into three sections; the first discusses data gathering, formatting, and a discussion of the assets being examined. The second contains data analysis, and an exploration of implied volatility through the Black-Scholes-Merton pricing framework and related computations. Finally, the third section discusses numerical integration and the convergence of various quadrature rules.
 
 \begin{center}
-    \textit{See Appendix \ref{appendix:source} for specific question implementations, and the project GitHub repository\footnote{\cite{Weerawarana2019}} for full source code of the \texttt{fe621} Python package.}
+    \textit{See Appendix~\ref{appendix:source} for specific question implementations, and the project GitHub repository\footnote{\cite{Weerawarana2019}} for full source code of the {\normalfont \texttt{fe621}} Python package.}
 \end{center}
 
 
@@ -206,7 +206,7 @@ The content of this Homework Assignment is divided into three sections; the firs
 
     Intra-day minute closing price data was gathered for both put and call options with expiration dates and strike prices detailed above. This intra-day data was gathered for the trading day \textit{2/6/19} (February 6 2019; \textbf{DATA1}). Additionally, intra-day minute closing price data was also downloaded for each of the underlying assets. This data was downloaded for both \textit{2/6/19} (February 6 2019; \textbf{DATA1}), and \textit{2/7/19} (February 7 2019; \textbf{DATA2}).
 
-    This data detailed above was gathered utilizing \textit{Rblpapi}\footnote{\cite{Armstrong2018}}, which provides an R interface to data on the Bloomberg Terminal\footnote{\cite{BloombergL.P.2019}}. The data download was automated, and corresponding intra-day prices for each of the options were output to individual files. The source code for this implementation is available in Appendix \ref{appendix:source:q1:bloomberg}.
+    This data detailed above was gathered utilizing \textit{Rblpapi}\footnote{\cite{Armstrong2018}}, which provides an R interface to data on the Bloomberg Terminal\footnote{\cite{BloombergL.P.2019}}. The data download was automated, and corresponding intra-day prices for each of the options were output to individual files. The source code for this implementation is available in Appendix~\ref{appendix:source:q1:bloomberg}.
 
     Furthermore, as a proxy for the \textit{risk-free rate}, we chose to utilize the effective Federal Funds Rate (FFR). This is the interest rate at which depository institutions in the United States lend reserve balances to other depository institutions overnight. This data was gathered for both dates, and correspond to \textbf{DATA1} and \textbf{DATA2}. The effective FFR is published daily by the US Federal Reserve Board of Governors, and are expressed as yields per annum.\footnote{\cite{BoardofGovernorsoftheFederalReserveSystem2019}}
 
@@ -216,7 +216,7 @@ The content of this Homework Assignment is divided into three sections; the firs
 
             \VerbatimInput{bin/data_tree.txt}
 
-            Option price filenames were changed to OOC format option names, discussed further below. This was done utilizing a cleaning script, written in Python. This script employs utility functions from the \texttt{fe621} Python package\footnote{\cite{Weerawarana2019}}. The cleaning script is reproduced in Appendix \ref{appendix:source:q1:clean}.
+            Option price filenames were changed to OOC format option names, discussed further below. This was done utilizing a cleaning script, written in Python. This script employs utility functions from the \texttt{fe621} Python package\footnote{\cite{Weerawarana2019}}. The cleaning script is reproduced in Appendix~\ref{appendix:source:q1:clean}.
     
         \subsection{Option Naming Convention}
 
@@ -267,7 +267,7 @@ The content of this Homework Assignment is divided into three sections; the firs
 \section{Data Analysis}
 
     \begin{center}
-        \textit{Note: All Python scripts reproduced in this section are extracted from the \texttt{fe621}\footnote{\cite{Weerawarana2019}} package created for this class.}
+        \textit{Note: All Python scripts reproduced in this section are extracted from the {\normalfont \texttt{fe621}}\footnote{\cite{Weerawarana2019}} package created for this class.}
     \end{center}
 
     \subsection{Black-Scholes Model Formulas}
@@ -280,6 +280,8 @@ The content of this Homework Assignment is divided into three sections; the firs
     \end{gather*}
 
     \lstinputlisting{fe621/black_scholes/util.py}
+
+    \pagebreak[4]
 
     \begin{center}
         \textbf{\textit{Note:} The following assumes the dividend rate, $q = 0$.}
@@ -360,7 +362,7 @@ The content of this Homework Assignment is divided into three sections; the firs
             \SetAlgoNoLine
             \KwIn{Input function, $f$ to be optimized; must have sign change. Search space start and stop points, $a$ and $b$. Tolerance level, $\epsilon$.}
             \KwOut{Point $x^* \in [a, b]$ where $f(x^*) = 0$.}
-            Let midpont = $m$\;
+            Let midpoint = $m$\;
             \Repeat{$(b - a) < \epsilon$}{
                 $m = \frac{a + b}{2}$\;
                 \If{$f(a) \times f(mid) < 0$}{$b=m$}
@@ -375,14 +377,14 @@ The content of this Homework Assignment is divided into three sections; the firs
         
         \subsubsection{Newton Method}
         
-        In this section, we implement the Newton optimization method. The Newton method algorithm is outlined in Algorithm~\ref{alg:newton}.
+        In this section, we implement the Newton optimization method. The Newton method algorithm is outlined in Algorithm~\ref{alg:newton}.\footnote{\cite{Stefanica2011}}
         
         \begin{algorithm}[h]
             \SetAlgoNoLine
             \KwIn{A differentiable function $f : \mathbb{R}^a \rightarrow \mathbb{R}^b \, \forall \, a, b \in \mathbb{N}_{>0}$. Starting guess for the root $x_0$. Tolerance level, $\epsilon$.}
             \KwOut{$x^* \in \mathbb{R}^a$, such that $f(x^*) = 0$}
             $k = 1$\;
-            \Repeat{$\lvert{f(x_k)\rvert} < \epsilon$}{
+            \Repeat{$\lvert x_{k} - x_{k-1}\rvert < \epsilon$}{
                 $x_{k+1} = x_k - \frac{f(x_k)}{f^\prime(x_k)}$\;
                 $k = k + 1$
             }
@@ -396,6 +398,36 @@ The content of this Homework Assignment is divided into three sections; the firs
 
     In this section, we utilize the functions and data described above to calculate the average implied volatility of each of the option chains. This was done for the entire dataset using the Bisection Method, but convergence times using the Newton Method were also explored.
 
+        \subsubsection{Convergence Comparison}
+
+        Here, we compare the performance of each of the optimization methods described above, the Bisection method and Newton method. This was done by computing the average daily implied volatility on the complete SPY option chain in the dataset.
+
+        The average daily implied volatility is computed by first calculating the implied volatility by-minute. Then, the mean of these minute-level implied volatilities is computed and is treated as the average daily implied volatility of the given option. For this comparison, the tolerance level of each of the termination conditions was set to $1 \times 10^{-4}$.
+        
+        \begin{table}
+            \centering
+            \csvautotabular{bin/imp_vol_convergence.csv}
+            \caption{Convergence comparison of average daily implied volatility computation on the SPY option chain using the Bisection and Newton optimization methods.}
+            \label{table:imp_vol_convergence}
+        \end{table}
+
+        The time elapsed for these computations, and other related statistics under each of the two optimization methods are presented in Table~\ref{table:imp_vol_convergence}.
+
+        Despite having a theoretical quadratic convergence rate, Newton's method results in slower performance compared to the Bisection method. This is evident from both the total time elapsed, and the average time per operation (computed to include dropped option computations for consistency). 
+        
+        This can be attributed to the fact that some of the minute-level implied volatility optimizations do not have solutions. The Bisection method reaches a state of "no solution" faster than Newton's method, as it employs a technique of reducing the possible range of the solution. This converging search space would suggest it discovers a state of "no solution" faster than the unbounded search space of the Newton method. In principle - on the condition that the existence of a solution is guaranteed - the Newton method will converge faster than the Bisection method, given a reasonable initial guess.
+
+        \subsubsection{Average Daily Implied Volatility}
+        
+        Average daily implied volatility was computed for each option, across all strike prices and expiration dates, for both SPY and AMZN option chains. This optimization on the aggregate dataset was completed using the Bisection Method.
+        
+        This was done by first computing the implied volatility for each minute, solving for some $\sigma$ such that ${(C(S_t) |_{\sigma} - P = 0)}$ or ${(P(S_t) |_{\sigma} - P = 0)}$ for a call or put option respectively. Then, the mean of each of these implied volatilities was computed to obtain the daily average implied volatility for an option with a given strike price and expiration date. For this comparison, the tolerance level of each of the termination conditions was set to $1 \times 10^{-7}$.
+
+        The complete dataset of average daily implied volatility is reproduced for the complete option chains on SPY in Appendix~\ref{appendix:q2:spy_vol} and AMZN in Appendix~\ref{appendix:q2:amzn_vol}.
+
+        % Add comparison between in-the-money and out-the-money option volatilities.
+        % Reflect on implied volatility values compared to the VIX for the day.
+        
     \subsection{Volatility Plots}
         \subsubsection{Volatility Smile}
         
@@ -476,7 +508,7 @@ The content of this Homework Assignment is divided into three sections; the firs
     \newpage
     \subsection{Computed Implied Volatility}
         
-        \subsubsection{SPY Option Chain}
+        \subsubsection{SPY Option Chain} \label{appendix:q2:spy_vol}
             \csvreader[
                 longtable=lcccl,
                 table head=
@@ -484,7 +516,7 @@ The content of this Homework Assignment is divided into three sections; the firs
                 late after line=\\
             ]{bin/spy_data1_vol.csv}{1=\one, 2=\two, 3=\three, 4=\four, 5=\five}{\one & \two & \three & \four & \five}
         
-        \subsubsection{AMZN Option Chain}
+        \subsubsection{AMZN Option Chain} \label{appendix:q2:amzn_vol}
             \csvreader[
                 longtable=lcccl,
                 table head=
