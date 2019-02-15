@@ -18,15 +18,17 @@
 \usepackage{amsmath} % math environment stuff
 \usepackage{amssymb} % additional math symbols
 \usepackage[toc, page]{appendix} % Appendix referencing
+\usepackage{booktabs} % Table lines
 \usepackage{comment} % enables the use of multi-line comments (\ifx \fi)
 \usepackage[skip=5pt, labelfont=bf]{caption}
-\usepackage{csvsimple} % CSV to Table
+\usepackage{csvsimple} % CSV import to Table
 \usepackage{fancyhdr} % Header
 \usepackage{fancyvrb} % Verbatim text
 \usepackage{float} % Controlling figure border
 \usepackage[headings]{fullpage} % Set all margins to 1.5 cm
 \usepackage{graphicx} % Figures
 \usepackage{listings} % code embedding
+\usepackage{longtable} % Multipage tables
 \usepackage{pmboxdraw} % Box characters for file tree
 \usepackage[dvipsnames]{xcolor} % colors for code
 
@@ -224,6 +226,9 @@ The content of this Homework Assignment is divided into three sections; the firs
         
         The methodology of this nomenclature is explained in detail below:
     
+        % Note: The number here denotes the "priority" of the pagebreak. It can range from 0-4, with 4 being highest priority (i.e. right now), and 0 being the lowest.
+        \pagebreak[3]
+
         \begin{center}
             \textbf{\textcolor{red}{AMZN}\textcolor{MidnightBlue}{19}\textcolor{Bittersweet}{02}\textcolor{YellowOrange}{15}\textcolor{RoyalPurple}{C}\textcolor{ForestGreen}{01960}\textcolor{violet}{000}}
         \end{center}
@@ -451,13 +456,42 @@ The content of this Homework Assignment is divided into three sections; the firs
     \subsection{Question 1 Implementation}
 
         \subsubsection{Bloomberg Data Download} \label{appendix:source:q1:bloomberg}
-
             \lstinputlisting{question_solutions/question_1.R}
         
         \subsubsection{Data Cleaning} \label{appendix:source:q1:clean}
-        
             \lstinputlisting{data_cleaning.py}
     
+    \newpage
+    \subsection{Question 2 Implementation}
+        
+        \subsubsection{Optimization Method Convergence Comparison} \label{appendix:source:q2:convergence}
+            \lstinputlisting{question_solutions/question_2_convergence.py}
+
+        \subsubsection{Implied Volatility Computation} \label{appendix:source:q2:imp_vol}
+            \lstinputlisting{question_solutions/question_2_imp_vol.py}
+        
+        \subsubsection{Volatility Plots} \label{appendix:source:q2:vol_plots}
+            \lstinputlisting{question_solutions/question_2_vol_plots.py}
+    
+    \newpage
+    \subsection{Computed Implied Volatility}
+        
+        \subsubsection{SPY Option Chain}
+            \csvreader[
+                longtable=lcccl,
+                table head=
+                    \toprule\bfseries Option Name &\bfseries Expiration Date &\bfseries Type &\bfseries Strike &\bfseries Implied Volatility \\ \midrule \endhead \bottomrule \endfoot,
+                late after line=\\
+            ]{bin/spy_data1_vol.csv}{1=\one, 2=\two, 3=\three, 4=\four, 5=\five}{\one & \two & \three & \four & \five}
+        
+        \subsubsection{AMZN Option Chain}
+            \csvreader[
+                longtable=lcccl,
+                table head=
+                    \toprule\bfseries Option Name &\bfseries Expiration Date &\bfseries Type &\bfseries Strike &\bfseries Implied Volatility \\ \midrule \endhead \bottomrule \endfoot,
+                late after line=\\
+            ]{bin/amzn_data1_vol.csv}{1=\one, 2=\two, 3=\three, 4=\four, 5=\five}{\one & \two & \three & \four & \five}
+
 %==============================
 % Document End
 %==============================
