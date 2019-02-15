@@ -100,16 +100,30 @@ for (security in securities) {
 expDates <- c("2/15/19", "3/15/19", "4/18/19")
 
 # Defining put and call prices for SPY and AMZN options
-# Grabbing prices for 5% +/- current price
+# Grabbing prices for 15% +/- current price
+
+# Defining bounds
+lowerBoundPct <- 0.85
+upperBoundPct <- 1.15
 
 # Current SPY price
 spyCurrent <- 270
-spyPrices <- c(floor(0.95 * spyCurrent):ceiling(1.05 * spyCurrent))
+spyPrices <- c(floor(
+  lowerBoundPct * spyCurrent):ceiling(upperBoundPct * spyCurrent))
+
+# Function to round to the nearest 'base', given an input 'x'. This is to
+# compute strike prices for AMZN options, which are in intervals of 5.
+# Source: http://r.789695.n4.nabble.com/Rounding-to-the-nearest-5-td863189.html
+mround <- function(x, base) {
+  base * round(x / base)
+}
 
 # Current AMZN price (need to do this manually because of option strikes)
 # Closest option price to 95% of price is at $1557.50 and 105% is $1722.50
 amznCurrent <- 1640
-amznPrices <- seq(1555, 1725, by=5)
+roundingLevel <- 5
+amznPrices <- seq(mround(amznCurrent * lowerBoundPct, roundingLevel),
+                  mround(amznCurrent * upperBoundPct, roundingLevel), by=5)
 
 # Creating option names for SPY and AMZN
 spyOptions <- createOptionName("SPY", expDates, spyPrices, "C", "Equity")
