@@ -10,7 +10,7 @@ def convergenceIterationLimit():
         return np.where(x == 0.0, 1.0, np.sin(x) / x)
 
     # Setting target tolerance level for termination
-    epsilon = 1e-4
+    epsilon = 1e-3
 
     # Using Trapezoidal rule
     trapezoidal_result = fe621.numerical_integration.convergenceApproximation(
