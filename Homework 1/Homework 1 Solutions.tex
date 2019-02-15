@@ -38,8 +38,8 @@
 %==============================
 
 % Figure outline configuration
-\floatstyle{boxed}
-\restylefloat{figure}
+% \floatstyle{boxed}
+% \restylefloat{figure}
 
 % Bibliography configuration
 
@@ -216,7 +216,7 @@ The content of this Homework Assignment is divided into three sections; the firs
 
             \VerbatimInput{bin/data_tree.txt}
 
-            Option price filenames were changed to OOC format option names, discussed further below. This was done utilizing a cleaning script, written in Python. This script employs utility functions from the \texttt{fe621} Python package\footnote{\cite{Weerawarana2019}}. The cleaning script is reproduced in Appendix~\ref{appendix:source:q1:clean}.
+            Option price filenames were changed to OOC format option names, discussed further below. This was done utilizing a cleaning script, written in Python. This script employs utility functions from the \texttt{fe621} Python package\footnote{\cite{Weerawarana2019}}.
     
         \subsection{Option Naming Convention}
 
@@ -443,15 +443,18 @@ The content of this Homework Assignment is divided into three sections; the firs
         \subsubsection{Volatility Smile}
         
         \begin{figure}
-            \begin{tabular}{cc}
-                \includegraphics[width=.475\textwidth]{bin/vol_smile/SPY_Call_2DVolSmile.png} &
-                \includegraphics[width=.475\textwidth]{bin/vol_smile/SPY_Put_2DVolSmile.png} \\
+            \begin{tabular}{|c|c|}
+                \hline
+                \includegraphics[width=.47\textwidth]{bin/vol_smile/SPY_Call_2DVolSmile.png} &
+                \includegraphics[width=.47\textwidth]{bin/vol_smile/SPY_Put_2DVolSmile.png} \\
                 (a) SPY Call Option Volatility Smile &
                 (b) SPY Put Option Volatility Smile \\
-                \includegraphics[width=.475\textwidth]{bin/vol_smile/AMZN_Call_2DVolSmile.png} &
-                \includegraphics[width=.475\textwidth]{bin/vol_smile/AMZN_Put_2DVolSmile.png} \\
+                \hline
+                \includegraphics[width=.47\textwidth]{bin/vol_smile/AMZN_Call_2DVolSmile.png} &
+                \includegraphics[width=.47\textwidth]{bin/vol_smile/AMZN_Put_2DVolSmile.png} \\
                 (c) AMZN Call Option Volatility Smile &
-                (d) AMZN Put Option Volatility Smile
+                (d) AMZN Put Option Volatility Smile \\
+                \hline
             \end{tabular}
             \label{fig:volatility_smiles}
             \caption{Volatility Smiles of call and put option chains on AMZN and SPY. Plots the relationship between the strike price and implied volatility for various maturities.}
@@ -460,15 +463,18 @@ The content of this Homework Assignment is divided into three sections; the firs
         \subsubsection{Volatility Surface}
 
         \begin{figure}
-            \begin{tabular}{cc}
-                \includegraphics[width=.475\textwidth]{bin/vol_surface/SPY_Call_3DVolSurface.png} &
-                \includegraphics[width=.475\textwidth]{bin/vol_surface/SPY_Put_3DVolSurface.png} \\
+            \begin{tabular}{|c|c|}
+                \hline
+                \includegraphics[width=.47\textwidth]{bin/vol_surface/SPY_Call_3DVolSurface.png} &
+                \includegraphics[width=.47\textwidth]{bin/vol_surface/SPY_Put_3DVolSurface.png} \\
                 (a) SPY Call Option Volatility Surface &
                 (b) SPY Put Option Volatility Surface \\
-                \includegraphics[width=.475\textwidth]{bin/vol_surface/AMZN_Call_3DVolSurface.png} &
-                \includegraphics[width=.475\textwidth]{bin/vol_surface/AMZN_Put_3DVolSurface.png} \\
+                \hline
+                \includegraphics[width=.47\textwidth]{bin/vol_surface/AMZN_Call_3DVolSurface.png} &
+                \includegraphics[width=.47\textwidth]{bin/vol_surface/AMZN_Put_3DVolSurface.png} \\
                 (c) AMZN Call Option Volatility Surface &
-                (d) AMZN Put Option Volatility Surface
+                (d) AMZN Put Option Volatility Surface \\
+                \hline
             \end{tabular}
             \label{fig:volatility_surfaces}
             \caption{Volatility Surfaces of call and put option chains on AMZN and SPY. Plots the relationship between the strike price, time to maturity, and the implied volatility.}
@@ -480,10 +486,6 @@ The content of this Homework Assignment is divided into three sections; the firs
 %==============================
 \newpage
 \section{Numerical Integration}
-
-    \begin{center}
-        \textit{See Appendix~HERE for question solution implementation.}
-    \end{center}
 
     \subsection{Quadrature Methods}
     In this section, we implement the \textit{Trapezoidal Rule} and \textit{Simpson's Rule} quadrature methods.
@@ -544,28 +546,7 @@ The content of this Homework Assignment is divided into three sections; the firs
 
 \section{Appendix} \label{appendix:source}
 
-    \subsection{Question 1 Implementation}
-
-        \subsubsection{Bloomberg Data Download} \label{appendix:source:q1:bloomberg}
-            \lstinputlisting{question_solutions/question_1.R}
-        
-        \subsubsection{Data Cleaning} \label{appendix:source:q1:clean}
-            \lstinputlisting{data_cleaning.py}
-    
-    \newpage
-    \subsection{Question 2 Implementation}
-        
-        \subsubsection{Optimization Method Convergence Comparison} \label{appendix:source:q2:convergence}
-            \lstinputlisting{question_solutions/question_2_convergence.py}
-
-        \subsubsection{Implied Volatility Computation} \label{appendix:source:q2:imp_vol}
-            \lstinputlisting{question_solutions/question_2_imp_vol.py}
-        
-        \subsubsection{Volatility Plots} \label{appendix:source:q2:vol_plots}
-            \lstinputlisting{question_solutions/question_2_vol_plots.py}
-    
-    \newpage
-    \subsection{Computed Implied Volatility}
+    \subsection{Computed Implied Volatility} \label{appendix:q2:imp_vol}
         
         \subsubsection{SPY Option Chain} \label{appendix:q2:spy_vol}
             \csvreader[
@@ -583,8 +564,31 @@ The content of this Homework Assignment is divided into three sections; the firs
                 late after line=\\
             ]{bin/amzn_data1_vol.csv}{1=\one, 2=\two, 3=\three, 4=\four, 5=\five}{\one & \two & \three & \four & \five}
 
+
     \newpage
-    \subsection{Question 3 Implementation}
+    \subsection{Question 1 Implementation}
+
+        \subsubsection{Bloomberg Terminal Data Download} \label{appendix:source:q1:bloomberg}
+            \lstinputlisting{question_solutions/question_1.R}
+    
+    \newpage
+    \subsection{Question 2 Implementation}
+        
+        \subsubsection{Optimization Method Convergence Comparison} \label{appendix:source:q2:convergence}
+            \lstinputlisting{question_solutions/question_2_convergence.py}
+
+        \subsubsection{Implied Volatility Computation} \label{appendix:source:q2:imp_vol}
+            \lstinputlisting{question_solutions/question_2_imp_vol.py}
+        
+        \subsubsection{Volatility Plots} \label{appendix:source:q2:vol_plots}
+            \lstinputlisting{question_solutions/question_2_vol_plots.py}
+
+    \newpage
+    \subsection{Question 3 Implementation} \label{appendix:q3}
+        
+        \subsubsection{Truncation Error Analysis} \label{appendix:q3:source:trunc_error}
+            \lstinputlisting{question_solutions/question_3_trunc_error.py}
+
 
 %==============================
 % Document End
