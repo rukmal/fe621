@@ -427,7 +427,18 @@ The content of this Homework Assignment is divided into three sections; the firs
 
         % Add comparison between in-the-money and out-the-money option volatilities.
         % Reflect on implied volatility values compared to the VIX for the day.
-        
+
+        \subsubsection{\textit{Money-ness} Implied Volatility Comparison}
+
+        We also compared the average daily implied volatility of options \textit{in-the-money}, and \textit{out-of-the-money}. For this comparison, we defined the ratio of \textit{money-ness} to be $\pm5\%$ of the current underlying asset price, where options within the range are \textit{in-the-money}, and \textit{out-of-the-money} otherwise. This comparison data is presented in Table~\ref{table:itm_otm_comparison}.
+
+        \begin{table}[h]
+            \centering
+            \csvautotabular{bin/itm_otm_vol_analysis.csv}
+            \caption{Comparison of \textit{in-the-money} and \textit{out-of-the-money} options through the lens of their average daily implied volatility.}
+            \label{table:itm_otm_comparison}
+        \end{table}
+
     \subsection{Volatility Plots}
         \subsubsection{Volatility Smile}
         
