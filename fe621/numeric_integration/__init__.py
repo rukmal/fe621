@@ -1,0 +1,1 @@
+from .simpsons import simpsonsRule
