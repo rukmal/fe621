@@ -526,7 +526,7 @@ The content of this Homework Assignment is divided into three sections; the firs
         \lstinputlisting{fe621/numerical_integration/simpsons.py}
     
     \pagebreak[3]
-    \subsection{Truncation Error Analysis}
+    \subsection{Truncation Error Analysis} \label{section:q3:trunc_error}
 
     To examine the behavior of each of the quadrature methods described above, we approximate the integral of the following function:
 
@@ -571,6 +571,27 @@ The content of this Homework Assignment is divided into three sections; the firs
     A potential explanation of this may be the interpolating behavior of the Simpson's quadrature rule. The function $\frac{sin{(x)}}{x}$ is significantly more linear than quadratic in small intervals, and thus the quadratic interpolating behavior of the Simpson's quadrature rule is a poor approximation heuristic for the function with low values of $a$.
 
     Finally, it can be observed that both quadrature rule approximations converge commensurately as the values of $a$ and $N$ increase. However, it is clear that the Trapezoidal quadrature rule approximation converges at a faster rate than the Simpson's quadrature rule approximation with increasing values of $a$ and $N$.
+
+
+    \subsection{Convergence Analysis} 
+
+    Typically, the true value of the objective integral is unknown. In this case, we would evaluate the rate of change of the objective function (i.e. convergence) computation with respect to the number of segments, $N$. We assign an arbitrary convergence criteria, $\epsilon$ to test the convergence with progressively increasing (in powers of 10) values of N.
+
+    \begin{gather*}
+        \text{Let approximation with parameter $N$} = I_N \\
+        \text{Repeat while:} \left| I_N - I_{N_\text{old}} \right| > \epsilon
+    \end{gather*}
+
+    We evaluate the number of iterations required for a convergence level of $\epsilon = 10^{-3}$ for the Trapezoidal and Simpson's quadrature rules. The output of this evaluation is reproduced in Table~\ref{table:quadrature_convergence}. The solution source code and \texttt{fe621} package\footnote{\cite{Weerawarana2019}} sub-module used for this analysis is reproduced in Appendix~\ref{appendix:q3:source:convergence_analysis}.
+
+    \begin{table}[h]
+        \centering
+        \csvautotabular{bin/numerical_integration/convergence.csv}
+        \caption{Analysis of segments required for convergence under the Trapezoidal and Simpson's quadrature rules.}
+        \label{table:quadrature_convergence}
+    \end{table}
+
+    Analyzing the results in Table~\ref{table:quadrature_convergence}, it is evident that the number of segments required for convergence under the Trapezoidal quadrature rule is significantly less than that required under Simpson's quadrature rule. This difference is significant, with the Trapezoidal quadrature rule requiring segments two orders of magnitude less than Simpson's quadrature rule for convergence. These behavior is in agreement with the previous analysis of convergence with respect to varying values of $N$ and $a$, explored in Section~\ref{section:q3:trunc_error}.
 
 %==============================
 % References
@@ -636,7 +657,10 @@ The content of this Homework Assignment is divided into three sections; the firs
         
         \subsubsection{Truncation Error Analysis} \label{appendix:q3:source:trunc_error}
             \lstinputlisting{question_solutions/question_3_trunc_error.py}
-
+        
+        \subsubsection{Convergence Segment Analysis} \label{appendix:q3:source:convergence_analysis}
+            \lstinputlisting{../fe621/numerical_integration/convergence.py}
+            \lstinputlisting{question_solutions/question_3_convergence.py}
 
 %==============================
 % Document End
