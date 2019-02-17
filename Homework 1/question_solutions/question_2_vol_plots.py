@@ -45,7 +45,7 @@ def plot2DVolSmile(data: pd.DataFrame, name: str, save_loc: str):
         # Formatting plot
         #================
 
-        ax = plt.gca()  # Get  current axes
+        ax = plt.gca()  # Get current axes
 
         # Setting y ticks and label
         ax.set_yticklabels(['{:,.1%}'.format(i) for i in ax.get_yticks()])

@@ -4,7 +4,11 @@ import numpy as np
 import pandas as pd
 
 
-def convergenceIterationLimit():
+def convergenceSegmentLimit():
+    """Function to compute the number of segments required for convergence of
+    various quadrature methods.
+    """
+
     # Objective function
     def f(x: float) -> float:
         return np.where(x == 0.0, 1.0, np.sin(x) / x)
@@ -41,4 +45,4 @@ def convergenceIterationLimit():
 
 if __name__ == '__main__':
     # Part 3 - Convergence Analysis
-    convergenceIterationLimit()
+    convergenceSegmentLimit()

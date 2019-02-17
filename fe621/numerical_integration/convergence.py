@@ -20,7 +20,7 @@ def convergenceApproximation(f: Callable, rule: Callable, epsilon: float=1e-3,
     
     Returns:
         Tuple[float, int] -- Approximation of the area under the function
-                             and the number of iterations (area, iterations).
+                             and the number of segments (area, segments).
     """
 
     # Flags
@@ -44,5 +44,5 @@ def convergenceApproximation(f: Callable, rule: Callable, epsilon: float=1e-3,
             '{:.5e}'.format(np.abs(area_new - area_old)),
             area_new))
 
-    # Return final area and number of iterations
+    # Return final area and number of segments
     return (area_new, N)
