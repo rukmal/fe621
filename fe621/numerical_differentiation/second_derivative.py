@@ -4,8 +4,9 @@ from typing import Callable
 def secondDerivative(f: Callable, x: float, h: float=1e-7) -> float:
     """Function to numerically approximate the second derivative about a point
     `x`, given a function `f(x)` which takes a single float as its argument.
-    This function uses the secant method, computing the slope of a nearby
-    secant curve passing through the points `(x - h)`, `x`, and `(x - h)`.
+    This function uses the central finite difference method, computing the slope
+    of a nearby secant curve passing through the points
+    `(x - h)`, `x`, and `(x - h)`.
     
     Arguments:
         f {Callable} -- Objective function who's second derivative is computed.
