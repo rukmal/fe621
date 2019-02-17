@@ -582,7 +582,9 @@ The content of this Homework Assignment is divided into three sections; the firs
         \text{Repeat while:} \left| I_N - I_{N_\text{old}} \right| > \epsilon
     \end{gather*}
 
-    We evaluate the number of iterations required for a convergence level of $\epsilon = 10^{-3}$ for the Trapezoidal and Simpson's quadrature rules. The output of this evaluation is reproduced in Table~\ref{table:quadrature_convergence}. The solution source code and \texttt{fe621} package\footnote{\cite{Weerawarana2019}} sub-module used for this analysis is reproduced in Appendix~\ref{appendix:q3:source:convergence_analysis}.
+    We evaluate the number of iterations required for a convergence level of $\epsilon = 10^{-3}$ for the Trapezoidal and Simpson's quadrature rules. The output of this evaluation is reproduced in Table~\ref{table:quadrature_convergence}. The solution source code for this analysis is reproduced in Appendix~\ref{appendix:q3:source:convergence_analysis}. The \texttt{fe-621} package\footnote{\cite{Weerawarana2019}} sub-module used in this analysis is presented below.
+
+    \lstinputlisting{fe621/numerical_integration/convergence.py}
 
     \begin{table}[h]
         \centering
@@ -592,6 +594,26 @@ The content of this Homework Assignment is divided into three sections; the firs
     \end{table}
 
     Analyzing the results in Table~\ref{table:quadrature_convergence}, it is evident that the number of segments required for convergence under the Trapezoidal quadrature rule is significantly less than that required under Simpson's quadrature rule. This difference is significant, with the Trapezoidal quadrature rule requiring segments two orders of magnitude less than Simpson's quadrature rule for convergence. These behavior is in agreement with the previous analysis of convergence with respect to varying values of $N$ and $a$, explored in Section~\ref{section:q3:trunc_error}.
+
+        \subsubsection{Arbitrary Function}
+
+        Additionally, we also evaluate each quadrature rule with respect to the number of segments required for convergence with an additional arbitrary integral:
+        
+        \begin{gather*}
+            g(x) = 1 + e^{-x^{2}} \cos{(8x^{\frac{2}{3}})} \\
+            \int_0^2 g(x) \, dx
+        \end{gather*}
+
+        \begin{table}[h]
+            \centering
+            \csvautotabular{bin/numerical_integration/arb_convergence.csv}
+            \caption{Analysis of segments required for convergence of an arbitrary integral under the Trapezoidal and Simpson's quadrature rules.}
+            \label{table:arb_function_convergence}
+        \end{table}
+
+        The estimates and segments required for convergence for the integral $\int_0^2 g(x) \, dx$ are presented in Table~\ref{table:arb_function_convergence}. The source code for this analysis is reproduced in Appendix~\ref{appendix:q3:source:arb_convergence_analysis}.
+
+
 
 %==============================
 % References
@@ -659,8 +681,10 @@ The content of this Homework Assignment is divided into three sections; the firs
             \lstinputlisting{question_solutions/question_3_trunc_error.py}
         
         \subsubsection{Convergence Segment Analysis} \label{appendix:q3:source:convergence_analysis}
-            \lstinputlisting{../fe621/numerical_integration/convergence.py}
             \lstinputlisting{question_solutions/question_3_convergence.py}
+
+        \subsubsection{Arbitrary Function Convergence Segment Analysis} \label{appendix:q3:source:arb_convergence_analysis}
+            \lstinputlisting{question_solutions/question_3_arbitrary_area.py}
 
 %==============================
 % Document End
