@@ -186,4 +186,7 @@ def cleanImpliedVol(candidate_df: pd.DataFrame) -> pd.DataFrame:
 
     clean_df.columns = ['name', 'expiration', 'type', 'strike', 'implied_vol']
 
+    # Sorting by expiration, then by strike price
+    clean_df.sort_values(by=['expiration', 'strike'], inplace=True)
+
     return clean_df
