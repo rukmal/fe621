@@ -119,7 +119,6 @@ mround <- function(x, base) {
 }
 
 # Current AMZN price (need to do this manually because of option strikes)
-# Closest option price to 95% of price is at $1557.50 and 105% is $1722.50
 amznCurrent <- 1640
 roundingLevel <- 5
 amznPrices <- seq(mround(amznCurrent * lowerBoundPct, roundingLevel),
