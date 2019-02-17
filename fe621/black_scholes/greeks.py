@@ -21,9 +21,9 @@ def callDelta(current: float, volatility: float, ttm: float, strike: float,
         float -- Delta of a European Call Option contract.
     """
 
-    d1, d2 = computeD1D2(current, volatility, ttm, strike, rf)
+    d1, _ = computeD1D2(current, volatility, ttm, strike, rf)
 
-    return np.cdf(d1)
+    return norm.cdf(d1)
 
 
 def callGamma(current: float, volatility: float, ttm: float, strike: float,
@@ -42,9 +42,9 @@ def callGamma(current: float, volatility: float, ttm: float, strike: float,
         float -- Delta of a European Call Opton Option contract.
     """
 
-    d1, d2 = computeD1D2(current, volatility, ttm, strike, rf)
+    d1, _ = computeD1D2(current, volatility, ttm, strike, rf)
 
-    return norm.pdf(d1) * (1 / (current * volatility * np.sqrt(ttm)))
+    return (norm.pdf(d1) / (current * volatility * np.sqrt(ttm)))
 
 
 def vega(current: float, volatility: float, ttm: float, strike: float,
@@ -62,6 +62,6 @@ def vega(current: float, volatility: float, ttm: float, strike: float,
         float -- Vega of a European Option contract.
     """
 
-    d1, d2 = computeD1D2(current, volatility, ttm, strike, rf)
+    d1, _ = computeD1D2(current, volatility, ttm, strike, rf)
 
     return current * np.sqrt(ttm) * norm.pdf(d1)
