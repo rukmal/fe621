@@ -35,7 +35,7 @@ def convergenceSegmentLimit():
                                             simpsons_result])))
     
     # Setting row and column names
-    results.columns = ['Estimated Area', 'Iterations']
+    results.columns = ['Estimated Area', 'Segments']
     results.index = ['Trapezoidal Rule', 'Simpson\'s Rule']
 
     # Saving to CSV
