@@ -45,6 +45,4 @@ def convergenceApproximation(f: Callable, rule: Callable, epsilon: float=1e-3,
             area_new))
 
     # Return final area and number of iterations
-    # NOTE: Number of iterations is just log_{10}(N) as we increase in powers
-    #       of 10.
-    return (area_new, np.log10(N))
+    return (area_new, N)
