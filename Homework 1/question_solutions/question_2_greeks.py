@@ -31,7 +31,7 @@ amzn_close = amzn_prices.iloc[-1][1]
 rf = pd.read_csv('Homework 1/data/ffr.csv')[data1_date][0]
 
 # Step size for computation
-h = 1e-7
+h = 1e-5
 
 def computeAnalyticalAndEstimatedGreeks(data: pd.DataFrame, close: float) \
     -> pd.DataFrame:
@@ -102,16 +102,16 @@ def computeAnalyticalAndEstimatedGreeks(data: pd.DataFrame, close: float) \
 
         # Adding to output DataFrame
         results = results.append(pd.Series([option_data['name'],
-                                            a_delta, e_delta,
-                                            a_gamma, e_gamma,
-                                            a_vega, e_vega]),
+                                            a_delta, a_gamma,
+                                            a_vega, e_delta,
+                                            e_gamma, e_vega]),
                                  ignore_index=True)
 
     # Setting column names
     results.columns = ['name',
-                       'delta_analytical', 'delta_estimated',
-                       'gamma_analytical', 'gamma_estimated',
-                       'vega_analytical', 'vega_estimated']
+                       'delta_analytical', 'gamma_analytical',
+                       'vega_analytical', 'delta_estimated',
+                       'gamma_estimated', 'vega_estimated']
 
     return results
         
@@ -121,10 +121,12 @@ if __name__ == '__main__':
     spy_greeks = computeAnalyticalAndEstimatedGreeks(data=spy_call_options,
                                                      close=spy_close)
     # Saving to CSV
-    spy_greeks.to_csv('Homework 1/bin/greeks/spy_greeks.csv', index=False)
+    spy_greeks.to_csv('Homework 1/bin/greeks/spy_greeks.csv', index=False,
+                      float_format='%.7f')
 
     # Computing Greeks for AMZN
     amzn_greeks = computeAnalyticalAndEstimatedGreeks(data=amzn_call_options,
                                                       close=amzn_close)
     # Saving to CSV
-    amzn_greeks.to_csv('Homework 1/bin/greeks/amzn_greeks.csv', index=False)
+    amzn_greeks.to_csv('Homework 1/bin/greeks/amzn_greeks.csv', index=False,
+                       float_format='%.7f')
