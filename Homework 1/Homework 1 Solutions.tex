@@ -471,8 +471,6 @@ The content of this Homework Assignment is divided into three sections; the firs
             $\hat{\sigma} = \hat{f}(K)$
         \end{center}
 
-        The various options (of the same type and underlying asset) are graphed on the same axes, and different expiration dates are displayed in different colors. The Volatility Smile is plotted for both put and call options on both SPY and AMZN in Figure~\ref{fig:volatility_smiles}.
-
         \begin{figure}[!hb] % the !hb forces it to be placed here, and at the bottom of the page. Source: https://robjhyndman.com/hyndsight/latex-floats/
             \begin{tabular}{|c|c|}
                 \hline
@@ -490,6 +488,8 @@ The content of this Homework Assignment is divided into three sections; the firs
             \caption{Volatility Smiles of call and put option chains on AMZN and SPY. Plots the relationship between the strike price and implied volatility for various maturities.}
             \label{fig:volatility_smiles}
         \end{figure}
+
+        The various options (of the same type and underlying asset) are graphed on the same axes, and different expiration dates are displayed in different colors. The Volatility Smile is plotted for both put and call options on both SPY and AMZN in Figure~\ref{fig:volatility_smiles}.
 
         \subsubsection{Volatility Surface}
 
@@ -538,7 +538,11 @@ The content of this Homework Assignment is divided into three sections; the firs
 
         \subsubsection{Analytical and Estimated Greeks}
 
-        The analytical and estimated Delta, $\Delta$, Gamma, $\Gamma$, and Vega, $\nu$, for the complete SPY and AMZN option chains are presented in Appendix~\ref{appendix:q2:spy_greeks} and Appendix~\ref{appendix:q2:amzn_greeks}, respectively. The source code for this computation is reproduced in 
+        The analytical and estimated Delta, $\Delta$, Gamma, $\Gamma$, and Vega, $\nu$, for the complete SPY and AMZN option chains are presented in Appendix~\ref{appendix:q2:spy_greeks} and Appendix~\ref{appendix:q2:amzn_greeks}, respectively. The source code for this computation is reproduced in Appendix~\ref{appendix:source:q2:greeks}.
+
+    \subsection{DATA2 Computed Prices}
+
+    Finally, we compute option prices utilizing the closing price data for DATA2. This was accomplished using the risk-free rate for DATA2, and correspondingly computed time-to-maturities. The computed prices are presented for both the SPY and AMZN option chains in Appendix~\ref{appendix:q2:spy_data2} and Appendix~\ref{appendix:q2:spy_data2}, respectively. The source code for this computation is reproduced in Appendix~\ref{appendix:source:q2:data2}.
 
 
 %==============================
@@ -699,15 +703,16 @@ The content of this Homework Assignment is divided into three sections; the firs
         
     \subsection{SPY Option Chain} \label{appendix:q2:spy_vol}
         \csvreader[
-            longtable=l|cccl,
+            longtable=l|cccc,
             table head=
                 \toprule\bfseries Option Name &\bfseries Expiration Date &\bfseries Type &\bfseries Strike &\bfseries Implied Volatility \\ \midrule \endhead \bottomrule \endfoot,
             late after line=\\
         ]{bin/spy_data1_vol.csv}{1=\one, 2=\two, 3=\three, 4=\four, 5=\five}{\one & \two & \three & \four & \five}
     
+    \newpage
     \subsection{AMZN Option Chain} \label{appendix:q2:amzn_vol}
         \csvreader[
-            longtable=l|cccl,
+            longtable=l|cccc,
             table head=
                 \toprule\bfseries Option Name &\bfseries Expiration Date &\bfseries Type &\bfseries Strike &\bfseries Implied Volatility \\ \midrule \endhead \bottomrule \endfoot,
             late after line=\\
@@ -716,7 +721,7 @@ The content of this Homework Assignment is divided into three sections; the firs
 \newpage
 \section{Analytically Computed and Estimated Greeks} \label{appendix:q2:greeks}
 
-    \subsection{SPY Greeks} \label{appendix:q2:spy_greeks}
+    \subsection{SPY Option Chain Greeks} \label{appendix:q2:spy_greeks}
         \csvreader[
             longtable=l|cccccc,
             table head=
@@ -725,7 +730,7 @@ The content of this Homework Assignment is divided into three sections; the firs
         ]{bin/greeks/spy_greeks.csv}{1=\one, 2=\two, 3=\three, 4=\four, 5=\five, 6=\six, 7=\seven}{\one & \two & \three & \four & \five & \six & \seven}
     
     \newpage
-    \subsection{AMZN Greeks} \label{appendix:q2:amzn_greeks}
+    \subsection{AMZN Option Chain Greeks} \label{appendix:q2:amzn_greeks}
     \csvreader[
         longtable=l|cccccc,
         table head=
@@ -733,8 +738,29 @@ The content of this Homework Assignment is divided into three sections; the firs
         late after line=\\
     ]{bin/greeks/amzn_greeks.csv}{1=\one, 2=\two, 3=\three, 4=\four, 5=\five, 6=\six, 7=\seven}{\one & \two & \three & \four & \five & \six & \seven}
 
+
 \newpage
-\addtocontents{toc}{\protect\pagebreak}
+\section{DATA2 Computed Prices} \label{appendix:q2:data2_prices}
+
+    \subsection{SPY Option Chain} \label{appendix:q2:spy_data2}
+    \csvreader[
+        longtable=l|cccc,
+        table head=
+            \toprule\bfseries Option Name &\bfseries Expiration Date &\bfseries Type &\bfseries Strike &\bfseries Computed Price \\ \midrule \endhead \bottomrule \endfoot,
+        late after line=\\
+    ]{bin/data2/spy_prices.csv}{1=\one, 2=\two, 3=\three, 4=\four, 5=\five}{\one & \two & \three & \four & \five}
+
+    \newpage
+    \subsection{AMZN Option Chain} \label{appendix:q2:amzn_data2}
+        \csvreader[
+            longtable=l|cccc,
+            table head=
+                \toprule\bfseries Option Name &\bfseries Expiration Date &\bfseries Type &\bfseries Strike &\bfseries Computed Price \\ \midrule \endhead \bottomrule \endfoot,
+            late after line=\\
+        ]{bin/data2/amzn_prices.csv}{1=\one, 2=\two, 3=\three, 4=\four, 5=\five}{\one & \two & \three & \four & \five}
+
+
+\newpage
 \section{Solution Source Code} \label{appendix:source}
 
     \subsection{Question 1 Implementation}
@@ -759,6 +785,9 @@ The content of this Homework Assignment is divided into three sections; the firs
 
         \subsubsection{The Greeks} \label{appendix:source:q2:greeks}
             \lstinputlisting{question_solutions/question_2_greeks.py}
+        
+        \subsubsection{DATA2 Price Computation} \label{appendix:source:q2:data2}
+            \lstinputlisting{question_solutions/question_2_data2.py}
 
     \newpage
     \subsection{Question 3 Implementation} \label{appendix:q3}
