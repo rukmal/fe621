@@ -330,7 +330,7 @@ The content of this Homework Assignment is divided into three sections; the firs
         \lstinputlisting{fe621/black_scholes/parity.py}
 
 
-        \subsubsection{The Greeks}
+        \subsubsection{The Greeks} \label{sec:q2:greeks}
 
         The Greeks are the quantities representing the sensitivity of the price of a derivative with respect to changes in the underlying parameters. The following formulas are implemented to calculate each of the Greeks using the Black-Scholes option pricing formula. These formulas are derived in full in (\cite{Stefanica2011}) and (\cite{Weerawarana2016}).
 
@@ -390,7 +390,7 @@ The content of this Homework Assignment is divided into three sections; the firs
         
         \subsubsection{Newton Method}
         
-        In this section, we implement the Newton optimization method. The Newton method algorithm is outlined in Algorithm~\ref{alg:newton}.\footnote{\cite{Stefanica2011}}
+        In this section, we implement the Newton optimization method. The Newton method algorithm is outlined in Algorithm~\ref{alg:newton}.\footnote{\cite{Stefanica2011}} The algorithm is implemented recursively.
         
         \begin{algorithm}[h]
             \SetAlgoNoLine
@@ -406,10 +406,7 @@ The content of this Homework Assignment is divided into three sections; the firs
             \label{alg:newton}
         \end{algorithm}
 
-
-    \subsection{Implied Volatility}
-
-    In this section, we utilize the functions and data described above to calculate the average implied volatility of each of the option chains. This was done for the entire dataset using the Bisection Method, but convergence times using the Newton Method were also explored.
+        \lstinputlisting{fe621/optimization/newton.py}
 
         \subsubsection{Convergence Comparison}
 
@@ -417,7 +414,7 @@ The content of this Homework Assignment is divided into three sections; the firs
 
         The average daily implied volatility is computed by first calculating the implied volatility by-minute. Then, the mean of these minute-level implied volatilities is computed and is treated as the average daily implied volatility of the given option. For this comparison, the tolerance level of each of the termination conditions was set to $1 \times 10^{-4}$.
         
-        \begin{table}
+        \begin{table}[h]
             \centering
             \csvautotabular{bin/imp_vol_convergence.csv}
             \caption{Convergence comparison of average daily implied volatility computation on the SPY option chain using the Bisection and Newton optimization methods.}
@@ -430,7 +427,13 @@ The content of this Homework Assignment is divided into three sections; the firs
         
         This can be attributed to the fact that some of the minute-level implied volatility optimizations do not have solutions. The Bisection method reaches a state of "no solution" faster than Newton's method, as it employs a technique of reducing the possible range of the solution. This converging search space would suggest it discovers a state of "no solution" faster than the unbounded search space of the Newton method. In principle - on the condition that the existence of a solution is guaranteed - the Newton method will converge faster than the Bisection method, given a reasonable initial guess.
 
-        \subsubsection{Average Daily Implied Volatility}
+
+        \newpage
+        \subsection{Implied Volatility}
+
+        In this section, we utilize the functions and data described above to calculate the average implied volatility of each of the option chains. This was done for the entire dataset using the Bisection Method, but convergence times using the Newton Method were also explored.
+
+        \subsubsection{Average Daily Implied Volatility} \label{section:q2:avg_imp_vol}
         
         Average daily implied volatility was computed for each option, across all strike prices and expiration dates, for both SPY and AMZN option chains. This optimization on the aggregate dataset was completed using the Bisection Method.
         
@@ -451,11 +454,22 @@ The content of this Homework Assignment is divided into three sections; the firs
             \caption{Comparison of \textit{in-the-money} and \textit{out-of-the-money} options through the lens of their average daily implied volatility.}
             \label{table:itm_otm_comparison}
         \end{table}
-
+    \newpage
     \subsection{Volatility Plots}
+    
+    In this section, we explore the visual relationship between the computed average daily implied volatility (see Section~\ref{section:q2:avg_imp_vol}), the strike price, and the expiration date of the options.
+
         \subsubsection{Volatility Smile}
         
-        \begin{figure}
+        The Volatility Smile is the graph of the relationship between the strike price and the average daily implied volatility of the option:
+        
+        \begin{center}
+            $\hat{\sigma} = \hat{f}(K)$
+        \end{center}
+
+        The various options (of the same type and underlying asset) are graphed on the same axes, and different expiration dates are displayed in different colors. The Volatility Smile is plotted for both put and call options on both SPY and AMZN in Figure~\ref{fig:volatility_smiles}.
+
+        \begin{figure}[!hb] % the !hb forces it to be placed here, and at the bottom of the page. Source: https://robjhyndman.com/hyndsight/latex-floats/
             \begin{tabular}{|c|c|}
                 \hline
                 \includegraphics[width=.47\textwidth]{bin/vol_smile/SPY_Call_2DVolSmile.png} &
@@ -469,13 +483,21 @@ The content of this Homework Assignment is divided into three sections; the firs
                 (d) AMZN Put Option Volatility Smile \\
                 \hline
             \end{tabular}
-            \label{fig:volatility_smiles}
             \caption{Volatility Smiles of call and put option chains on AMZN and SPY. Plots the relationship between the strike price and implied volatility for various maturities.}
+            \label{fig:volatility_smiles}
         \end{figure}
 
         \subsubsection{Volatility Surface}
 
-        \begin{figure}
+        The Volatility Surface is the graph of the relationship between the strike price, the time to maturity, and the average daily implied volatility of the option:
+        
+        \begin{center}
+            $\hat{\sigma} = \hat{f}(K, \sqrt{T - t})$
+        \end{center}
+
+        The various options (of the same type and underlying asset) are graphed on the same axes. The Volatility Surface is plotted for both put and call options on both SPY and AMZN in Figure~\ref{fig:volatility_surfaces}.
+
+        \begin{figure}[!hb]
             \begin{tabular}{|c|c|}
                 \hline
                 \includegraphics[width=.47\textwidth]{bin/vol_surface/SPY_Call_3DVolSurface.png} &
@@ -489,12 +511,18 @@ The content of this Homework Assignment is divided into three sections; the firs
                 (d) AMZN Put Option Volatility Surface \\
                 \hline
             \end{tabular}
-            \label{fig:volatility_surfaces}
             \caption{Volatility Surfaces of call and put option chains on AMZN and SPY. Plots the relationship between the strike price, time to maturity, and the implied volatility.}
+            \label{fig:volatility_surfaces}
         \end{figure}
 
     
-    \subsection{Greeks}
+    \subsection{The Greeks}
+
+    In this section, we compute the Greeks for the options. To do this, we employ the estimate of the average daily implied volatility (see Section~\ref{section:q2:avg_imp_vol}). We compute the Greeks using both the analytical formula (see Section~\ref{sec:q2:greeks}), and by estimation.
+
+        \subsubsection{Central Finite Difference Method}
+
+        
 
 
 %==============================
