@@ -29,6 +29,7 @@
 \usepackage{graphicx} % Figures
 \usepackage{listings} % code embedding
 \usepackage{longtable} % Multipage tables
+\usepackage{multirow} % Multirow cells in tables
 \usepackage{pmboxdraw} % Box characters for file tree
 \usepackage[dvipsnames]{xcolor} % colors for code
 
@@ -130,6 +131,8 @@
 
 \thispagestyle{plain}
 
+\pagenumbering{roman}  % Changing numbering to Roman numerals for first pages
+
 %==============================
 % Document Title
 %==============================
@@ -178,6 +181,8 @@ The content of this Homework Assignment is divided into three sections; the firs
 %==============================
 
 \newpage
+
+\pagenumbering{arabic}  % Changing numbering to arabic numerals for main content
 
 \section{Data Overview}
 
@@ -344,7 +349,7 @@ The content of this Homework Assignment is divided into three sections; the firs
         \textbf{Gamma}
     
         The Gamma ($\Gamma$) of an option is the second derivative of an option with respect to the price of the underlying asset at time $t$, $S_t$.
-    
+
         \begin{gather*}
             \Gamma(C) = \frac{\partial^2 C(S_t)}{\partial S_t^2} = \frac{\phi(d_1)}{S_t \sigma \sqrt{T-t}}
         \end{gather*}
@@ -487,6 +492,9 @@ The content of this Homework Assignment is divided into three sections; the firs
             \label{fig:volatility_surfaces}
             \caption{Volatility Surfaces of call and put option chains on AMZN and SPY. Plots the relationship between the strike price, time to maturity, and the implied volatility.}
         \end{figure}
+
+    
+    \subsection{Greeks}
 
 
 %==============================
@@ -647,7 +655,7 @@ The content of this Homework Assignment is divided into three sections; the firs
         
     \subsection{SPY Option Chain} \label{appendix:q2:spy_vol}
         \csvreader[
-            longtable=lcccl,
+            longtable=l|cccl,
             table head=
                 \toprule\bfseries Option Name &\bfseries Expiration Date &\bfseries Type &\bfseries Strike &\bfseries Implied Volatility \\ \midrule \endhead \bottomrule \endfoot,
             late after line=\\
@@ -655,14 +663,34 @@ The content of this Homework Assignment is divided into three sections; the firs
     
     \subsection{AMZN Option Chain} \label{appendix:q2:amzn_vol}
         \csvreader[
-            longtable=lcccl,
+            longtable=l|cccl,
             table head=
                 \toprule\bfseries Option Name &\bfseries Expiration Date &\bfseries Type &\bfseries Strike &\bfseries Implied Volatility \\ \midrule \endhead \bottomrule \endfoot,
             late after line=\\
         ]{bin/amzn_data1_vol.csv}{1=\one, 2=\two, 3=\three, 4=\four, 5=\five}{\one & \two & \three & \four & \five}
 
+\newpage
+\section{Analytically Computed and Estimated Greeks} \label{appendix:q2:greeks}
+
+    \subsection{SPY Greeks} \label{appendix:q2:spy_greeks}
+        \csvreader[
+            longtable=l|cccccc,
+            table head=
+                \toprule \multirow{2}{*}{\bfseries Option Name} & \multicolumn{3}{c}{\bfseries Analytical} & \multicolumn{3}{c}{\bfseries Estimated} \\ & $\Delta$ & $\Gamma$ & $\nu$ & $\Delta$ & $\Gamma$ & $\nu$ \\ \midrule \endhead \bottomrule \endfoot,
+            late after line=\\
+        ]{bin/greeks/spy_greeks.csv}{1=\one, 2=\two, 3=\three, 4=\four, 5=\five, 6=\six, 7=\seven}{\one & \two & \three & \four & \five & \six & \seven}
+    
+    \newpage
+    \subsection{AMZN Greeks} \label{appendix:q2:amzn_greeks}
+    \csvreader[
+        longtable=l|cccccc,
+        table head=
+            \toprule \multirow{2}{*}{\bfseries Option Name} & \multicolumn{3}{c}{\bfseries Analytical} & \multicolumn{3}{c}{\bfseries Estimated} \\ & $\Delta$ & $\Gamma$ & $\nu$ & $\Delta$ & $\Gamma$ & $\nu$ \\ \midrule \endhead \bottomrule \endfoot,
+        late after line=\\
+    ]{bin/greeks/amzn_greeks.csv}{1=\one, 2=\two, 3=\three, 4=\four, 5=\five, 6=\six, 7=\seven}{\one & \two & \three & \four & \five & \six & \seven}
 
 \newpage
+\addtocontents{toc}{\protect\pagebreak}
 \section{Solution Source Code} \label{appendix:source}
 
     \subsection{Question 1 Implementation}
