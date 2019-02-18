@@ -283,7 +283,7 @@ The content of this Homework Assignment is divided into three sections; the firs
         \textit{Note: All Python scripts reproduced in this section are extracted from the {\normalfont \texttt{fe621}}\footnote{\cite{Weerawarana2019}} package created for this class.}
     \end{center}
 
-    \subsection{Black-Scholes Model Formulas}
+    \subsection{Black-Scholes Model}
 
     With the probabilities $d_1$ and $d_2$ defined as:
     \begin{gather*}
@@ -428,10 +428,11 @@ The content of this Homework Assignment is divided into three sections; the firs
         This can be attributed to the fact that some of the minute-level implied volatility optimizations do not have solutions. The Bisection method reaches a state of "no solution" faster than Newton's method, as it employs a technique of reducing the possible range of the solution. This converging search space would suggest it discovers a state of "no solution" faster than the unbounded search space of the Newton method. In principle - on the condition that the existence of a solution is guaranteed - the Newton method will converge faster than the Bisection method, given a reasonable initial guess.
 
 
-        \newpage
-        \subsection{Implied Volatility}
 
-        In this section, we utilize the functions and data described above to calculate the average implied volatility of each of the option chains. This was done for the entire dataset using the Bisection Method, but convergence times using the Newton Method were also explored.
+    \newpage
+    \subsection{Implied Volatility}
+
+    In this section, we utilize the functions and data described above to calculate the average implied volatility of each of the option chains. This was done for the entire dataset using the Bisection Method. Additionally, we also discuss the differences in average daily implied volatility between \textit{in-the-money} and \textit{out-of-the-money} options.
 
         \subsubsection{Average Daily Implied Volatility} \label{section:q2:avg_imp_vol}
         
@@ -444,20 +445,23 @@ The content of this Homework Assignment is divided into three sections; the firs
         % Add comparison between in-the-money and out-the-money option volatilities.
         % Reflect on implied volatility values compared to the VIX for the day.
 
-        \subsubsection{\textit{Money-ness} Implied Volatility Comparison}
+    
+    \subsection{Implied Volatility Analysis}
 
-        We also compared the average daily implied volatility of options \textit{in-the-money}, and \textit{out-of-the-money}. For this comparison, we defined the ratio of \textit{money-ness} to be $\pm5\%$ of the current underlying asset price, where options within the range are \textit{in-the-money}, and \textit{out-of-the-money} otherwise. This comparison data is presented in Table~\ref{table:itm_otm_comparison}.
+    We also compared the average daily implied volatility of options \textit{in-the-money}, and \textit{out-of-the-money}. For this comparison, we defined the ratio of \textit{money-ness} to be $\pm5\%$ of the current underlying asset price, where options within the range are \textit{in-the-money}, and \textit{out-of-the-money} otherwise. This comparison data is presented in Table~\ref{table:itm_otm_comparison}.
 
-        \begin{table}[h]
-            \centering
-            \csvautotabular{bin/itm_otm_vol_analysis.csv}
-            \caption{Comparison of \textit{in-the-money} and \textit{out-of-the-money} options through the lens of their average daily implied volatility.}
-            \label{table:itm_otm_comparison}
-        \end{table}
+    \begin{table}[h]
+        \centering
+        \csvautotabular{bin/itm_otm_vol_analysis.csv}
+        \caption{Comparison of \textit{in-the-money} and \textit{out-of-the-money} options through the lens of their average daily implied volatility.}
+        \label{table:itm_otm_comparison}
+    \end{table}
+
+
     \newpage
     \subsection{Volatility Plots}
     
-    In this section, we explore the visual relationship between the computed average daily implied volatility (see Section~\ref{section:q2:avg_imp_vol}), the strike price, and the expiration date of the options.
+    In this section, we explore the visual relationship between the computed average daily implied volatility (see Section~\ref{section:q2:avg_imp_vol}), the strike price, and the expiration date of the options. The source code for this question is reproduced in Appendix~\ref{appendix:source:q2:vol_plots}.
 
         \subsubsection{Volatility Smile}
         
@@ -516,13 +520,25 @@ The content of this Homework Assignment is divided into three sections; the firs
         \end{figure}
 
     
+    \newpage
     \subsection{The Greeks}
 
-    In this section, we compute the Greeks for the options. To do this, we employ the estimate of the average daily implied volatility (see Section~\ref{section:q2:avg_imp_vol}). We compute the Greeks using both the analytical formula (see Section~\ref{sec:q2:greeks}), and by estimation.
+    In this section, we compute the Greeks for the options. To do this, we employ the estimate of the average daily implied volatility (see Section~\ref{section:q2:avg_imp_vol}). We compute the Greeks using both the analytical formula (see Section~\ref{sec:q2:greeks}), and by estimation of the derivatives using the central finite difference Method.
 
         \subsubsection{Central Finite Difference Method}
 
+        The central finite difference method is a framework for computing the numerical derivative of a three times differentiable function in an interval around the point $a$, $f$. Then, numerical approximations for the first and second derivatives are\footnote{\cite{Stefanica2011}}:
         
+        \begin{gather*}
+            \text{Let } h > 0 \\
+            f^\prime(a) \approx \frac{f(a + h) - f(a - h)}{2h} + O(h^2) \\
+            f^{\prime\prime}(a) \approx \frac{f(a + h) - 2 f(a) + f(a - h)}{h^2} + O(h^2)
+        \end{gather*}
+
+
+        \subsubsection{Analytical and Estimated Greeks}
+
+        The analytical and estimated Delta, $\Delta$, Gamma, $\Gamma$, and Vega, $\nu$, for the complete SPY and AMZN option chains are presented in Appendix~\ref{appendix:q2:spy_greeks} and Appendix~\ref{appendix:q2:amzn_greeks}, respectively. The source code for this computation is reproduced in 
 
 
 %==============================
@@ -735,8 +751,14 @@ The content of this Homework Assignment is divided into three sections; the firs
         \subsubsection{Implied Volatility Computation} \label{appendix:source:q2:imp_vol}
             \lstinputlisting{question_solutions/question_2_imp_vol.py}
         
+        \subsubsection{Implied Volatility Analysis} \label{appendix:source:q2:vol_analysis}
+            \lstinputlisting{question_solutions/question_2_vol_analysis.py}
+        
         \subsubsection{Volatility Plots} \label{appendix:source:q2:vol_plots}
             \lstinputlisting{question_solutions/question_2_vol_plots.py}
+
+        \subsubsection{The Greeks} \label{appendix:source:q2:greeks}
+            \lstinputlisting{question_solutions/question_2_greeks.py}
 
     \newpage
     \subsection{Question 3 Implementation} \label{appendix:q3}
