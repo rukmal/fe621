@@ -438,25 +438,9 @@ The content of this Homework Assignment is divided into three sections; the firs
         
         Average daily implied volatility was computed for each option, across all strike prices and expiration dates, for both SPY and AMZN option chains. This optimization on the aggregate dataset was completed using the Bisection Method.
         
-        This was done by first computing the implied volatility for each minute, solving for some $\sigma$ such that ${(C(S_t) |_{\sigma} - P = 0)}$ or ${(P(S_t) |_{\sigma} - P = 0)}$ for a call or put option respectively. Then, the mean of each of these implied volatilities was computed to obtain the daily average implied volatility for an option with a given strike price and expiration date. For this comparison, the tolerance level of each of the termination conditions was set to $1 \times 10^{-7}$.
+        This was done by first computing the implied volatility for each minute, solving for some $\sigma$ such that ${(C(S_t) |_{\sigma} - P = 0)}$ or ${(P(S_t) |_{\sigma} - P = 0)}$ for a call or put option, respectively. Then, the mean of each of these implied volatilities was computed to obtain the daily average implied volatility for an option with a given strike price and expiration date. For this comparison, the tolerance level of each of the termination conditions was set to $1 \times 10^{-7}$.
 
         The complete dataset of average daily implied volatility is reproduced for the complete option chains on SPY in Appendix~\ref{appendix:q2:spy_vol} and AMZN in Appendix~\ref{appendix:q2:amzn_vol}.
-
-        % Add comparison between in-the-money and out-the-money option volatilities.
-        % Reflect on implied volatility values compared to the VIX for the day.
-
-    
-    \subsection{Implied Volatility Analysis}
-
-    We also compared the average daily implied volatility of options \textit{in-the-money}, and \textit{out-of-the-money}. For this comparison, we defined the ratio of \textit{money-ness} to be $\pm5\%$ of the current underlying asset price, where options within the range are \textit{in-the-money}, and \textit{out-of-the-money} otherwise. This comparison data is presented in Table~\ref{table:itm_otm_comparison}.
-
-    \begin{table}[h]
-        \centering
-        \csvautotabular{bin/itm_otm_vol_analysis.csv}
-        \caption{Comparison of \textit{in-the-money} and \textit{out-of-the-money} options through the lens of their average daily implied volatility.}
-        \label{table:itm_otm_comparison}
-    \end{table}
-
 
     \newpage
     \subsection{Volatility Plots}
@@ -519,7 +503,26 @@ The content of this Homework Assignment is divided into three sections; the firs
             \label{fig:volatility_surfaces}
         \end{figure}
 
-    
+    \newpage
+    \subsection{Implied Volatility Analysis}
+
+    We also compared the average daily implied volatility of options \textit{in-the-money}, and \textit{out-of-the-money}. For this comparison, we defined the ratio of \textit{money-ness} to be $\pm5\%$ of the current underlying asset price, where options within the range are \textit{in-the-money}, and \textit{out-of-the-money} otherwise. This comparison data is presented in Table~\ref{table:itm_otm_comparison}.
+
+    \begin{table}[h]
+        \centering
+        \csvautotabular{bin/itm_otm_vol_analysis.csv}
+        \caption{Comparison of \textit{in-the-money} and \textit{out-of-the-money} options through the lens of their average daily implied volatility.}
+        \label{table:itm_otm_comparison}
+    \end{table}
+
+    It is immediately apparent from Table~\ref{table:itm_otm_comparison} that the implied volatility for \textit{in-the-money} option chains on both AMZN and SPY are less than their \textit{out-the-money} counterparts. This is to be expected, as realizing prices farther away from the current price would imply that the underlying asset has a larger volatility in price.
+
+    Additionally, an analysis of Figure~\ref{fig:volatility_smiles} and Figure~\ref{fig:volatility_surfaces} echo the results of the volatility comparison between \textit{in-the-money} and \textit{out-of-the-money} options above. Options that have a closer maturity date consistently have a higher implied volatility when compared to options with a farther maturity date. This behavior is also expected, as realized strike prices farther from the current asset price would have longer to be realized; implying a lower level of volatility in the underlying asset price.
+
+    Furthermore, the difference between the implied volatilities of both flavors of options on SPY and AMZN are also to be expected. As the SPY index tracks the \textit{S\&P 500 Index}, it captures the volatility of the ETF as a whole, compared to AMZN options which track a single company. The idiosyncratic risk of a single company is always greater than that of an averaged basket of assets, due to the benefit provided by diversification.
+
+    Finally, compared to the current level of the VIX (\$15.42 Closing Price for \textbf{DATA1}) the ratio between the options \textit{in-the-money} and \textit{out-of-the-money} are reasonable. This can be inferred from the current (relatively low) value of the VIX, as its price is based on the prices of \textit{out-of-the-money} put and call options on SPY.
+
     \newpage
     \subsection{The Greeks}
 
