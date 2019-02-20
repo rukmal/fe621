@@ -22,11 +22,10 @@ amzn_prices = pd.read_csv('Homework 1/data/DATA1/AMZN/AMZN.csv',
 # Isolating daily close prices
 spy_close = spy_prices.iloc[-1][1]
 amzn_close = amzn_prices.iloc[-1][1]
-print(amzn_close)
+
 # Defining 'money-ness' ratio
-# NOTE: This needs to be changed when more data is available
-lower_bound_pct = 0.975
-upper_bound_pct = 1.025
+lower_bound_pct = 0.95
+upper_bound_pct = 1.05
 
 def analyzeVolAvg(data: pd.DataFrame, underlying_close: float) -> list:
     """Function to compute the average daily implied volatility of in-the-money
