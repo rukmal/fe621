@@ -32,7 +32,7 @@ def convergenceApproximation(f: Callable, rule: Callable, epsilon: float=1e-3,
         # Set new area to old area
         area_old = area_new
 
-        # Increase N by powers of 10
+        # Increase N by factor of 10
         N *= 10
 
         # Computing area with given parameters
