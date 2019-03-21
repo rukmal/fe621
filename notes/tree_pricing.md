@@ -89,7 +89,7 @@ The matrix must have the following dimensions:
 
 This can be done relatively easily by iterating over each of the values in a top -> down, left -> right pattern (i.e. by column, then by row).
 
-Then, for every (non-zero checking can be done here too of course) value encountered, simply compute and set the values of the children using whatever modification function you want, and assign it to the array value in the relevant slot.
+Then, for every (non-zero checking can be done here too of course) value encountered, simply compute and set the values of the children using whatever modification function you want, and assign it to the matrix value in the relevant slot.
 
 The pseudocode for this computation is outlined below:
 
