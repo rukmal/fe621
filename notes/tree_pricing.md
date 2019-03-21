@@ -96,11 +96,9 @@ The pseudocode for this computation is outlined below:
 ```python
 set T = Matrix(rows=2*N+1, columns=N+1)
 
-set middle_index = 
-
 # Set the middle row of the first column to the initial value
-# Note: For 0-based indexing (NOT THIS EXAMPLE), mid_index = floor(N / 2)
-set mid_index = ceiling(N / 2)
+# Note: For 0-based indexing (NOT THIS EXAMPLE), mid_index = floor(rows / 2)
+set mid_index = ceiling(rows / 2)
 set T[mid_index, 1] = initial_value
 
 # Iterate over columns
