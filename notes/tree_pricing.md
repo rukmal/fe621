@@ -129,3 +129,30 @@ return T
 ### Reverse Traversal of the Tree
 
 To compute the option price from the price tree, we need to traverse it from right to left (i.e. in reverse). This can be achieved by simply reversing the direction of the outer loop in the pseudocode above.
+
+Any updates to the nodes in the tree can be made, using each of the child nodes as inputs.
+
+In the pseudocode below, assume that we have the functions:
+
+- `optionValue`: Gets the value of the option, given the computed underlying price (eg: for call, this would simply be *max(0, S - P)*, etc.)
+- `pricingFunction`: Computes value of parent node, based on value of child nodes (this is the function that would use probabilities of each of the edges; *p_u*, *p_m*, and *p_d*)
+
+```python
+# Iterate over columns
+for j in ((column - 1) to 1):  # Reverse loop
+    # Iterate over rows
+    for i in (1 to rows):
+        # Get up child, apply option value function
+        upChild = optionValue(T[i + 1, j + 1])
+        # Get mid child, apply option value function
+        midChild = optionValue(T[i, j + 1])
+        # Get down child, apply option value function
+        downChild = optionValue(T[i - 1, j + 1])
+
+        # Set current node (T[i, j]) to some function of children
+        T[i, j] = pricingFunction(upChild, midChild, downChild)
+
+# Return the root of the tree, with updated recursive function call of all
+# the children
+return T[mid_index, 1]
+```
