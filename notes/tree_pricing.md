@@ -44,7 +44,7 @@ To index each of these values, we can use regular matrix indexing notation. That
 
 For example (considering the examples detailed above):
 
-- **T**[2, 1] = * (the first node (i.e. root) of the tree)
+- **T**[3, 1] = * (the first node (i.e. root) of the tree)
 - **T**[1, 1] = 0 (the top left node of the tree)
 
 and so on...
@@ -94,7 +94,7 @@ Then, for every (non-zero checking can be done here too of course) value encount
 The pseudocode for this computation is outlined below:
 
 ```python
-set T = Matrix(rows=2N+1, columns=N+1)
+set T = Matrix(rows=2*N+1, columns=N+1)
 
 set middle_index = 
 
