@@ -94,7 +94,14 @@ Then, for every (non-zero checking can be done here too of course) value encount
 The pseudocode for this computation is outlined below:
 
 ```python
-set T = Matrix(rows=2*N+1, columns=N+1)
+# Define number of time steps
+set N = 2  # Same as examples discussed above
+
+# Define number of rows and columns
+set rows = (2 * N) + 1
+set columns = N + 1
+
+set T = Matrix(rows=rows, columns=columns)
 
 # Set the middle row of the first column to the initial value
 # Note: For 0-based indexing (NOT THIS EXAMPLE), mid_index = floor(rows / 2)
