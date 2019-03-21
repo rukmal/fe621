@@ -142,6 +142,10 @@ In the pseudocode below, assume that we have the functions:
 for j in ((column - 1) to 1):  # Reverse loop
     # Iterate over rows
     for i in (1 to rows):
+        # If it is a node with value 0, go to next iteration
+        if T[i, j] == 0:
+            continue  # Go to next iteration
+
         # Get up child, apply option value function
         upChild = optionValue(T[i + 1, j + 1])
         # Get mid child, apply option value function
