@@ -134,7 +134,7 @@ Any updates to the nodes in the tree can be made, using each of the child nodes 
 
 In the pseudocode below, assume that we have the functions:
 
-- `optionValue`: Gets the value of the option, given the computed underlying price (eg: for call, this would simply be *max(0, S - P)*, etc.)
+- `optionValue`: Gets the value of the option, given the computed underlying price (eg: for call, this would simply be *max(0, `child_node_value` - K)*, etc.)
 - `pricingFunction`: Computes value of parent node, based on value of child nodes (this is the function that would use probabilities of each of the edges; *p_u*, *p_m*, and *p_d*)
 
 ```python
