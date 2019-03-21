@@ -47,7 +47,6 @@ dependencies:
   - pango=1.42.4=h060686c_0
   - pcre=8.42=h378b8a2_0
   - pep8=1.7.1=py37_0
-  - pip=10.0.1=py37_0
   - pixman=0.34.0=hca0a616_3
   - python=3.7.0=hc167b69_0
   - readline=7.0=h1de35cc_5
@@ -68,6 +67,7 @@ dependencies:
     - mccabe==0.6.1
     - numpy==1.15.2
     - pandas==0.23.4
+    - pip==19.0.2
     - pylint==2.1.1
     - pyparsing==2.3.1
     - python-dateutil==2.7.3
