@@ -103,6 +103,10 @@ class GeneralTree(ABC):
 
             # Iterate over rows:
             for i in range(row_low, row_high):
+                # Skip to next iteration if current node is 0
+                if price_tree[i, j] == 0:
+                    continue
+
                 # Making current i, j, and value global for external visibility
                 self._current_row = i
                 self._current_col = j
