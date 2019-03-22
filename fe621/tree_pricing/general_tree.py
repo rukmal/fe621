@@ -5,6 +5,7 @@ import numpy as np
 
 
 class GeneralTree(ABC):
+    # Need to add documentation to this; explain persistent variables, etc.
     def __init__(self, current: float, strike: float, ttm: float, rf: float,
                  steps: int=1):
         # Be sure to mention that the variables `self.children` is set at each
@@ -25,6 +26,7 @@ class GeneralTree(ABC):
         if self.steps < 1:
             raise ValueError('Must have a step size of at least 1.')
 
+        # Construct the price tree
         self.price_tree = self.__constructPriceTree()
 
     @abstractmethod
@@ -48,7 +50,7 @@ class GeneralTree(ABC):
         raise NotImplementedError
 
     @abstractmethod
-    def getDeltaX(self) -> np.array:
+    def getChildren(self) -> np.array:
         # update deltaX (i.e. the steps)
         # Must return an array of size 3
         raise NotImplementedError
@@ -109,7 +111,7 @@ class GeneralTree(ABC):
                 # Update children indexes
                 self.__updateChildIndexes()
                 # Get deltaX
-                deltaX = self.getDeltaX()
+                deltaX = self.getChildren()
                 # Update child values
                 for idx, child_delX in zip(self._child_indexes, deltaX):
                     price_tree[idx[0], idx[1]] = child_delX
@@ -137,12 +139,12 @@ class GeneralTree(ABC):
         """
 
         self._child_indexes = (
-            [self._current_row + 1, self._current_col + 1],
+            [self._current_row - 1, self._current_col + 1],
             [self._current_row, self._current_col + 1],
-            [self._current_row - 1, self._current_col + 1]
+            [self._current_row + 1, self._current_col + 1]
         )
 
     def __checkImplementationMethods(self):
         # Methods to check: instrumentValueFromChildren, instrumentValueAtNode,
-        # getProbabilities, getDeltaX
+        # getProbabilities, getChildren
         pass
