@@ -90,7 +90,7 @@ def plot3DVolatilitySurface(data: pd.DataFrame, name: str, save_loc: str):
                                 current_date=data1_date),
                               axis=1)
         # Converting TTM to days
-        ttm_days = ttm * 365
+        ttm_days = ttm * fe621.util.cfg.days_in_year
 
         # Isolating data for each axis
         x = np.array(ttm_days)

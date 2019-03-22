@@ -1,3 +1,4 @@
+from . import cfg
 from datetime import datetime
 import re
 
@@ -93,7 +94,7 @@ def getTTM(name: str, current_date: str) -> float:
     current_date = datetime.strptime(current_date, current_date_format)
 
     # Defining days in year
-    days = 365
+    days = cfg.days_in_year
 
     # Getting number of days from current date to expiration date
     ttm_days = (exp_date - current_date).days
