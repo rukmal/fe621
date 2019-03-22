@@ -66,9 +66,9 @@ Furthermore, the following notation will be used:
 
 With this, we can state (*m* = 0 for the Binomial tree, **B**):
 
-- *u* = **T**[*i* + 1, *n* + 1]
+- *u* = **T**[*i* - 1, *n* + 1]
 - *m* = **T**[*i*, *n* + 1]
-- *d* = **T**[*i* - 1, *n* + 1]
+- *d* = **T**[*i* + 1, *n* + 1]
 
 This relationship is illustrated in the diagram below:
 
@@ -116,11 +116,11 @@ for j in (1 to (column - 1)):
         current_node = T[i, j]
 
         # Set up child
-        T[i + 1, j + 1] = setUpChild(input=current_node)
+        T[i - 1, j + 1] = setUpChild(input=current_node)
         # Set mid child
         T[i, j + 1] = setMidChild(input=current_node)
         # Set down child
-        T[i - 1, j + 1] = setDownChild(input=current_node)
+        T[i + 1, j + 1] = setDownChild(input=current_node)
 
 # Return the constructed tree
 return T
@@ -147,11 +147,11 @@ for j in ((column - 1) to 1):  # Reverse loop
             continue  # Go to next iteration
 
         # Get up child, apply option value function
-        upChild = optionValue(T[i + 1, j + 1])
+        upChild = optionValue(T[i - 1, j + 1])
         # Get mid child, apply option value function
         midChild = optionValue(T[i, j + 1])
         # Get down child, apply option value function
-        downChild = optionValue(T[i - 1, j + 1])
+        downChild = optionValue(T[i + 1, j + 1])
 
         # Set current node (T[i, j]) to some function of children
         T[i, j] = pricingFunction(upChild, midChild, downChild)
