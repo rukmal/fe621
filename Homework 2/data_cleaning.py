@@ -19,8 +19,8 @@ data1_imp_vol = pd.read_csv('Homework 1/bin/spy_data1_vol.csv', index_col=0)
 hw2_data = pd.DataFrame()
 
 # Defining percent bounds for the considered options
-lower_bound = 0.95
-upper_bound = 1.05
+lower_bound = 0.98
+upper_bound = 1.02
 
 # Iterating through rows of computed implied volatilities
 for idx, imp_vol_data in data1_imp_vol.iterrows():
