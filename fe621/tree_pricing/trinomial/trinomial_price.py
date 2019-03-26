@@ -161,3 +161,37 @@ class TrinomialAdditivePriceTree(GeneralTree):
         # Replacing all instances of value '1' with zero, as it would have
         # previously been a zero node before exponentiation
         return np.where(price_tree_unadj == 1, 0, price_tree_unadj)
+
+    def computeOtherStylePrice(self, opt_style: str) -> float:
+        """Function to compute the 'other' option style (i.e. American or
+        European), given the constructed price tree. Note that this modifies the
+        current instance `self.opt_type` and `self.value_tree` variables.
+        
+        This is possible for this specific implementation, as the same
+        constructed price tree is utilized for both option value calculations.
+
+        This function calls internal functions from abstract class `GeneralTree`
+        to recompute the option value, given a change in style.
+        
+        Arguments:
+            opt_style {str} -- Option style, 'E' for European, 'A' for American.
+        
+        Returns:
+            float -- Option value of the desired style.
+        """
+
+        # Ensuring valid option style
+        if opt_style not in ['A', 'E']:
+            raise ValueError('`opt_style` must be \'A\' or \'E\'.')
+        
+        # If desired option style matches current style, return price
+        if opt_style == self.opt_style:
+            return self.getInstrumentValue()
+        
+        # Setting new option style
+        self.opt_style = opt_style
+
+        # Rebuilding value tree (calling superclass internal function here)
+        self.value_tree = self._constructValueTree()
+
+        return self.getInstrumentValue()
