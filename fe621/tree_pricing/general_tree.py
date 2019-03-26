@@ -68,6 +68,10 @@ class GeneralTree(ABC):
         if self.steps < 1:
             raise ValueError('Must have a step size of at least 1.')
 
+        # Computing shape of matrix representing the tree
+        self.nrow = (2 * self.steps) + 1
+        self.ncolumn = self.steps + 1
+
         # Construct the price tree
         if build_price_tree:
             self.price_tree = self.__constructPriceTree()
@@ -239,10 +243,6 @@ class GeneralTree(ABC):
             sparse.dok_matrix -- Correctly sized DOK sparse matrix to store the
                                  price tree.
         """
-
-        # Compute required rows and columns
-        self.nrow = (2 * self.steps) + 1
-        self.ncolumn = self.steps + 1
 
         # Instantiate sparse matrix with correct size and type
         price_tree = sparse.dok_matrix((self.nrow, self.ncolumn), dtype=float)
