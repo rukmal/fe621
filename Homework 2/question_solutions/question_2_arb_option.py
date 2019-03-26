@@ -10,7 +10,7 @@ ttm = 1
 volatility = 0.25
 rf = 0.06
 dividend = 0.03
-steps = 10
+steps = 200
 
 # Constructing arbitrary tree price
 call_tree = fe621.tree_pricing.trinomial.AdditiveTree(current=current,
