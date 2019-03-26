@@ -1,4 +1,5 @@
 from context import fe621
+from question_solutions.config import cfg
 
 import pandas as pd
 
@@ -28,6 +29,11 @@ for idx, imp_vol_data in data1_imp_vol.iterrows():
     row_data['bs_price'] = data2_computed_options.loc[idx]['computed_prices']
     # Assigning implied volatility
     row_data['implied_vol'] = imp_vol_data['implied_vol']
+    # Assigning time to maturity
+    row_data['ttm'] = fe621.util.option_metadata.getTTM(
+        name=idx,
+        current_date=cfg.data2_date
+    )
 
     # Adding row to new DataFrame
     hw2_data = hw2_data.append(row_data, ignore_index=True)
