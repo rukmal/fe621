@@ -56,4 +56,4 @@ computed_prices = computed_prices.set_index('name')
 
 # Saving to CSV
 computed_prices.to_csv('Homework 2/bin/binomial_data2_prices.csv', index=True,
-                       float_format='%.2f')
+                       float_format='%.4f')
