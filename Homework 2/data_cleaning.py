@@ -29,11 +29,10 @@ for idx, imp_vol_data in data1_imp_vol.iterrows():
     row_data['bs_price'] = data2_computed_options.loc[idx]['computed_prices']
     # Assigning implied volatility
     row_data['implied_vol'] = imp_vol_data['implied_vol']
-    # Assigning time to maturity
-    row_data['ttm'] = fe621.util.option_metadata.getTTM(
-        name=idx,
-        current_date=cfg.data2_date
-    )
+    # Assigning time to maturity and strike
+    row_data['ttm'] = fe621.util.getTTM(name=idx, current_date=cfg.data2_date)
+    row_data['strike'] = fe621.util.getStrikePrice(name=idx)
+    row_data['opt_type'] = fe621.util.getOptionType(name=idx)
 
     # Adding row to new DataFrame
     hw2_data = hw2_data.append(row_data, ignore_index=True)
