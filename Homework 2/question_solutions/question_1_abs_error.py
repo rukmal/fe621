@@ -16,8 +16,8 @@ computed_prices = pd.DataFrame()
 steps = [10, 20, 30, 40, 50,100, 150, 200, 250, 300, 350, 400]
 
 # Candidate Put option metadata
-option_name = 'SPY190315P00260000'
-strike = 260.0
+option_name = 'SPY190315P00265000'
+strike = 265.0
 ttm = fe621.util.getTTM(name=option_name, current_date=cfg.data2_date)
 implied_vol = hw2_data.loc[option_name]['implied_vol']
 
