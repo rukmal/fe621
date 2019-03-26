@@ -24,6 +24,20 @@ def isCallOption(name: str) -> bool:
     return match[1] is 'C'
 
 
+def getOptionType(name: str) -> str:
+    """Function to return the type of the option as a string, 'P' for Put, and
+    'C' for Call.
+    
+    Arguments:
+        name {str} -- Name of the option contract.
+    
+    Returns:
+        str -- 'C' if call option, 'P' if put option.
+    """
+
+    return 'C' if isCallOption(name=name) else 'P'
+
+
 def getStrikePrice(name: str) -> float:
     """Function to extract the strike price of an option from its
     standard name.
