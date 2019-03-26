@@ -22,7 +22,7 @@ class Trigeorgis(GeneralTree):
             rf {float} -- Risk-free rate (annualized).
             volatility {float} -- Volatility of the underlying asset price.
             opt_type {str} -- Option type, 'C' for Call, 'P' for Put.
-            opt_style {str} -- Option style, 'E' for European, A' for American.
+            opt_style {str} -- Option style, 'E' for European, 'A' for American.
         
         Keyword Arguments:
             steps {int} -- Number of steps to construct (default: {1}).
@@ -131,5 +131,65 @@ class Trigeorgis(GeneralTree):
             # Computing non-floored put option value
             non_floor_val = self.strike - np.exp(last_col)
 
+            # Replacing values equal to (self.strike - 1) with 0. This is to
+            # adjust for the fact that zero nodes would have this value in
+            # the tree.
+            # This is a special case adjustment that must be made to
+            # computation. This is purely for clarity.
+            non_floor_val = np.where(non_floor_val == (self.strike - 1), 0,
+                                     non_floor_val)
+
         # Floor to 0 and return
         return np.where(non_floor_val > 0, non_floor_val, 0)
+
+    def getPriceTree(self) -> np.array:
+        """Function to get the price tree. Overrides superclass function of the
+        same name to return the real price tree as opposed to to the
+        log-price tree.
+        
+        Returns:
+            np.array -- Constructed price tree.
+        """
+
+        # Getting log price tree from superclass method
+        log_price_tree = super().getPriceTree()
+        # Computing real price tree
+        price_tree_unadj = np.exp(log_price_tree)
+
+        # Replacing all instances of value '1' with zero, as it would have
+        # previously been a zero node before exponentiation
+        return np.where(price_tree_unadj == 1, 0, price_tree_unadj)
+
+    def computeOtherStylePrice(self, opt_style: str) -> float:
+        """Function to compute the 'other' option style (i.e. American or
+        European), given the constructed price tree. Note that this modifies the
+        current instance `self.opt_type` and `self.value_tree` variables.
+        
+        This is possible for this specific implementation, as the same
+        constructed price tree is utilized for both option value calculations.
+
+        This function calls internal functions from abstract class `GeneralTree`
+        to recompute the option value, given a change in style.
+        
+        Arguments:
+            opt_style {str} -- Option style, 'E' for European, 'A' for American.
+        
+        Returns:
+            float -- Option value of the desired style.
+        """
+
+        # Ensuring valid option style
+        if opt_style not in ['A', 'E']:
+            raise ValueError('`opt_style` must be \'A\' or \'E\'.')
+        
+        # If desired option style matches current style, return price
+        if opt_style == self.opt_style:
+            return self.getInstrumentValue()
+        
+        # Setting new option style
+        self.opt_style = opt_style
+
+        # Rebuilding value tree (calling superclass internal function here)
+        self.value_tree = self._constructValueTree()
+
+        return self.getInstrumentValue()
