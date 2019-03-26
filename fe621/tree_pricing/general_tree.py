@@ -78,13 +78,9 @@ class GeneralTree(ABC):
                 self.price_tree
             except NameError:
                 raise RuntimeError('Price tree not constructed yet.')
-            self.value_tree = self.__constructValueTree()
 
-        # Set global variable with parent node value as instrument value
-        try:
-            self.instrument_value = self.value_tree[self.mid_row_index, 0]
-        except NameError:
-            raise RuntimeError('Value tree not constructed yet.')
+            # Price tree exists, continue
+            self.value_tree = self.__constructValueTree()
 
     @abstractmethod
     def valueFromLastCol(self, last_col: np.array) -> np.array:
@@ -162,29 +158,53 @@ class GeneralTree(ABC):
     def getPriceTree(self) -> np.array:
         """Get the constructed price tree.
         
+        Raises:
+            RuntimeError -- Raised when the price tree is not constructed yet,
+                            note that this only happens if the tree construction
+                            flags are used in the initialization method.
+
         Returns:
             np.array -- Constructed price tree (matrix representation).
         """
 
-        return self.price_tree.toarray()
+        try:
+            return self.price_tree.toarray()
+        except NameError:
+            raise RuntimeError('Price tree not constructed yet.')
     
     def getValueTree(self) -> np.array:
         """Get the constructed value tree.
         
+        Raises:
+            RuntimeError -- Raised when the value tree is not constructed yet,
+                            note that this only happens if the tree construction
+                            flags are used in the initialization method.
+
         Returns:
             np.array -- Constructed value tree (matrix representation).
         """
 
-        return self.value_tree.toarray()
+        try:
+            return self.value_tree.toarray()
+        except NameError:
+            raise RuntimeError('Value tree not constructed yet.')
     
     def getInstrumentValue(self) -> float:
         """Get the value of the instrument as implied by the value tree.
         
+        Raises:
+            RuntimeError -- Raised when the value tree is not constructed yet,
+                            note that this only happens if the tree construction
+                            flags are used in the initialization method.
+
         Returns:
             float -- Value of the instrument as implied by the value tree.
         """
 
-        return self.instrument_value
+        try:
+            return self.value_tree[self.mid_row_index, 0]
+        except NameError:
+            raise RuntimeError('Value tree not constructed yet.')
 
 
     def __constructPriceTree(self) -> sparse.dok_matrix:
