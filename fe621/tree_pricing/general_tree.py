@@ -92,11 +92,8 @@ class GeneralTree(ABC):
         column of the price matrix. That is, the bottom row of leaf nodes on
         the price tree.
         
-        At runtime, the implementing class can access the current indexes,
-        current node price, current child indexes, and current child values
-        from the variables `self._current_row`, `self._current_col`,
-        `self._current_val`, `self._child_indexes`, and `self._child_values`,
-        respectively.
+        At runtime, the implementing class can access the current price tree
+        from `self.price_tree`.
 
         See documentation for `GeneralTree.__constructValueTree` for more.
 
@@ -302,10 +299,11 @@ class GeneralTree(ABC):
         """
 
         # Creating copy of price tree for the value tree
-        value_tree = self.price_tree.copy()
-        # Applying value function to the last column of child nodes
+        value_tree = sparse.dok_matrix((self.nrow, self.ncolumn), dtype=float)
+
+        # Applying value function to the last column of child price nodes
         last_row = self.valueFromLastCol(
-            last_col=value_tree[:, self.ncolumn - 1].toarray()
+            last_col=self.price_tree[:, self.ncolumn - 1].toarray()
         )
 
         # Updating last column values
@@ -323,15 +321,16 @@ class GeneralTree(ABC):
             row_high = self.nrow - offset
 
             for i in range(row_low, row_high):
-                # Skip to next iteration if current node is 0
-                if value_tree[i, j] == 0:
+                # Expose corresponding current node price from `price_tree`
+                self._current_val = self.price_tree[i, j]
+
+                # Skip to next iteration if current node in price tree is 0
+                if self._current_val == 0:
                     continue
 
                 # Making current i, j and value global for external visiblity
                 self._current_row = i
                 self._current_col = j
-                # Expose corresponding current node price from `price_tree`
-                self._current_val = self.price_tree[i, j]
 
                 # Update children indexes
                 self.__updateChildIndexes()
