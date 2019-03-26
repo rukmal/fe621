@@ -51,9 +51,6 @@ for idx, row in hw2_data.iterrows():
     print('%f%% Complete - Binomial tree price for EU option %s is %f' % \
           (counter / len(hw2_data.index) * 100, idx, price_data['binomial_E']))
 
-    if counter == 10:
-        break
-
 # Setting index to option name
 computed_prices = computed_prices.set_index('name')
 
