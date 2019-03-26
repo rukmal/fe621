@@ -24,6 +24,6 @@ def blackScholesPut(current: float, volatility: float, ttm: float,
     d1, d2 = computeD1D2(current, volatility, ttm, strike, rf)
 
     put = (strike * np.exp(-1 * rf * ttm) * norm.cdf(-1 * d2)) \
-        - (strike * norm.cdf(-1 * d1))
+        - (current * norm.cdf(-1 * d1))
     
     return put
