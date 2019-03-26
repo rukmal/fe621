@@ -47,11 +47,14 @@ def computeAbsError() -> np.array:
     # Computing absolute error
     abs_error = np.abs(tree_prices - option_bs_price)
 
-    # Saving to CSV
-    pd.DataFrame({'Steps': steps, 'Abs Error': abs_error})\
-        .to_csv('Homework 2/bin/binomial_tree_abs_error.csv', index=False)
+    # Building output dataframe
+    abs_error_df = pd.DataFrame({'Steps': steps, 'Abs Error': abs_error})\
 
-    return abs_error
+    # Saving to CSV
+    abs_error_df.to_csv(
+        'Homework 2/bin/binomial_tree_abs_error.csv', index=False)
+
+    return abs_error_df
 
 
 def plotAbsError(steps: np.array, abs_error: np.array):
