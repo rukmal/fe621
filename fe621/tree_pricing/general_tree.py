@@ -74,7 +74,7 @@ class GeneralTree(ABC):
 
         # Construct the price tree
         if build_price_tree:
-            self.price_tree = self.__constructPriceTree()
+            self.price_tree = self._constructPriceTree()
 
         # Construct value tree (check that price tree is constructed first)
         if build_value_tree:
@@ -84,7 +84,7 @@ class GeneralTree(ABC):
                 raise RuntimeError('Price tree not constructed yet.')
 
             # Price tree exists, continue
-            self.value_tree = self.__constructValueTree()
+            self.value_tree = self._constructValueTree()
 
     @abstractmethod
     def valueFromLastCol(self, last_col: np.array) -> np.array:
@@ -95,7 +95,7 @@ class GeneralTree(ABC):
         At runtime, the implementing class can access the current price tree
         from `self.price_tree`.
 
-        See documentation for `GeneralTree.__constructValueTree` for more.
+        See documentation for `GeneralTree._constructValueTree` for more.
 
         It is required that the returned array has the same dimensions as
         argument `last_col`.
@@ -123,7 +123,7 @@ class GeneralTree(ABC):
         `self._current_val`, `self._child_indexes`, and `self._child_values`,
         respectively.
 
-        See documentation for `GeneralTree.__constructValueTree` for more.
+        See documentation for `GeneralTree._constructValueTree` for more.
         
         Raises:
             NotImplementedError -- Raised when not implemented.
@@ -144,7 +144,7 @@ class GeneralTree(ABC):
         `self._current_col`, `self._current_val`, and `self._child_indexes`,
         respectively.
         
-        See documentation for `GeneralTree.__constructPriceTree` for more.
+        See documentation for `GeneralTree._constructPriceTree` for more.
 
         It is required that the returned array has size 3, with the format
         [up_child_price, mid_child_price, down_child_price].
@@ -211,7 +211,7 @@ class GeneralTree(ABC):
             raise RuntimeError('Value tree not constructed yet.')
 
 
-    def __constructPriceTree(self) -> sparse.dok_matrix:
+    def _constructPriceTree(self) -> sparse.dok_matrix:
         """Constructs the price tree.
         
         It is instantiated as a dictionary of keys matrix (DOK) for efficiency.
@@ -287,7 +287,7 @@ class GeneralTree(ABC):
         # Return final price tree
         return price_tree
 
-    def __constructValueTree(self) -> sparse.dok_matrix:
+    def _constructValueTree(self) -> sparse.dok_matrix:
         """Constructs the value tree.
 
         This tree is also represented as a dictionary of keys matrix (DOK) for
