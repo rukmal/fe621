@@ -1,0 +1,1 @@
+from .trinomial_price import TrinomialAdditivePriceTree as AdditiveTree

@@ -3,17 +3,17 @@ from ..general_tree import GeneralTree
 import numpy as np
 
 
-class Trigeorgis(GeneralTree):
-    """Binomial tree option pricing with the Trigeorgis tree. This method is
-    outlined in http://bit.ly/2FAT3S0.
-    
+class TrinomialAdditivePriceTree(GeneralTree):
+    """Trinomial tree option pricing with an additive tree. This method is
+    outlined in https://en.wikipedia.org/wiki/Trinomial_tree.
+
     Implemented with the `GeneralTree` abstract class.
     """
 
     def __init__(self, current: float, strike: float, ttm: float, rf: float,
                  volatility: float, opt_type: str, opt_style: str,
-                 steps: int=1):
-        """Initialization method for the `Trigeorgis` class.
+                 dividend: float=0, steps: int=1):
+        """Initialization method for the `TrinomialAdditivePriceTree` class.
         
         Arguments:
             current {float} -- Current asset price.
@@ -25,6 +25,7 @@ class Trigeorgis(GeneralTree):
             opt_style {str} -- Option style, 'E' for European, 'A' for American.
         
         Keyword Arguments:
+            dividend {float} -- Cont. div. yield (annualized) (default: {0}).
             steps {int} -- Number of steps to construct (default: {1}).
         """
 
@@ -39,29 +40,29 @@ class Trigeorgis(GeneralTree):
         self.rf = rf
         self.volatility = volatility
         self.strike = strike
-        
+        self.nu = (rf - dividend) - (0.5 * np.power(volatility, 2))
+
         # Computing deltaT
         deltaT = ttm / steps
 
-        # Computing upward and downward jumps for children
-        # Do this only once so it doesn't have to be recomputed each time
-        # Upward additive deltaX
-        self.deltaXU = np.sqrt((np.power(rf - (np.power(volatility, 2) / 2), 2)\
-                               * np.power(deltaT, 2)) + (np.power(volatility,
-                               2) * deltaT))
-        # Down deltaX = -1 * upDeltaX
+        # Setting upward and downward jumps for children
+        # Setting equal to the convergence condition for now
+        self.deltaXU = volatility * np.sqrt(3 * deltaT)
         self.deltaXD = -1 * self.deltaXU
 
-        # Computing jump probabilities for value tree construction
-        # Do this only once so it doesn't have to be recomputed each time
-        self.jumpU = 0.5 + (0.5 * (rf - (np.power(volatility, 2) / 2)) * deltaT\
-                            / self.deltaXU)
-        self.jumpD = 1 - self.jumpU
+        # Computing upward, middle and downward jumps (additive)
+        self.jumpU = 0.5 * ((((np.power(volatility, 2) * deltaT) + (np.power(
+            self.nu, 2) * np.power(deltaT, 2))) / np.power(self.deltaXU, 2)) +\
+            (self.nu * deltaT / self.deltaXU))
+        self.jumpD = 0.5 * ((((np.power(volatility, 2) * deltaT) + (np.power(
+            self.nu, 2) * np.power(deltaT, 2))) / np.power(self.deltaXU, 2)) -\
+            (self.nu * deltaT / self.deltaXU))
+        self.jumpM = 1 - self.jumpU - self.jumpD
 
-        # Define discount factor for each jump
+        # Discount factor for each jump
         self.disc = np.exp(-1 * rf * deltaT)
 
-        # Initializing GeneralTree, with root set to log price for Trigeorgis
+        # Initializing GeneralTree, with root set to log price for Additive tree
         super().__init__(price_tree_root=np.log(current), steps=steps)
 
     def childrenPrice(self) -> np.array:
@@ -73,16 +74,16 @@ class Trigeorgis(GeneralTree):
                         mid_child_price, down_child_price].
         """
 
-        # Computing up and downward child additive values (mid is 0)
+        # Computing upward and downward child additive values (mid is same)
         up_child_price = self._current_val + self.deltaXU
         down_child_price = self._current_val + self.deltaXD
 
-        return np.array([up_child_price, 0, down_child_price])
+        return np.array([up_child_price, self._current_val, down_child_price])
 
     def instrumentValueAtNode(self) -> float:
         """Function to compute the instrument value at the given node.
 
-        Intelligently adapts to the specificed option style (`self.opt_style`)
+        Intelligently adapts to the specified option style (`self.opt_style`)
         and type (`self.opt_type`) to work with both European options, and the
         path-dependent American option style.
         
@@ -92,7 +93,8 @@ class Trigeorgis(GeneralTree):
 
         # Value implied by children
         child_implied_value = self.disc * ((self.jumpU * self._child_values[0])\
-                                + (self.jumpD * self._child_values[2]))
+            + (self.jumpM * self._child_values[1])\
+            + (self.jumpD * self._child_values[2]))
 
         # American option special case
         # NOTE: It is path dependent, so evaluate option value at current node
@@ -159,37 +161,3 @@ class Trigeorgis(GeneralTree):
         # Replacing all instances of value '1' with zero, as it would have
         # previously been a zero node before exponentiation
         return np.where(price_tree_unadj == 1, 0, price_tree_unadj)
-
-    def computeOtherStylePrice(self, opt_style: str) -> float:
-        """Function to compute the 'other' option style (i.e. American or
-        European), given the constructed price tree. Note that this modifies the
-        current instance `self.opt_type` and `self.value_tree` variables.
-        
-        This is possible for this specific implementation, as the same
-        constructed price tree is utilized for both option value calculations.
-
-        This function calls internal functions from abstract class `GeneralTree`
-        to recompute the option value, given a change in style.
-        
-        Arguments:
-            opt_style {str} -- Option style, 'E' for European, 'A' for American.
-        
-        Returns:
-            float -- Option value of the desired style.
-        """
-
-        # Ensuring valid option style
-        if opt_style not in ['A', 'E']:
-            raise ValueError('`opt_style` must be \'A\' or \'E\'.')
-        
-        # If desired option style matches current style, return price
-        if opt_style == self.opt_style:
-            return self.getInstrumentValue()
-        
-        # Setting new option style
-        self.opt_style = opt_style
-
-        # Rebuilding value tree (calling superclass internal function here)
-        self.value_tree = self._constructValueTree()
-
-        return self.getInstrumentValue()
