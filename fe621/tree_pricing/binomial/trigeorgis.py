@@ -38,7 +38,6 @@ class Trigeorgis(GeneralTree):
         self.opt_style = opt_style
         self.rf = rf
         self.volatility = volatility
-        self.jumpProbability = 0
         self.strike = strike
         
         # Computing deltaT
