@@ -339,7 +339,7 @@ class GeneralTree(ABC):
                 child_row_range = range(self._child_indexes[0][0],
                                         self._child_indexes[2][0] + 1)
                 self._child_values = value_tree[child_row_range, j + 1]\
-                    .toarray()
+                                               .toarray()
 
                 # Set value of current node
                 value_tree[i, j] = self.instrumentValueAtNode()
