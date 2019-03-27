@@ -223,7 +223,7 @@ The content of this Homework Assignment is divided into three sections; the firs
 
     Option prices were computed, utilizing data from Homework Assignment 1's SPY \textbf{DATA2} dataset. To begin, both American and European style options were computed for options of various strike prices, with expiration dates varying from 1 to 3 months of the data gathering date.
 
-    This data is reproduced in Appendix~\ref{appendix:q1:binomial_prices}.
+    This data is reproduced in Appendix~\ref{appendix:q1:binomial_prices}, and the source code for this computation is reproduced in Appendix~\ref{appendix:q1:binomial_prices}.
 
     As seen in the tables, the computed values for the European style option with the Binomial tree agree with the analytically computed Black Scholes price. This behavior is to be expected, as the Binomial Tree price converges to the Black Scholes price as the step size, $N \rightarrow \infty$.
 
@@ -234,7 +234,7 @@ The content of this Homework Assignment is divided into three sections; the firs
 
     \subsection{Absolute Error Analysis}
     
-    To better understand the behavior of the Binomial Tree pricing under varying step sizes, the following error function was plotted for various values of the step size, $N$.
+    To better understand the behavior of the Binomial Tree pricing under varying step sizes, the following error function was plotted for various values of the step size, $N$. The source code for this computation is reproduced in Appendix~\ref{appendix:source:q1:abs_error}.
 
     \begin{gather*}
         N \in \{10, 20, 30, 40, 50, 100, 150, 200, 250, 300, 350, 400\} \\
@@ -242,14 +242,29 @@ The content of this Homework Assignment is divided into three sections; the firs
         \epsilon_N = \left| P^{BSM}(\cdot) - P^{BTree}_N(\cdot) \right|
     \end{gather*}
 
-    Where $P^{BTree}_N$ is the price of a put option computed with a binomial tree of $N$ steps. The table of absolute errors is reproduced in Table~\ref{table:binomial_abs_error}.
-
-    \begin{table}[h]
+    \begin{table}[!h]
         \centering
         \csvautotabular{bin/binomial_tree_abs_error.csv}
         \caption{Absoute error of Binomial Tree Put Option price computation, with respect to a range of varying step sizes, $N$.}
         \label{table:binomial_abs_error}
     \end{table}
+
+    Where $P^{BTree}_N$ is the price of a put option computed with a binomial tree of $N$ steps. The table of absolute errors is reproduced in Table~\ref{table:binomial_abs_error}. Additionally, a graphical representation of this data is also presented in Figure~\ref{fig:binomial_abs_error}.
+
+    \begin{figure}[!ht]
+        \includegraphics[]{bin/binomial_abs_error_plot.png}
+        \caption{Absolute error analysis of the Binomial Tree price computation convergence, with respect to varying step sizes.}
+        \label{fig:binomial_abs_error}
+    \end{figure}
+
+    As evidenced by the graphic, there is a clear pattern of convergence to a the analytically computed value as the number of steps, $N$ increases. This is to be expected, as at the limit as $N \rightarrow \infty$, the Binomial Tree process will perfectly approximate a continuous geometric brownian motion.
+
+    \newpage
+    \subsection{Implied Volatility Computation}
+    
+    Following the algorithm outlined in Homework 1, I computed the implied volatility for the selection of option contracts used in this Homework Assignment, using the Binomial Option Tree, driven by a Bisection Search Algorithm. Source code for this computation is reproduced in Appendix~\ref{appendix:source:q1:imp_vol}.
+
+    Compared to the implied volatilities computed in Homework Assignment 1, the volatilities computed here are marginally higher. This too can be attributed to the fact that the holder is compensated fairly for the added optionality provided under the American Option heuristic, used in this computation.
 
 %==============================
 % References
@@ -310,7 +325,7 @@ The content of this Homework Assignment is divided into three sections; the firs
     ]{bin/trinomial_implied_vol.csv}{1=\one, 2=\two, 3=\three, 4=\four}{\one & \two & \four & \three}
 
 \newpage
-\section{Solution Source Code}
+\section{Solution Source Code} \label{appendix:source}
 
     \subsection{Question 1 Implementation} \label{appendix:source:q1}
 
@@ -318,11 +333,11 @@ The content of this Homework Assignment is divided into three sections; the firs
 
             \lstinputlisting{question_solutions/question_1_prices.py}
         
-        \subsection{Binomial Tree Absolute Error Analysis} \label{appendix:source:q1:abs_error}
+        \subsubsection{Binomial Tree Absolute Error Analysis} \label{appendix:source:q1:abs_error}
 
             \lstinputlisting{question_solutions/question_1_abs_error.py}
         
-        \subsection{Binomial Tree Implied Volatility Optimization} \label{appendix:source:q1:imp_vol}
+        \subsubsection{Binomial Tree Implied Volatility Optimization} \label{appendix:source:q1:imp_vol}
 
             \lstinputlisting{question_solutions/question_1_imp_vol.py}
 
@@ -333,11 +348,11 @@ The content of this Homework Assignment is divided into three sections; the firs
 
             \lstinputlisting{question_solutions/question_2_prices.py}
         
-        \subsection{Trinomial Tree Absolute Error Analysis} \label{appendix:source:q2:abs_error}
+        \subsubsection{Trinomial Tree Absolute Error Analysis} \label{appendix:source:q2:abs_error}
 
             \lstinputlisting{question_solutions/question_2_abs_error.py}
         
-        \subsection{Trinomial Tree Implied Volatility Optimization} \label{appendix:source:q2:imp_vol}
+        \subsubsection{Trinomial Tree Implied Volatility Optimization} \label{appendix:source:q2:imp_vol}
 
             \lstinputlisting{question_solutions/question_2_imp_vol.py}
 
