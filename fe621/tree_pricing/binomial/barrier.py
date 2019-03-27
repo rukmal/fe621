@@ -1,4 +1,5 @@
 from ..general_tree import GeneralTree
+from .trigeorgis import Trigeorgis
 
 import numpy as np
 
@@ -54,7 +55,12 @@ class Barrier(GeneralTree):
         self.strike = strike
         self.barrier = barrier
         self.barrier_log = np.log(barrier)
-        self.barrier_type = barrier_type
+
+        # Override barrier type if option style is European
+        if opt_style == 'E':
+            self.barrier_type = 'O'  # Necessary for this to work
+        else:
+            self.barrier_type = barrier_type
         
         # Computing deltaT
         deltaT = ttm / steps
@@ -77,8 +83,16 @@ class Barrier(GeneralTree):
         # Define discount factor for each jump
         self.disc = np.exp(-1 * rf * deltaT)
 
-        # Initializing GeneralTree, with root set to log price for Trigeorgis
+        # Initializing GeneralTree, with root set to ln price for Trigeorgis
         super().__init__(price_tree_root=np.log(current), steps=steps)
+
+        if (barrier_type == 'I'):
+            # Special case for 'In' barrier type
+            vanilla_tree = Trigeorgis(current=current, strike=strike, ttm=ttm,
+                rf=rf, volatility=volatility, opt_type=opt_type,
+                opt_style=opt_style, steps=steps)
+            self.value_tree = (vanilla_tree.value_tree - self.value_tree)\
+                .todok(copy=True)
     
     def childrenPrice(self) -> np.array:
         """Function to compute the price of children nodes, given the price at
