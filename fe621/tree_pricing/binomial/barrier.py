@@ -92,6 +92,12 @@ class Barrier(GeneralTree):
         # Computing up and downward child additive values (mid is 0)
         up_child_price = self._current_val + self.deltaXU
         down_child_price = self._current_val + self.deltaXD
+        
+        # Computing barrier indicator for each of the child prices
+        up_child_price = up_child_price \
+            * self.barrierIndicator(np.exp(up_child_price))
+        down_child_price = down_child_price \
+            * self.barrierIndicator(np.exp(down_child_price))
 
         return np.array([up_child_price, 0, down_child_price])
 
@@ -137,8 +143,13 @@ class Barrier(GeneralTree):
             np.array -- Value of the option corresponding to the input prices.
         """
 
+        # Computing prices of each of the values
+        underlying_prices = np.array([0 if i == 0 else np.exp(i)
+                                        for i in last_col])
+
         # Computing barrier indicator function values for last_col values
-        indicator_val = np.array([[self.barrierIndicator(i)] for i in last_col])
+        indicator_val = np.array([[self.barrierIndicator(i)]
+                                    for i in underlying_prices])
 
         # Call option (same for European and American)
         if self.opt_type == 'C':
@@ -164,14 +175,14 @@ class Barrier(GeneralTree):
         # Return element-wise product of floor_val and barrier indicator
         return np.multiply(indicator_val, floor_val)
     
-    def barrierIndicator(self, underlying_log_price: float) -> int:
+    def barrierIndicator(self, underlying_price: float) -> int:
         """Indicator for the barrier option.
         
         Returns the corresponding value for the barrier indicator function,
         depending on the barrier type and barrier characteristic.
         
         Arguments:
-            underlying_log_price {float} -- Log price of the underlying asset.
+            underlying_price {float} -- Log price of the underlying asset.
         
         Returns:
             int -- 1 or 0 depending on indicator function.
@@ -179,19 +190,19 @@ class Barrier(GeneralTree):
 
         # Down and out
         if (self.barrier_characteristic == 'D') and (self.barrier_type == 'O'):
-            return 1 if underlying_log_price > self.barrier_log else 0
+            return 1 if underlying_price > self.barrier else 0
 
         # Down and in
         if (self.barrier_characteristic == 'D') and (self.barrier_type == 'I'):
-            return 1 if underlying_log_price <= self.barrier_log else 0
+            return 1 if underlying_price <= self.barrier else 0
         
         # Up and out
         if (self.barrier_characteristic == 'U') and (self.barrier_type == 'O'):
-            return 1 if underlying_log_price < self.barrier_log else 0
+            return 1 if underlying_price < self.barrier else 0
         
         # Up and in
         if (self.barrier_characteristic == 'U') and (self.barrier_type == 'I'):
-            return 1 if underlying_log_price >= self.barrier_log else 0
+            return 1 if underlying_price >= self.barrier else 0
 
     def getPriceTree(self) -> np.array:
         """Function to get the price tree. Overrides superclass function of the
