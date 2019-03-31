@@ -1,3 +1,6 @@
+# Custom Ignores
+Midterm\ Exam/
+
 # LaTeX stuff
 *.log
 *.fls
@@ -15,6 +18,7 @@
 tmp/
 tmp_*
 tmux.conf
+
 # Application folders
 .idea/
 .vscode/
