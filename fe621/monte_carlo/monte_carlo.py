@@ -36,6 +36,7 @@ def monteCarloSkeleton(sim_count: int, eval_count: int, sim_func: Callable) \
     # Running simulations the required number of times, returning
     return np.array([simulation() for i in range(0, sim_count)])
 
+
 def monteCarloStats(mc_output: np.array) -> dict:
     """Function to compute statistics on a Monte Carlo simulation output set.
 
