@@ -18,7 +18,7 @@ port_positions = np.floor((port_weights * port_init_val
     / initial_prices_corrected)).astype(int)
 
 # Simulation data
-sim_count = int(1e2)
+sim_count = int(1e3)
 dt = 0.001
 t = 10 / 252
 eval_count = int(np.ceil(t / dt))
@@ -83,7 +83,43 @@ def exportInitialData():
     out_df.to_csv('Homework 4/bin/q2_port_data.csv', float_format='%.0f')
 
 
+def performRiskAnalytics():
+    """Function to compute and export the portfolio VaR and CVaR (2(b) & 2(c))
+    """
+    
+    # Output data dictionary
+    output = dict()
+
+    # VaR config
+    N = 10
+    alpha = 0.01
+
+    # Computing simulation stats
+    sim_stats = fe621.monte_carlo.monteCarloStats(mc_output=sim_data)
+
+    # Computing value at risk (VaR) using the quantile method
+    var = sim_stats['estimate'] - np.quantile(sim_data, alpha)
+    var_daily = var / np.sqrt(N)
+    output['VaR ($)'] = [var, var_daily]
+    output['VaR (%)'] = np.array(output['VaR ($)']) / port_init_val * 100
+
+    # Isolating portfolios that perform worse than the VaR risk threshold
+    shortfall_ports = sim_data[sim_data <= np.quantile(sim_data, alpha)]
+    # Computing conditional value at risk (cVaR) using the quantile method
+    cvar = np.mean(sim_stats['estimate'] - shortfall_ports)
+    cvar_daily = cvar / np.sqrt(N)
+    output['CVaR ($)'] = [cvar, cvar_daily]
+    output['CVaR (%)'] = np.array(output['CVaR ($)']) / port_init_val * 100
+
+    # Building output dataframe, formatting and outputting to CSV
+    out_df = pd.DataFrame(output, index=['10 Day', '1 Day']).T
+
+    out_df.to_csv('Homework 4/bin/q2_risk_analytics.csv', float_format='%.4f')
+
 
 if __name__ == '__main__':
     # Part (1)
-    exportInitialData()
+    # exportInitialData()
+
+    # Part (2)
+    performRiskAnalytics()
