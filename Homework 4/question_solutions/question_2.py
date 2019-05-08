@@ -1,12 +1,14 @@
 from context import fe621
 
 import numpy as np
+import pandas as pd
 
 
 # Portfolio Metadata
 port_init_val = 1e7  # Portfolio value
 port_weights = np.array([.4, .3, .3])  # IBM, 10 yr Treasury, Yuan
 initial_prices = np.array([80, 90000, 6.1])
+asset_labels = ['IBM Equity', '10-Year T-Bill', 'CNY/USD ForEx']
 
 # Portfolio initial stats
 # Inverting CNY/USD rate as we're buying in USD
@@ -30,6 +32,8 @@ n_zt = lambda zt, w: zt + ((5 * (6 - zt) * dt) + (0.01 * np.sqrt(zt)
 
 # Function to compute portfolio value, given asset prices
 def portfolioValue(asset_prices: np.array):
+    # Making copy of asset prices (to not edit original array)
+    asset_prices = np.copy(asset_prices)
     # Inverting last current price value (it is CNY/USD; we're buying in USD)
     asset_prices[2] = 1 / asset_prices[2]
 
@@ -60,6 +64,26 @@ sim_data = fe621.monte_carlo.monteCarloSkeleton(
     sim_dimensionality=3
 )
 
-print(sim_data)
 
-print(fe621.monte_carlo.monteCarloStats(sim_data))
+def exportInitialData():
+    """Function to export initial portfolio data (answering question 2(a))
+    """
+    # Building output dictionary with necessary data
+    # Specifically, positions, USD value, and CNY value
+    output = dict()
+    output['Positions'] = list(port_positions) + ['-']
+    output['Position Value (USD)'] = np.append(np.multiply(
+        initial_prices_corrected,
+        port_positions
+    ), portfolioValue(initial_prices))
+    output['Position Value (CNY)'] = output['Position Value (USD)'] * initial_prices[2]
+
+    # Building output dataframe, formatting and saving to CSV
+    out_df = pd.DataFrame(output, index=[*asset_labels, 'Total'])
+    out_df.to_csv('Homework 4/bin/q2_port_data.csv', float_format='%.0f')
+
+
+
+if __name__ == '__main__':
+    # Part (1)
+    exportInitialData()
