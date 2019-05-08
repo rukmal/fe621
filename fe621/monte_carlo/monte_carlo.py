@@ -61,3 +61,6 @@ def monteCarloStats(mc_output: np.array) -> dict:
     # Standard error
     output['standard_error'] = output['standard_deviation'] / np.sqrt(
         len(mc_output))
+
+    # Return final output
+    return output
