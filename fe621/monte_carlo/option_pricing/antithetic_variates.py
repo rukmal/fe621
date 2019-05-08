@@ -5,7 +5,7 @@ import numpy as np
 
 def blackScholes(current: float, volatility: float, ttm: float, strike: float,
                  rf: float, dividend: float, sim_count: int, eval_count: int,
-                 opt_type: str='C') -> dict:
+                 opt_type: str='C', **kwargs) -> dict:
     """Function to model the price of a European Option, under the
     Black-Scholes pricing model heuristic, using an antithetic variates method
     variance-reduced Monte-Carlo simulation.
@@ -14,6 +14,7 @@ def blackScholes(current: float, volatility: float, ttm: float, strike: float,
     Brownian Motion (GBM) processes of the underlying asset price, before
     computing the terminal contract value for a given number of simulated paths,
     as the arithmetic average of the payouts of each of the two GBMs.
+
     Then, Monte Carlo simulation statistics are computed for each of the
     simulations, and a dict of results is returned.
     

@@ -10,8 +10,9 @@ def deltaCVBlackScholes(current: float, volatility: float, ttm: float,
     Black-Scholes pricing model heuristic, using a control variates method
     variance-reduced Monte-Carlo simulation.
 
-    This function simulated a delta-hedged portfolio mimicking a call or put
+    This function simulates a delta-hedged portfolio mimicking a call or put
     option, under the Black-Scholes pricing heuristic.
+
     Then, Monte Carlo simulation statistics are computed for each of the
     simulations, and a dict of results is returned.
     
