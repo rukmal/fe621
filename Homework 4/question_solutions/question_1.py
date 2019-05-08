@@ -92,8 +92,8 @@ def partB():
     output = pd.DataFrame()
 
     # Simulation settings
-    sim_count = int(5e3)
-    eval_count = 500
+    sim_count = int(1e6)
+    eval_count = 700
     opt_types = ['C', 'P']
 
     # Arguments for the simulations
@@ -128,6 +128,10 @@ def partB():
     # See: https://docs.python.org/3/library/itertools.html#itertools.product
     for sim_method, opt_type in itertools.product(sim_functions.keys(),
         opt_types):
+        # Print update
+        print('Starting simulation with method {0} and option type {1}'.
+            format(sim_method, opt_type))
+
         # Dictionary to store metadata
         meta = dict()
 
