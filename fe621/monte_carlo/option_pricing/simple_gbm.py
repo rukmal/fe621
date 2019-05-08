@@ -52,10 +52,12 @@ def blackScholes(current: float, volatility: float, ttm: float, strike: float,
     def sim_func(x: np.array) -> float:
         if (opt_type == 'C'):
             # Call option
-            return np.maximum(np.exp(init_val + np.sum(gbm(x))) - strike, 0)
+            return np.exp(-1 * rf * ttm) * \
+                np.maximum(np.exp(init_val + np.sum(gbm(x))) - strike, 0)
         else:
             # Put option
-            return np.maximum(strike - np.exp(init_val + np.sum(gbm(x))), 0)
+            return np.exp(-1 * rf * ttm) * \
+                np.maximum(strike - np.exp(init_val + np.sum(gbm(x))), 0)
 
     # Running simulation
     mc_output = monteCarloSkeleton(sim_count=sim_count,
