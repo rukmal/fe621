@@ -1,3 +1,4 @@
+from scipy.stats import norm
 from typing import Callable
 import numpy as np
 
@@ -33,8 +34,7 @@ def monteCarloSkeleton(sim_count: int, eval_count: int, sim_func: Callable,
         """
 
         # Building list of normal random numbers to apply to sim_func
-        rand_Ns = np.array([np.random.normal(size=eval_count,)
-            for i in range(0, sim_dimensionality)])
+        rand_Ns = norm.rvs(size=(sim_dimensionality, eval_count))
         # Applying simulated function over path
         return sim_func(rand_Ns)
     
