@@ -2,8 +2,8 @@ from typing import Callable
 import numpy as np
 
 
-def monteCarloSkeleton(sim_count: int, eval_count: int, sim_func: Callable) \
-    -> np.array:
+def monteCarloSkeleton(sim_count: int, eval_count: int, sim_func: Callable,
+    sim_dimensionality: int=1) -> np.array:
     """Function to run a simple Monte Carlo simulation. This is a highly
     generalized Monte Carlo simulation skeleton, and takes in functions as
     parameters for computation functions, and final post-processing
@@ -16,6 +16,10 @@ def monteCarloSkeleton(sim_count: int, eval_count: int, sim_func: Callable) \
         eval_count {int} -- Number of evaluations per simulation.
         sim_func {Callable} -- Function to run on the random numbers
                                (per-simulation).
+
+    Keyword Arguments
+        sim_dimensionality {int} -- Dimensionality of the simulation. Affects
+                                    the shape of random normals (default: {1}).
     
     Returns:
         np.array -- Array of simulated value outputs.
@@ -29,7 +33,7 @@ def monteCarloSkeleton(sim_count: int, eval_count: int, sim_func: Callable) \
         """
 
         # Building list of normal random numbers to apply to sim_func
-        rand_Ns = np.random.normal(size=(eval_count, ))
+        rand_Ns = np.random.normal(size=(eval_count, sim_dimensionality))
         # Applying simulated function over path
         return sim_func(rand_Ns)
     
