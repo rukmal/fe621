@@ -18,7 +18,7 @@ port_positions = np.floor((port_weights * port_init_val
     / initial_prices_corrected)).astype(int)
 
 # Simulation data
-sim_count = int(1e3)
+sim_count = int(3e6)
 dt = 0.001
 t = 10 / 252
 eval_count = int(np.ceil(t / dt))
