@@ -34,6 +34,10 @@ def partA():
     for sim_count in sim_counts:
         # Iterating over possible evaluation counts
         for eval_count in eval_counts:
+            # Print update
+            print('Starting simulation with eval count {0} and sim count {1}'.
+                format(eval_count, sim_count))
+
             # Metadata dictionary
             meta = dict()
 
@@ -67,8 +71,9 @@ def partA():
             output = output.append(meta, ignore_index=True)
     
             # Printing status update, update counter
-            print('{0}% complete: finished eval count {1} and sim count {2}'.
-                format(counter / total_combos * 100, eval_count, sim_count))
+            print('{0}% complete'.format(counter / total_combos * 100))
+            print('Finished eval count {0} and sim count {1} in {2} minutes'.
+                format(eval_count, sim_count, meta['time_elapsed'] / 60))
             counter += 1
 
     # Saving to CSV
