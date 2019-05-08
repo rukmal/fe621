@@ -7,13 +7,11 @@ import numpy as np
 def deltaCVBlackScholes(current: float, volatility: float, ttm: float,
                       strike: float, rf: float, dividend: float, sim_count: int, eval_count: int, beta1: float, opt_type: str='C') -> dict:
     """Function to model the price of a European Option, under the
-    Black-Scholes pricing model heuristic, using an antithetic variates method
+    Black-Scholes pricing model heuristic, using a control variates method
     variance-reduced Monte-Carlo simulation.
 
-    This function simulates two perfectly negatively correlated simple Geometric
-    Brownian Motion (GBM) processes of the underlying asset price, before
-    computing the terminal contract value for a given number of simulated paths,
-    as the arithmetic average of the payouts of each of the two GBMs.
+    This function simulated a delta-hedged portfolio mimicking a call or put
+    option, under the Black-Scholes pricing heuristic.
     Then, Monte Carlo simulation statistics are computed for each of the
     simulations, and a dict of results is returned.
     
