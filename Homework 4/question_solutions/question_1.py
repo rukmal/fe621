@@ -173,7 +173,7 @@ def partB():
 
 if __name__ == '__main__':
     # Part A - raw data
-    # partA()
+    partA()
 
     # Part B - raw data
     partB()
