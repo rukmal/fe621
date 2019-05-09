@@ -132,9 +132,65 @@ def partC():
     out_df.index = ['Estimate', 'Standard Deviation', 'Standard Error']
     out_df.to_csv('Homework 4/bin/q3_basket_option.csv')
 
+
+def partD():
+    """Solution to 3(d)
+    """
+    
+    # Simulation constants
+    strike = 100
+    a_weights = np.array([1 / 3] * 3)
+    barrier = 104
+
+    # Defining simulation function
+    def sim_func(x: np.array) -> float:
+        # Computing asset prices for each of the 3 correlated assets
+        asset_prices = np.array([init_prices[i] * np.exp(np.cumsum(
+            st(x[i], sigma_vec[i], mu_vec[i])))
+            for i in range(0, 3)])
+
+        # Condition 1 - testing asset 2 against barrier
+        if np.any(np.greater(asset_prices[1], barrier)):
+            # Option value is equal to EU call on asset 2
+            return np.exp(-1 * rf * ttm) * np.maximum(0,
+                asset_prices[1][-1] - strike)
+        
+        # Condition 2 - testing max of asset 2 against max of asset 3
+        if (np.max(asset_prices[1]) > np.max(asset_prices[2])):
+            # Option value is (asset 2 term price ^2 - K)+
+            return np.exp(-1 * rf * ttm) * np.maximum(0,
+                np.power(asset_prices[1][-1], 2) - strike)
+        
+        # Condition 3 - testing average price of asset 2 against asset 3
+        if (np.mean(asset_prices[1]) > np.mean(asset_prices[2])):
+            # Option value is (avg asset 2 price - K)+
+            return np.exp(-1 * rf * ttm) * np.maximum(0,
+                np.mean(asset_prices[1]) - strike)
+        
+        # Otherwise, option is vanilla call option on the basket (same as (c))
+        term_price = np.sum(np.multiply(asset_prices[:, -1], a_weights))
+        return np.exp(-1 * rf * ttm) * np.maximum(term_price - strike, 0)
+
+    # Running simulation
+    sim_results = fe621.monte_carlo.monteCarloSkeleton(
+        sim_count=sim_count,
+        eval_count=eval_count,
+        sim_func=sim_func,
+        sim_dimensionality=3
+    )
+
+    # Building output dataframe with stats, formatting and saving to CSV
+    out_df = pd.Series(fe621.monte_carlo.monteCarloStats(sim_results))
+    out_df.index = ['Estimate', 'Standard Deviation', 'Standard Error']
+    out_df.to_csv('Homework 4/bin/q3_exotic_option_mc.csv')
+
+
 if __name__ == '__main__':
     # 3(b)
     # partB()
 
     # 3(c)
-    partC()
+    # partC()
+
+    # 3(d)
+    partD()
