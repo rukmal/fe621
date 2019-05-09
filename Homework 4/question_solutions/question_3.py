@@ -1,6 +1,7 @@
 from context import fe621
 
 import numpy as np
+import pandas as pd
 from scipy.linalg import cholesky
 from scipy.stats import norm
 
@@ -20,7 +21,8 @@ L = cholesky(corr_mat, lower=True)
 dt = 1 / 365
 ttm = 100 / 365
 sim_count = 1000
-eval_count = ttm / dt
+eval_count = int(ttm / dt)
+rf = 0.06
 
 # Defining process function
 st = lambda x, volatility, mu: (mu * dt) + (volatility * np.sqrt(dt) * x)
@@ -38,12 +40,12 @@ def partB():
 
     # Running simulation
     sim_results = fe621.monte_carlo.monteCarloSkeleton(
-        sim_count=100,
-        eval_count=10,
+        sim_count=sim_count,
+        eval_count=eval_count,
         sim_func=sim_func,
         sim_dimensionality=3
     )
-    print(sim_results.shape)
+
     # Reshaping as per question specs
     # (rows: time step, col: simulation, z: asset)
     sim_results = np.swapaxes(sim_results, 0, 1)  # sims to columns
@@ -86,6 +88,53 @@ def partB():
     # Closing plot
     plt.close()
 
+
+def partC():
+    """Solution to 3(c)
+    """
+    
+    strike = 100
+    a_weights = np.array([1 / 3] * 3)
+
+    # Defining simulation function
+    def sim_func(x: np.array) -> float:
+        # Computing terminal asset prices for each of the 3 correlated assets
+        term_prices = np.array([init_prices[i] * np.exp(np.sum(
+            st(x[i], sigma_vec[i], mu_vec[i])))
+            for i in range(0, 3)])
+        
+        # Computing weighted basket price, and comparing to strike price
+        term_price = np.sum(np.multiply(term_prices, a_weights))
+
+        # Computing both put and call prices; returning
+        call_price = np.exp(-1 * rf * ttm) * np.maximum(term_price - strike, 0)
+        put_price = np.exp(-1 * rf * ttm) * np.maximum(strike - term_price, 0)
+
+        return np.array([call_price, put_price])
+
+    # Running simulation
+    sim_results = fe621.monte_carlo.monteCarloSkeleton(
+        sim_count=sim_count,
+        eval_count=eval_count,
+        sim_func=sim_func,
+        sim_dimensionality=3
+    )
+
+    # Output dictionary
+    output = dict()
+
+    # Iterating over option types, computing MC stats for each
+    for idx, opt_type in zip([0, 1], ['European Call', 'European Put']):
+        output[opt_type] = fe621.monte_carlo.monteCarloStats(sim_results.T[idx])
+
+    # Building output dataframe, formatting and saving to CSV
+    out_df = pd.DataFrame(output)
+    out_df.index = ['Estimate', 'Standard Deviation', 'Standard Error']
+    out_df.to_csv('Homework 4/bin/q3_basket_option.csv')
+
 if __name__ == '__main__':
     # 3(b)
-    partB()
+    # partB()
+
+    # 3(c)
+    partC()
