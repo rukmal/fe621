@@ -27,6 +27,9 @@ rf = 0.06
 # Defining process function
 st = lambda x, volatility, mu: (mu * dt) + (volatility * np.sqrt(dt) * x)
 
+# NOTE: See the following link for how I figured out correlating the random
+#       variables with the Cholesky decomposition of the correlation matrix.
+# https://scipy-cookbook.readthedocs.io/items/CorrelatedRandomSamples.html
 
 def partB():
     """Solution to 3(b)
