@@ -1,0 +1,9 @@
+MC Method,Option Type,Estimate,Std Error,Time Elapsed
+Antithetic MC,C,9.13168,0.00722,66.05935
+Antithetic MC,P,6.26197,0.00464,65.72103
+Antithetic and Control Delta MC,C,9.13528,0.00032,504.39522
+Antithetic and Control Delta MC,P,6.26741,0.00028,508.45291
+Control Delta MC,C,9.13535,0.00061,271.13860
+Control Delta MC,P,6.26747,0.00098,276.63671
+Simple MC,C,9.10371,0.01365,44.68048
+Simple MC,P,6.25836,0.00907,45.93523
