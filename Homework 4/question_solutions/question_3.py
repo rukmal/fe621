@@ -34,6 +34,9 @@ def partB():
 
     # Defining simulation function
     def sim_func(x: np.array) -> np.array:
+        # Correlating random variables
+        x = np.dot(L, x)
+
         return np.array([init_prices[i] * np.exp(np.cumsum(
             st(x[i], sigma_vec[i], mu_vec[i])))
             for i in range(0, 3)])
@@ -98,6 +101,9 @@ def partC():
 
     # Defining simulation function
     def sim_func(x: np.array) -> float:
+        # Correlating random variables
+        x = np.dot(L, x)
+
         # Computing terminal asset prices for each of the 3 correlated assets
         term_prices = np.array([init_prices[i] * np.exp(np.sum(
             st(x[i], sigma_vec[i], mu_vec[i])))
@@ -144,6 +150,9 @@ def partD():
 
     # Defining simulation function
     def sim_func(x: np.array) -> float:
+        # Correlating random variables
+        x = np.dot(L, x)
+
         # Computing asset prices for each of the 3 correlated assets
         asset_prices = np.array([init_prices[i] * np.exp(np.cumsum(
             st(x[i], sigma_vec[i], mu_vec[i])))
