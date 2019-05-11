@@ -1,3 +1,4 @@
+from . import asian
 from . import barrier
 from . import greeks
 from . import parity
