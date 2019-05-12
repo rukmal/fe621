@@ -17,7 +17,19 @@ days_in_year = 252
 sim_count = int(1e4)
 eval_count = days_in_year * ttm
 
+# Output file paths
+out_files = {
+    'analytical_call_price': 'Final Exam/bin/q1_analytical_call_price.csv',
+    'mc_geom_call': 'Final Exam/bin/mc_geom_call.csv',
+    'mc_arithmetic_call': 'Final Exam/bin/mc_arithmetic_call.csv'
+}
+
 def analyticalCallPrice():
+    """Part (a): Use analytic formula to compute the option price.
+    """
+
+    # Computing the analytical price of the Asian Call option with the
+    # fe621 package function
     analytical_price = fe621.black_scholes.asian.call(
         current=current,
         volatility=volatility,
@@ -27,7 +39,9 @@ def analyticalCallPrice():
         days_in_year=days_in_year
     )
 
-    print(analytical_price)
+    # Creating output dataframe, saving to CSV
+    output = pd.Series({'Analytical Asian Call Price': analytical_price})
+    output.to_csv(out_files['analytical_call_price'])
 
 def mcArithmeticCallPrice():
     # Need to figure out what they mean by "arithmetic" vs "geometric" here;
@@ -113,7 +127,7 @@ def mcGeometricCallPrice():
 
 if __name__ == '__main__':
     # Part (a) - Analytical Formula Geometric Asian Call Option price
-    # analyticalCallPrice()
+    analyticalCallPrice()
 
     # Part (b) and (c) - MC Price computation
-    mcGeometricCallPrice()
+    # mcGeometricCallPrice()
