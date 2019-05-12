@@ -48,7 +48,8 @@ def monteCarloSkeleton(sim_count: int, eval_count: int, sim_func: Callable,
     return np.array([simulation() for i in range(0, sim_count)])
 
 
-def monteCarloStats(mc_output: np.array) -> dict:
+def monteCarloStats(mc_output: np.array, computeCIs: bool=False,
+                    CI_alpha: list=[0.95, 0.99]) -> dict:
     """Function to compute statistics on a Monte Carlo simulation output set.
 
     This function computes the estimate (i.e. the mean), sample standard
@@ -57,6 +58,12 @@ def monteCarloStats(mc_output: np.array) -> dict:
     
     Arguments:
         mc_output {np.array} -- Array of simulated Monte Carlo values.
+    
+    Keword Arguments:
+        computeCIs {bool} -- Flag to enable computation of percentile-based 99%
+                             and 95% confidence intervals (default: {False}).
+        CI_alpha {list} -- Confidence intervals to be computed; listed as
+                           percentages from 0-1 (default: {[0.95, 0.99]}).
     
     Returns:
         dict -- Dictionary with summary statistics.
@@ -72,6 +79,14 @@ def monteCarloStats(mc_output: np.array) -> dict:
     # Standard error
     output['standard_error'] = output['standard_deviation'] / np.sqrt(
         len(mc_output))
+
+    # Check CIs
+    if computeCIs:
+        for alpha in CI_alpha:
+            # Quantile-based confidence interval computation
+            output['_'.join(['ci', str(alpha)])] = [
+                np.quantile(mc_output, i) for i in [1 - alpha, alpha]
+            ]
 
     # Return final output
     return output
