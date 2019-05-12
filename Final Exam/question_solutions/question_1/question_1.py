@@ -1,5 +1,7 @@
 from context import fe621
 
+import asian_option_mc
+
 import numpy as np
 import pandas as pd
 
@@ -12,7 +14,7 @@ ttm = 5
 days_in_year = 252
 
 # Simulation data
-sim_count = int(1e3)
+sim_count = int(1e4)
 eval_count = days_in_year * ttm
 
 def analyticalCallPrice():
@@ -79,6 +81,32 @@ def mcGeometricCallPrice():
     # Extracting price data for each type of computation
     geom_sim_data = sim_data[:, 0]
     arithmetic_sim_data = sim_data[:, 1]
+
+    # Function to compute the present value of the terminal value for an
+    # Asian Call option
+    asianCallPayoffPV = lambda avg_price: np.maximum(avg_price - strike, 0)
+
+    geom_sim_data = fe621.monte_carlo.monteCarloSkeleton(
+        sim_func=asian_option_mc.sim_func_geometric,
+        eval_count=eval_count,
+        sim_count=sim_count,
+        sim_func_kwargs={
+            'gbm': gbm,
+            'computePayoffPV': asianCallPayoffPV,
+            'current': current
+        }
+    )
+
+    arithmetic_sim_data = fe621.monte_carlo.monteCarloSkeleton(
+        sim_func=asian_option_mc.sim_func_arithmetic,
+        eval_count=eval_count,
+        sim_count=sim_count,
+        sim_func_kwargs={
+            'gbm': gbm,
+            'computePayoffPV': asianCallPayoffPV,
+            'current': current
+        }
+    )
 
     print('geometric sim data\n', fe621.monte_carlo.monteCarloStats(geom_sim_data))
     print('arithmetic sim data\n', fe621.monte_carlo.monteCarloStats(arithmetic_sim_data))
