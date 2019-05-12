@@ -4,7 +4,7 @@ import numpy as np
 
 
 def monteCarloSkeleton(sim_count: int, eval_count: int, sim_func: Callable,
-    sim_dimensionality: int=1) -> np.array:
+    sim_dimensionality: int=1, sim_func_kwargs: dict=None) -> np.array:
     """Function to run a simple Monte Carlo simulation. This is a highly
     generalized Monte Carlo simulation skeleton, and takes in functions as
     parameters for computation functions, and final post-processing
@@ -21,6 +21,8 @@ def monteCarloSkeleton(sim_count: int, eval_count: int, sim_func: Callable,
     Keyword Arguments
         sim_dimensionality {int} -- Dimensionality of the simulation. Affects
                                     the shape of random normals (default: {1}).
+        sim_func_kwargs {dict} -- Optional additional keyword arguments for the
+                                  simulation function (default: {None}).
     
     Returns:
         np.array -- Array of simulated value outputs.
@@ -35,8 +37,12 @@ def monteCarloSkeleton(sim_count: int, eval_count: int, sim_func: Callable,
 
         # Building list of normal random numbers to apply to sim_func
         rand_Ns = norm.rvs(size=(sim_dimensionality, eval_count))
-        # Applying simulated function over path
-        return sim_func(rand_Ns)
+        
+        # Applying simulated function over path (pass kwargs if applicable)
+        if sim_func_kwargs:
+            return sim_func(rand_Ns, **sim_func_kwargs)
+        else:
+            return sim_func(rand_Ns)
     
     # Running simulations the required number of times, returning
     return np.array([simulation() for i in range(0, sim_count)])
