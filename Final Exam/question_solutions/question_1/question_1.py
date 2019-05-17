@@ -5,6 +5,8 @@ import asian_option_mc
 import itertools
 import numpy as np
 import pandas as pd
+import time
+
 
 # Option data
 rf = 0.03
@@ -61,6 +63,7 @@ def mcCallPrices():
     """
 
     # MC simulation to price Geometric Asian Call Option
+    start = time.time()
     geom_sim_data = fe621.monte_carlo.monteCarloSkeleton(
         sim_func=asian_option_mc.sim_func_geometric,
         eval_count=eval_count,
@@ -71,8 +74,10 @@ def mcCallPrices():
             'current': current
         }
     )
+    geometric_time = time.time() - start
 
     # MC simulation to price Arithmetic Asian Call Option
+    start = time.time()
     arithmetic_sim_data = fe621.monte_carlo.monteCarloSkeleton(
         sim_func=asian_option_mc.sim_func_arithmetic,
         eval_count=eval_count,
@@ -83,23 +88,30 @@ def mcCallPrices():
             'current': current
         }
     )
+    arithmetic_time = time.time() - start
 
-    # Compute MC stats and CIs for both price estimates 
+    # Compute MC stats and CIs for both price estimates; timing
     geometric_results = fe621.monte_carlo.monteCarloStats(
         geom_sim_data,
         computeCIs=True
     )
+    
     arithmetic_results = fe621.monte_carlo.monteCarloStats(
         arithmetic_sim_data,
         computeCIs=True
     )
-    print(np.mean(arithmetic_sim_data))
-    print(np.std(arithmetic_sim_data))
+
     # Converting CIs to strings (for output)
     ci_fields = ['ci_0.99', 'ci_0.95']
     for key, opt_type in itertools.product(ci_fields,
         [geometric_results, arithmetic_results]):
-        opt_type[key] = ['{:.4f}'.format(i) for i in opt_type[key]]
+        # opt_type[key] = ['{:.4f}'.format(i) for i in opt_type[key]]
+        opt_type[key] = '; '.join(['{:.4f}'.format(i) for i in opt_type[key]])
+        opt_type[key] = '(' + opt_type[key] + ')'
+
+    # Adding time elapsed to the output DataFrame
+    geometric_results['time_elapsed'] = geometric_time
+    arithmetic_results['time_elapsed'] = arithmetic_time
 
     # Build output DataFrame
     output = pd.DataFrame({
@@ -108,7 +120,7 @@ def mcCallPrices():
     })
     # Update index
     output.index = ['95% CI', '99% CI', 'Price Estimate', 'Standard Deviation',
-                    'Standard Error']
+                    'Standard Error', 'Time Elapsed']
 
     output.to_csv(out_files['mc_option_prices'], float_format='{:.4f}')
 
