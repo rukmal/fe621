@@ -23,7 +23,8 @@ eval_count = days_in_year * ttm
 # Output file paths
 out_files = {
     'analytical_call_price': 'Final Exam/bin/q1_analytical_call_price.csv',
-    'mc_option_prices': 'Final Exam/bin/q1_mc_asian_option_prices.csv'
+    'mc_option_prices': 'Final Exam/bin/q1_mc_asian_option_prices.csv',
+    'mc_adjusted_prices': 'Final Exam/bin/q1_mc_adjusted_prices.csv'
 }
 
 # Globally used functions and values
@@ -124,9 +125,113 @@ def mcCallPrices():
 
     output.to_csv(out_files['mc_option_prices'], float_format='{:.4f}')
 
+
+def regressionSlope(M: int):
+    """Using M simulations and the exact same random valriables,
+    compute the regression slope.
+    """
+
+    arithmetic_prices = []
+    geometric_prices = []
+
+    def sim_func(x: np.array):
+        # Simulation function computing prices for both types of options with
+        # the same random numbers
+        arithmetic_prices.append(asian_option_mc.sim_func_arithmetic(
+            x=x,
+            gbm=gbm,
+            computePayoffPV=asianCallPayoffPV,
+            current=current
+        ))
+        
+        geometric_prices.append(asian_option_mc.sim_func_geometric(
+            x=x,
+            gbm=gbm,
+            computePayoffPV=asianCallPayoffPV,
+            current=current
+        ))
+
+
+    # Running simulation with M iterations
+    fe621.monte_carlo.monteCarloSkeleton(
+        sim_count=M,
+        eval_count=eval_count,
+        sim_func=sim_func
+    )
+
+    # Casting to numpy arrays
+    arithmetic_prices = np.array(arithmetic_prices)
+    geometric_prices = np.array(geometric_prices)
+
+    # Computing means
+    a_mean = np.mean(arithmetic_prices)
+    g_mean = np.mean(geometric_prices)
+
+    # Computing b_star
+    b_star = np.sum([((arithmetic_prices[i] - a_mean) * (geometric_prices[i] \
+        - g_mean)) for i in range(0, len(arithmetic_prices))]) \
+        / np.sum(np.power(arithmetic_prices - a_mean, 2))
+    
+    return b_star, arithmetic_prices, geometric_prices
+
+
+def partDEF():
+    """Solution to part (d) [single M value]
+    """
+
+    # Computing analytical option price
+    analytical_price = fe621.black_scholes.asian.call(
+        current=current,
+        volatility=volatility,
+        ttm=ttm,
+        strike=strike,
+        rf=rf,
+        days_in_year=days_in_year
+    )
+
+    out_df = pd.DataFrame()
+
+    for i in range(3, 7):
+        out_row = dict()
+        M = int(np.power(10, i))
+        b_star, arithmetic_prices, geom_prices = regressionSlope(M=M)
+
+        # Computing MC price esimates
+        price_a = fe621.monte_carlo.monteCarloStats(
+            arithmetic_prices)['estimate']
+        price_g = fe621.monte_carlo.monteCarloStats(geom_prices)['estimate']
+
+        # Computing error for the geometric Asian option
+        geom_err = np.abs(analytical_price - price_g)
+        
+        # Computing modified arithmetic option price using the error and b_star
+        price_a_adj = price_a - (b_star * geom_err)
+
+        # Building output dictionary
+        out_row['M'] = M
+        out_row['sim_price_g'] = price_g
+        out_row['sim_price_a'] = price_a
+        out_row['b*'] = b_star
+        out_row['E_g'] = geom_err
+        out_row['price_a_adj'] = price_a_adj
+
+        out_df = out_df.append(out_row, ignore_index=True)
+
+        print(out_row)
+    
+    # Saving to CSV
+    out_df.to_csv(out_files['mc_adjusted_prices'])
+
+
+    
+
+
 if __name__ == '__main__':
     # Part (a) - Analytical Formula Geometric Asian Call Option price
     # analyticalCallPrice()
 
     # Part (b) and (c) - MC Price computation
-    mcCallPrices()
+    # mcCallPrices()
+
+    # Part (d), (e), (f)
+    partDEF()
