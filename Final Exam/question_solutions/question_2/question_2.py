@@ -16,6 +16,8 @@ raw_data_files = {
 assets = ['bac', 'c', 'gs', 'jpm']
 asset_names = ['BAC', 'C', 'GS', 'JPM']
 
+N = 255
+
 # Output DataFrame
 def get_params():
     """Solution to 2(b)
@@ -23,8 +25,6 @@ def get_params():
 
     theta_1 = []
     theta_2 = []
-
-    N = 255
 
     for asset in assets:
         prices = pd.read_csv(raw_data_files[asset])['Adj Close']
@@ -66,8 +66,8 @@ def eulerMilsteinSim():
     """
 
     sim_count = 10
-    eval_count = 255
-    dt = 1 / 255
+    eval_count = N
+    dt = 1 / N
 
     corr_mat = computeCorrMatrix()
     L = cholesky(corr_mat, lower=True)
@@ -126,6 +126,17 @@ def eulerMilsteinSim():
     # Saving to CSV
     out_df.round(decimals=7).to_csv('Final Exam/bin/q2_asset_stats.csv')
 
+def etf_params():
+    prices = pd.read_csv(raw_data_files['xlf'])['Adj Close']
+    log_prices = np.diff(np.log(prices))
+
+    out = dict()
+    out['Theta_1'] = [np.mean(log_prices) * N]
+    out['Theta_2'] = [np.std(log_prices) * np.sqrt(N)]
+
+    # Saving to CSV
+    pd.DataFrame(out, index=['XLF']).round(decimals=7).to_csv(
+        'Final Exam/bin/q2_etf_params.csv')
 
 if __name__ == '__main__':
     # 2 (b)
@@ -135,4 +146,7 @@ if __name__ == '__main__':
     # corr_matrix()
 
     # 2(d)
-    eulerMilsteinSim()
+    # eulerMilsteinSim()
+
+    # 2(e)
+    etf_params()
