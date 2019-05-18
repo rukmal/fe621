@@ -239,7 +239,7 @@ def local_vol_surface_plot():
     """
 
     # Loading data from CSV
-    vol_data = pd.read_csv('Final Exam/bin/q3_local_vols.csv')
+    vol_data = pd.read_csv('Final Exam/bin/q3_local_vol.csv')
     # Dropping rows with na data
     vol_data = vol_data.dropna(axis=0)
 
@@ -302,7 +302,7 @@ if __name__ == '__main__':
     # imp_vol_surface_plot()
 
     # Part (d) Dupire's Local Vol
-    calculate_local_vol()
+    # calculate_local_vol()
 
     # Part (d) Cont. Dupire's Local Vol Plot
     local_vol_surface_plot()
