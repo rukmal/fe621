@@ -30,8 +30,8 @@ Repository to store homework for FE 621 (Computational Methods in Finance) taugh
 ### Numerical Differentiation/Integration
 
 - Numerical Differentiation: https://github.com/rukmal/FE-621-Homework/tree/master/fe621/numerical_differentiation
-- Numerical Integration: https://github.com/rukmal/FE-621-Homework/tree/master/fe621/numerical_integration
-
+- Simpson's Quadrature Rule (Numerical Integration): https://github.com/rukmal/FE-621-Homework/blob/master/fe621/numerical_integration/simpsons.py
+- Trapezoidal Quadrature Rule (Numerical Integration): https://github.com/rukmal/FE-621-Homework/blob/master/fe621/numerical_integration/trapezoidal.py
 
 ### Optimization (Numeric; 1D)
 
@@ -47,5 +47,3 @@ Repository to store homework for FE 621 (Computational Methods in Finance) taugh
 - Binomial Trigeorgis Additive Vanilla Option Pricing: https://github.com/rukmal/FE-621-Homework/blob/master/fe621/tree_pricing/binomial/trigeorgis.py
 - Binomial Trigeorgis Additive Barrier Option Pricing: https://github.com/rukmal/FE-621-Homework/blob/master/fe621/tree_pricing/binomial/barrier.py
 - Trinomial Additive Vanilla Option Pricing: https://github.com/rukmal/FE-621-Homework/blob/master/fe621/tree_pricing/trinomial/trinomial_price.py
-
-
