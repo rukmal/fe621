@@ -55,8 +55,8 @@ Note that this indexing scheme makes it easy for us to reference the children of
 
 To illustrate this, assume that we have the following information:
 
-- *n* = (time step + 1) of the target node, *k*
-- *i* = row of the target node
+- *n* = time step of the target node, *k*
+- *i* = row of the target node, *k*
 
 Furthermore, the following notation will be used:
 
